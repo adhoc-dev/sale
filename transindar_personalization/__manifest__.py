@@ -96,7 +96,11 @@ Transindar Personalization
         'purchase_usability',
         'product_replenishment_cost',
         # no se migran
-        # AGREGADOS POR JUAN
+        # dependencias para que el no_tracking vaya lo mas arriba posible
+        'sale_order_type_automation',
+        'sale_order_type_invoice_policy',
+        'sale_procurement_date_confirm',
+        'sale_order_validity',
     ],
     'data': [
         # 'security/security.xml',

@@ -2,8 +2,11 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 from datetime import datetime, timedelta
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class SaleOrder(models.Model):
@@ -13,6 +16,22 @@ class SaleOrder(models.Model):
     sale_preparetion_time = fields.Integer(
         compute='_get_preparation_time',
         string='Tiempo De Preparacion')
+
+    @api.multi
+    def action_confirm(self):
+        param = self.env['ir.config_parameter'].get_param(
+                'sale_order_action_confirm')
+        if param == 'tracking_disable':
+            _logger.info('tracking_disable on SO confirm ')
+            self = self.with_context(tracking_disable=True)
+        elif param == 'mail_notrack':
+            _logger.info('mail_notrack on SO confirm ')
+            self = self.with_context(mail_notrack=True)
+        res = super(SaleOrder, self).action_confirm()
+        if param:
+            self.message_post(
+                body=_('Orden validada con "no tracking=%s"') % param)
+        return res
 
     @api.one
     def _get_preparation_time(self):
