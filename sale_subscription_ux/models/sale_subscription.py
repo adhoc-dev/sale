@@ -1,0 +1,55 @@
+##############################################################################
+# For copyright and license notices, see __manifest__.py file in module root
+# directory
+##############################################################################
+from odoo import models, api, fields, _
+from odoo.exceptions import ValidationError
+from dateutil.relativedelta import relativedelta
+
+
+class SaleSubscription(models.Model):
+
+    _inherit = "sale.subscription"
+
+    dates_required = fields.Boolean(
+        related="template_id.dates_required",
+        readonly=True,
+    )
+
+    period = fields.Integer(
+        related="template_id.period",
+        readonly=True,
+    )
+
+    @api.multi
+    def _prepare_invoice_data(self):
+        """ Copy the terms and conditions of the subscription as part of the
+        invoice note.
+        """
+        self.ensure_one()
+        res = super(SaleSubscription, self)._prepare_invoice_data()
+        if self.template_id.copy_description_to_invoice:
+            res.update({'comment':
+                        res.get('comment', '') + '\n\n' + self.description})
+        return res
+
+    @api.onchange('date_start', 'template_id')
+    @api.constrains('date_start', 'template_id')
+    def update_date(self):
+        periods = {
+            'daily': 'days', 'weekly': 'weeks', 'monthly': 'months',
+            'yearly': 'years'}
+        to_update = self.filtered(
+            lambda x: x.template_id.period and x.date_start)
+        for rec in to_update:
+            date_start = fields.Date.from_string(rec.date_start)
+            end_date = date_start + relativedelta(
+                **{periods[rec.recurring_rule_type]: rec.period})
+            rec.date = fields.Date.to_string(end_date)
+
+    @api.constrains('date', 'date_start')
+    def validate_dates(self):
+        for sub in self:
+            if sub.date and sub.date_start and sub.date < sub.date_start:
+                raise ValidationError(
+                    _("The date end must be greater than the start date!"))

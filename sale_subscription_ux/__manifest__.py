@@ -18,8 +18,8 @@
 #
 ##############################################################################
 {
-    'name': 'Sale Contract Usability',
-    'version': '9.0.0.5.0',
+    'name': 'Sale Subscription UX',
+    'version': '11.0.1.0.0',
     'category': 'Sales Management',
     'sequence': 14,
     'summary': '',
@@ -29,18 +29,15 @@
     'images': [
     ],
     'depends': [
-        'sale_contract',
+        'sale_subscription',
     ],
     'data': [
-        'views/res_company_view.xml',
-        'views/sale_subscription_view.xml',
-        'views/product_view.xml',
+        'views/sale_subscription_views.xml',
+        'views/sale_subscription_template_views.xml',
     ],
     'demo': [
     ],
-    'test': [
-    ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
