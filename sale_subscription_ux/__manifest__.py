@@ -34,6 +34,7 @@
     'data': [
         'views/sale_subscription_views.xml',
         'views/sale_subscription_template_views.xml',
+        'views/sale_subscription_line_views.xml',
     ],
     'demo': [
     ],

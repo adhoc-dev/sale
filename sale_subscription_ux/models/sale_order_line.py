@@ -6,6 +6,7 @@ from odoo import models, fields
 
 
 class SaleSubscriptionLine(models.Model):
+
     _inherit = 'sale.subscription.line'
     _order = 'sequence'
 

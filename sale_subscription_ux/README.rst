@@ -21,6 +21,8 @@ Sale Subscription UX
 #. If you have a sale order that have both, subscription products and products
    that generate projects or tasks, then the created subscriptions will re use
    the analytic account that was created for the project/tasks.
+#. Add sequence on sale subscriptions lines that let us to order the
+   subscription lines.
 
 Installation
 ============
