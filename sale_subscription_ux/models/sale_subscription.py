@@ -53,3 +53,12 @@ class SaleSubscription(models.Model):
             if sub.date and sub.date_start and sub.date < sub.date_start:
                 raise ValidationError(
                     _("The date end must be greater than the start date!"))
+
+    @api.multi
+    def update_lines_prices_from_products(self):
+        """ Update subscription lines, all the line including prices.
+        """
+        for subscription in self:
+            for line in subscription.recurring_invoice_line_ids:
+                line.onchange_product_quantity()
+        self._compute_recurring_total()

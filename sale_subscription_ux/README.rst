@@ -23,6 +23,8 @@ Sale Subscription UX
    the analytic account that was created for the project/tasks.
 #. Add sequence on sale subscriptions lines that let us to order the
    subscription lines.
+#. Update prices in subscriptions: update price in subscription lines from the
+   values in the related products.
 
 Installation
 ============
@@ -40,6 +42,9 @@ To configure this module, you need to:
 
 Usage
 =====
+
+#. Update prices from subscription form with button "Update Lines Prices"
+#. Update prices from subscription list selecting the ones you want to update and then going in to "Action / Update Lines Prices"
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
