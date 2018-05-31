@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="helpdesk_ticket_kanban_view">
+        <field name="name">Helpdesk Ticket Kanban</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_kanban"/>
+        <field name="arch" type="xml">
+            <field name="activity_ids" position="after">
+                <field name="sequence"/>
+            </field>
+        </field>
+    </record>
+</odoo>
