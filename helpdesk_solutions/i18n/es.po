@@ -1,0 +1,210 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* helpdesk_solutions
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-06-13 11:58+0000\n"
+"PO-Revision-Date: 2018-06-13 11:58+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: helpdesk_solutions
+#: model:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_form_view
+msgid "Add a solution description..."
+msgstr "Agregar una descripción de solución..."
+
+#. module: helpdesk_solutions
+#: model:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_form_view
+msgid "Add a ticket description..."
+msgstr "Agregar descripción de incidencia..."
+
+#. module: helpdesk_solutions
+#: model:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_ticket_view_form
+msgid "Add solution description..."
+msgstr "Agregar descripción de solución..."
+
+#. module: helpdesk_solutions
+#: model:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_ticket_view_form
+msgid "Add ticket description..."
+msgstr "Add ticket description..."
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag_color
+msgid "Color Index"
+msgstr "Índice de color"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_create_uid
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_create_date
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag_create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_display_name
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag_display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: helpdesk_solutions
+#: model:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_search_view
+msgid "Everywhere"
+msgstr "Everywhere"
+
+#. module: helpdesk_solutions
+#: model:ir.model,name:helpdesk_solutions.model_helpdesk_solution
+msgid "Helpdesk Solution"
+msgstr "Helpdesk Solution"
+
+#. module: helpdesk_solutions
+#: model:ir.model,name:helpdesk_solutions.model_helpdesk_solution_tag
+msgid "Helpdesk Solution Tag"
+msgstr "Helpdesk Solution Tag"
+
+#. module: helpdesk_solutions
+#: model:ir.actions.act_window,name:helpdesk_solutions.helpdesk_solution_act0
+#: model:ir.ui.menu,name:helpdesk_solutions.menu_helpdesk_solution
+msgid "Helpdesk Solutions"
+msgstr "Helpdesk Solutions"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_id
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag_id
+msgid "ID"
+msgstr "ID (identificación)"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,help:helpdesk_solutions.field_helpdesk_stage_solution_required
+msgid "If you set it to true, then tickets that moves into this stage will require a solution."
+msgstr "If you set it to true, then tickets that moves into this stage will require a solution."
+
+#. module: helpdesk_solutions
+#: model:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_ticket_view_form
+msgid "Internal Description"
+msgstr "Internal Description"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_ticket_description
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_ticket_ticket_description
+msgid "Issue Description"
+msgstr "Descripción de Incidencia"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution___last_update
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag_write_uid
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización de"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag_write_date
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_ticket_helpdesk_solution_id
+msgid "Linked Solution"
+msgstr "Solución Vinculada"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_name
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag_name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: helpdesk_solutions
+#: model:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_form_view
+msgid "Name..."
+msgstr "Name..."
+
+#. module: helpdesk_solutions
+#: model:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_form_view
+#: model:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_search_view
+#: model:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_tree_view
+msgid "Solution"
+msgstr "Solución"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_solution_description
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_ticket_solution_description
+msgid "Solution Description"
+msgstr "Descripción de Solución"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_stage_solution_required
+msgid "Solution Required?"
+msgstr "Solution Required?"
+
+#. module: helpdesk_solutions
+#: model:ir.actions.act_window,name:helpdesk_solutions.helpdesk_solution_tag_action
+#: model:ir.ui.menu,name:helpdesk_solutions.menu_helpdesk_solution_tag
+msgid "Solutions Tags"
+msgstr "Solutions Tags"
+
+#. module: helpdesk_solutions
+#: model:ir.model,name:helpdesk_solutions.model_helpdesk_stage
+msgid "Stage"
+msgstr "Etapa"
+
+#. module: helpdesk_solutions
+#: sql_constraint:helpdesk.solution.tag:0
+msgid "Tag name already exists !"
+msgstr "Tag name already exists !"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tags_ids
+msgid "Tags"
+msgstr "Etiquetas"
+
+#. module: helpdesk_solutions
+#: model:ir.actions.act_window,help:helpdesk_solutions.helpdesk_solution_act0
+msgid "The Helpdesk Solutions allows you to efficiantly\n"
+"                manage the solutions for tickets."
+msgstr "The Helpdesk Solutions allows you to efficiantly\n"
+"                manage the solutions for tickets."
+
+#. module: helpdesk_solutions
+#: model:ir.model,name:helpdesk_solutions.model_helpdesk_ticket
+msgid "Ticket"
+msgstr "Ticket"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_ticket_count
+msgid "Ticket Count"
+msgstr "Ticket Count"
+
+#. module: helpdesk_solutions
+#: model:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_ticket_view_form
+msgid "Ticket Data"
+msgstr "Ticket Data"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_helpdesk_ticket_ids
+#: model:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_form_view
+msgid "Tickets"
+msgstr "Tickets"
+
+#. module: helpdesk_solutions
+#: code:addons/helpdesk_solutions/models/helpdesk_ticket.py:29
+#, python-format
+msgid "You need to complete solution description to change the stage"
+msgstr "You need to complete solution description to change the stage"
+

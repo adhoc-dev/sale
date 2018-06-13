@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="helpdesk_tickets_view_search" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="helpdesk_solution_id"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_timesheet"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook/page[1]" position="before">
+                <page string="Ticket Data">
+                    <group colspan="4" col="1">
+                        <field name="ticket_description" placeholder="Add ticket description..."/>
+                        <!-- TODO include? {'default_categ_ids':categ_ids} -->
+                        <field name="helpdesk_solution_id" context="{'default_name':name,'default_solution_description': solution_description,'default_ticket_description':ticket_description}"/>
+                        <field name="solution_description" placeholder="Add solution description..."/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//sheet/notebook/page[2]" position="attributes">
+                <attribute name="string">Internal Description</attribute>
+                <attribute name="groups">base.group_user</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

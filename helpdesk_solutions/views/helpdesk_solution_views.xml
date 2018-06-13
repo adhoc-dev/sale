@@ -1,0 +1,79 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <record id="helpdesk_solution_search_view" model="ir.ui.view">
+        <field name="name">helpdesk.solution.search.view</field>
+        <field name="model">helpdesk.solution</field>
+        <field name="arch" type="xml">
+            <search string="Solution">
+                <field name="name" string="Everywhere" filter_domain="['|','|','|',('name','ilike',self),('ticket_description','ilike',self),('solution_description','ilike',self),('tag_ids','ilike',self)]"/>
+                <field name="name"/>
+                <field name="ticket_description"/>
+                <field name="solution_description"/>
+                <field name="tag_ids"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="helpdesk_solution_tree_view" model="ir.ui.view">
+        <field name="name">helpdesk.solution.tree.view</field>
+        <field name="model">helpdesk.solution</field>
+        <field name="arch" type="xml">
+            <tree string="Solution">
+                <field name="name"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="helpdesk_solution_form_view" model="ir.ui.view">
+        <field name="name">helpdesk.solution.form.view</field>
+        <field name="model">helpdesk.solution</field>
+        <field name="arch" type="xml">
+            <form string="Solution">
+                <sheet string="Solution">
+                    <div class="oe_button_box" name="button_box" groups="base.group_user">
+                        <button class="oe_stat_button" type="action" name="%(helpdesk.helpdesk_ticket_action_main_tree)d" icon="fa-bug" context="{'search_default_helpdesk_solution_id': active_id}">
+                            <field string="Tickets" name="ticket_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1 class="o_row">
+                            <field name="name" placeholder="Name..." class="oe_inline"/>
+                        </h1>
+                    </div>
+                    <field name="tag_ids" widget="many2many_tags" placeholder="Tags..." options="{'color_field': 'color', 'no_create_edit': True}"/>
+                    <group>
+                        <field name="ticket_description" placeholder="Add a ticket description..."/>
+                        <field name="solution_description" placeholder="Add a solution description..."/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="helpdesk_solution_act0">
+        <field name="name">Helpdesk Solutions</field>
+        <field name="res_model">helpdesk.solution</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False"/>
+        <field name="domain" eval=""/>
+        <field name="search_view_id" ref="helpdesk_solution_search_view"/>
+        <field name="help" type="html">
+            <p>
+                The Helpdesk Solutions allows you to efficiantly
+                manage the solutions for tickets.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_helpdesk_solution"  parent="helpdesk.menu_helpdesk_root"
+            name="Solutions"
+            action="helpdesk_solution_act0" sequence="20"/>
+
+</odoo>
