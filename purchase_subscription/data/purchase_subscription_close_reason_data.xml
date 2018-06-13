@@ -1,0 +1,17 @@
+<odoo noupdate="1">
+
+    <!-- Standard Closing Reason -->
+    <record id="close_reason_1" model="purchase.subscription.close.reason">
+        <field name="name">Subscription is too expensive</field>
+    </record>
+    <record id="close_reason_2" model="purchase.subscription.close.reason">
+        <field name="name">Subscription does not meet my requirements</field>
+    </record>
+    <record id="close_reason_3" model="purchase.subscription.close.reason">
+        <field name="name">I don't use it</field>
+    </record>
+    <record id="close_reason_4" model="purchase.subscription.close.reason">
+        <field name="name">Other</field>
+    </record>
+
+</odoo>

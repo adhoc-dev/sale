@@ -18,11 +18,11 @@
 #
 ##############################################################################
 {
-    "name": "Purchase Contract",
-    'version': '9.0.1.3.0',
+    "name": "Purchase Subscription",
+    'version': '11.0.1.0.0',
     'category': 'Accounting',
     'sequence': 14,
-    'summary': 'Contract Purchase, Invoicing',
+    'summary': 'Subscription, Invoicing',
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
@@ -32,18 +32,17 @@
         'purchase',
     ],
     'data': [
-        'security/purchase_contract_security.xml',
+        'security/purchase_subscription_security.xml',
         'security/ir.model.access.csv',
-        'view/purchase_subscription_view.xml',
-        'view/purchase_subscription_menu.xml',
-        'data/subscription_cron.xml',
-        'data/purchase_contract_data.xml'
+        'views/purchase_subscription_views.xml',
+        'data/email_template_data.xml',
+        'data/ir_cron_data.xml',
+        'data/purchase_subscription_close_reason_data.xml',
+        'data/ir_sequence_data.xml'
     ],
     'demo': [
     ],
-    'test': [
-    ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': True,
 }
