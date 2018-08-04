@@ -33,7 +33,7 @@
             <form string="Solution">
                 <sheet string="Solution">
                     <div class="oe_button_box" name="button_box" groups="base.group_user">
-                        <button class="oe_stat_button" type="action" name="%(helpdesk.helpdesk_ticket_action_main_tree)d" icon="fa-bug" context="{'search_default_helpdesk_solution_id': active_id}">
+                        <button class="oe_stat_button" type="action" name="%(helpdesk.helpdesk_ticket_action_main_tree)d" icon="fa-life-ring" context="{'search_default_helpdesk_solution_id': active_id}">
                             <field string="Tickets" name="ticket_count" widget="statinfo"/>
                         </button>
                     </div>

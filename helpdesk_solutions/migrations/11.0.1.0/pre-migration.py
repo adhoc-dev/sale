@@ -43,3 +43,4 @@ def migrate(env, version):
     openupgrade.rename_fields(env, field_renames)
     openupgrade.rename_tables(cr, table_renames)
     openupgrade.rename_models(cr, model_renames)
+    # parte de la migracion la estamos haciendo en post-upgrades de nube
