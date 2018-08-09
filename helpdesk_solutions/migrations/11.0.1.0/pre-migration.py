@@ -4,7 +4,8 @@ from openupgradelib import openupgrade
 table_renames = [
     ('project_issue_solution', 'helpdesk_solution'),
     ('project_solution_tag', 'helpdesk_solution_tag'),
-    ('project_issue_solution_project_solution_tag_rel', 'helpdesk_solution_helpdesk_solution_tag_rel'),
+    ('project_issue_solution_project_solution_tag_rel',
+        'helpdesk_solution_helpdesk_solution_tag_rel'),
 ]
 
 model_renames = [
