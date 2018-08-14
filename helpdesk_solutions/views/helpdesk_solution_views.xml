@@ -43,10 +43,14 @@
                         </h1>
                     </div>
                     <field name="tag_ids" widget="many2many_tags" placeholder="Tags..." options="{'color_field': 'color', 'no_create_edit': True}"/>
-                    <group>
-                        <field name="ticket_description" placeholder="Add a ticket description..."/>
-                        <field name="solution_description" placeholder="Add a solution description..."/>
-                    </group>
+                    <notebook>
+                        <page string="Ticket Description">
+                            <field name="ticket_description" placeholder="Add a ticket description..."/>
+                        </page>
+                        <page string="Solution Description">
+                            <field name="solution_description" placeholder="Add a solution description..."/>
+                        </page>
+                    </notebook>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>

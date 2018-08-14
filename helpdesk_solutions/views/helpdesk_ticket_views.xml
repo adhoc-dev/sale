@@ -17,17 +17,19 @@
         <field name="model">helpdesk.ticket</field>
         <field name="inherit_id" ref="helpdesk_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_timesheet"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="helpdesk_solution_id" context="{'default_name':name,'default_solution_description': solution_description,'default_ticket_description':ticket_description}"/>
+            </xpath>
             <xpath expr="//sheet/notebook/page[1]" position="before">
-                <page string="Ticket Data">
-                    <group colspan="4" col="1">
-                        <field name="ticket_description" placeholder="Add ticket description..."/>
-                        <!-- TODO include? {'default_categ_ids':categ_ids} -->
-                        <field name="helpdesk_solution_id" context="{'default_name':name,'default_solution_description': solution_description,'default_ticket_description':ticket_description}"/>
-                        <field name="solution_description" placeholder="Add solution description..."/>
-                    </group>
+                <page string="Description">
+                    <field name="ticket_description" placeholder="Add ticket description..."/>
+                    <!-- TODO include? {'default_categ_ids':categ_ids} -->
+                </page>
+                <page string="Solution">
+                    <field name="solution_description" placeholder="Add solution description..."/>
                 </page>
             </xpath>
-            <xpath expr="//sheet/notebook/page[2]" position="attributes">
+            <xpath expr="//field[@name='description']/.." position="attributes">
                 <attribute name="string">Internal Description</attribute>
                 <attribute name="groups">base.group_user</attribute>
             </xpath>
