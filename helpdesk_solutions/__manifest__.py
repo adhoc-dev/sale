@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Helpdesk Solutions',
-    'version': '11.0.1.2.0',
+    'version': '11.0.1.3.0',
     'category': 'Projects & Services',
     'sequence': 14,
     'summary': '',

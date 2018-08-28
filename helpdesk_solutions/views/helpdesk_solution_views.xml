@@ -11,6 +11,7 @@
                 <field name="ticket_description"/>
                 <field name="solution_description"/>
                 <field name="tag_ids"/>
+                <filter string="Followed by Me" domain="[('message_is_follower','=',True)]"/>
             </search>
         </field>
     </record>
@@ -22,6 +23,7 @@
             <tree string="Solution">
                 <field name="name"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="ticket_count"/>
             </tree>
         </field>
     </record>

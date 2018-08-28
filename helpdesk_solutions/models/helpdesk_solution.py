@@ -10,7 +10,7 @@ class HelpdeskSolution(models.Model):
     _name = 'helpdesk.solution'
     _inherit = ['mail.thread']
     _description = "Helpdesk Solution"
-    _order = 'name'
+    _order = 'ticket_count desc'
 
     name = fields.Char(
         required=True,
@@ -30,6 +30,7 @@ class HelpdeskSolution(models.Model):
     )
     ticket_count = fields.Integer(
         compute='_compute_ticket_count',
+        store=True,
     )
 
     @api.depends('ticket_ids')
