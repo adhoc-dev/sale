@@ -11,6 +11,6 @@ class HelpdeskStage(models.Model):
 
     solution_required = fields.Boolean(
         string="Solution Required?",
-        help='If you set it to true, then tickets that moves into this stage '
-        'will require a solution.'
+        help='If you set it to true, then tickets that has a contact and are'
+        'moved to this stage will require a solution.'
     )
