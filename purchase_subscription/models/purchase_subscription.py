@@ -229,9 +229,10 @@ class PurchaseSubscription(models.Model):
             line = line.with_context(
                 force_company=company.id, company_id=company.id)
 
-        account = line.product_id.property_account_income_id
+        account = line.product_id.property_account_expense_id
         if not account:
-            account = line.product_id.categ_id.property_account_income_categ_id
+            account = line.product_id.\
+                categ_id.property_account_expense_categ_id
         account_id = fiscal_position.map_account(account).id
 
         tax = line.product_id.taxes_id.filtered(
