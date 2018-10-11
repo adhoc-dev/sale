@@ -33,6 +33,7 @@
     ],
     'data': [
         'views/account_journal_views.xml',
+        'views/assets.xml',
     ],
     'demo': [
         'demo/account_journal_demo.xml',
