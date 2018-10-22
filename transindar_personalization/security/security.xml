@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
-<odoo>
-    <data noupdate="0">
-    <!-- <data noupdate="1"> -->
+<odoo noupdate="0">
 
+    <!-- <data noupdate="1"> -->
     <!-- restrict prices to portal -->
     <record id="base.group_portal" model="res.groups">
         <field name="implied_ids" eval="[(4,ref('price_security.group_restrict_prices'))]"/>
@@ -118,7 +117,5 @@ portal_account_distributor.access_product_product,product.product.portal.distrib
         <field name="perm_unlink" eval="False"/>
     </record> -->
 
-
-    </data> 
 </odoo>
 

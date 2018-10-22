@@ -6,6 +6,7 @@ from odoo import models, api
 
 
 class PurchaseOrderLine(models.Model):
+
     _inherit = "purchase.order.line"
 
     # como depreciamos modulo purchase_replenishment_cost, y para que no los

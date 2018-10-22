@@ -5,14 +5,14 @@
 from odoo import models, fields
 
 
-class res_company(models.Model):
+class ResCompany(models.Model):
+
     _inherit = 'res.company'
 
     preparation_time_variable = fields.Integer(
-        string='Preparation time variable',
-        default=0
+        default=0,
     )
+
     preparation_time_fixed = fields.Integer(
-        string='Preparation time fixed',
-        default=0
+        default=0,
     )

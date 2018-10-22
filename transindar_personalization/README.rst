@@ -22,9 +22,9 @@ Se agrego la posibilidad de definir:
         mail_notrack ():  seg
 
     sale_order_action_confirm (con automatización de entrega y factura y pago)
-        sin nada (134083): 1:46 
-        tracking_disable en todo (134084): 1:20 
-        tracking_disable solo en ventas (134085): 1:13 
+        sin nada (134083): 1:46
+        tracking_disable en todo (134084): 1:20
+        tracking_disable solo en ventas (134085): 1:13
 
     oc:
         sin nada(6563): 52 seg
