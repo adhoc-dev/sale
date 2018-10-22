@@ -14,7 +14,7 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def action_date_assign(self):
-        param = self.env['ir.config_parameter'].get_param(
+        param = self.env['ir.config_parameter'].sudo().get_param(
                 'account_invoice_action_date_assign')
         if param == 'tracking_disable':
             _logger.info('tracking_disable on invoice date_assign ')
@@ -26,7 +26,7 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def action_move_create(self):
-        param = self.env['ir.config_parameter'].get_param(
+        param = self.env['ir.config_parameter'].sudo().get_param(
                 'account_invoice_action_move_create')
         if param == 'tracking_disable':
             _logger.info('tracking_disable on invoice move_create ')
@@ -38,7 +38,7 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def invoice_validate(self):
-        param = self.env['ir.config_parameter'].get_param(
+        param = self.env['ir.config_parameter'].sudo().get_param(
                 'account_invoice_invoice_validate')
         if param == 'tracking_disable':
             _logger.info('tracking_disable on invoice invoice_validate ')

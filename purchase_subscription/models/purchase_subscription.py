@@ -409,7 +409,7 @@ class PurchaseSubscription(models.Model):
             ('date', '!=', False),
             ('date', '<', (datetime.datetime.now() + datetime
                            .timedelta(30)).strftime("%Y-%m-%d"))])
-        base_url = self.env['ir.config_parameter'].get_param(
+        base_url = self.env['ir.config_parameter'].sudo().get_param(
             'web.base.url')
         action_id = self.env['ir.model.data'].get_object_reference(
             'purchase_subscription', 'purchase_subscription_action')[1]

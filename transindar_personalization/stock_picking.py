@@ -14,7 +14,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def do_new_transfer(self):
-        param = self.env['ir.config_parameter'].get_param(
+        param = self.env['ir.config_parameter'].sudo().get_param(
                 'stock_picking_do_transfer')
         if param == 'tracking_disable':
             _logger.info('tracking_disable on Picking do_new_transfer ')
@@ -26,7 +26,7 @@ class StockPicking(models.Model):
 
     @api.multi
     def do_transfer(self):
-        param = self.env['ir.config_parameter'].get_param(
+        param = self.env['ir.config_parameter'].sudo().get_param(
                 'stock_picking_do_transfer')
         if param == 'tracking_disable':
             _logger.info('tracking_disable on Picking confirm ')

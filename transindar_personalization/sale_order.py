@@ -19,7 +19,7 @@ class SaleOrder(models.Model):
 
     @api.multi
     def action_confirm(self):
-        param = self.env['ir.config_parameter'].get_param(
+        param = self.env['ir.config_parameter'].sudo().get_param(
                 'sale_order_action_confirm')
         if param == 'tracking_disable':
             _logger.info('tracking_disable on SO confirm ')
