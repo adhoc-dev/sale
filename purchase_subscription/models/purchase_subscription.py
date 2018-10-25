@@ -217,7 +217,7 @@ class PurchaseSubscription(models.Model):
             'company_id': company.id,
         }
         if partner.user_id:
-            invoice.update({'user_id': partner.user_id.id})
+            invoice.user_id = partner.user_id.id
         return invoice
 
     def _prepare_invoice_line(self, line, fiscal_position):

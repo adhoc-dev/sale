@@ -26,5 +26,5 @@ class SaleOrder(models.Model):
             if not analytic_account or not subscriptions:
                 continue
 
-            subscriptions.update({
+            subscriptions.write({
                 'analytic_account_id': analytic_account.id})

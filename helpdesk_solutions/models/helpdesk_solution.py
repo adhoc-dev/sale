@@ -38,4 +38,4 @@ class HelpdeskSolution(models.Model):
         """ Amount of tickets related to this Helpdesk Solution
         """
         for rec in self:
-            rec.update({'ticket_count': len(rec.ticket_ids)})
+            rec.ticket_count = len(rec.ticket_ids)
