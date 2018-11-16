@@ -20,7 +20,10 @@ class CustomerPortal(CustomerPortal):
             sortby=sortby, filterby=filterby, search=search,
             search_in=search_in, **kw)
 
-        domain = []
+        values = self._prepare_portal_layout_values()
+        user = request.env.user
+        domain = ['|', ('user_id', '=', user.id), ('partner_id', 'child_of', user.partner_id.commercial_partner_id.id)]
+
         searchbar_filters = {
             'all': {'label': _('All'), 'domain': []},
             'open': {'label': _('Open'),
