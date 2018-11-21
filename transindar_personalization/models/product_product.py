@@ -4,7 +4,6 @@
 # directory
 ##############################################################################
 from odoo import models, api, fields
-import logging
 
 
 class ProductProduct(models.Model):
