@@ -235,7 +235,7 @@ class PurchaseSubscription(models.Model):
                 categ_id.property_account_expense_categ_id
         account_id = fiscal_position.map_account(account).id
 
-        tax = line.product_id.taxes_id.filtered(
+        tax = line.product_id.supplier_taxes_id.filtered(
             lambda r: r.company_id == company)
         tax = fiscal_position.map_tax(
             tax, product=line.product_id, partner=self.partner_id)
