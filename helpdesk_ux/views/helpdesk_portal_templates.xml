@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="tickets_followup" name="Helpdesk Tickets Inherit" inherit_id="helpdesk.tickets_followup">
+        <t t-set="disable_composer" position="replace"/>
+    </template>
+</odoo>
