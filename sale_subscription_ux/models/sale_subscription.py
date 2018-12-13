@@ -21,6 +21,20 @@ class SaleSubscription(models.Model):
         readonly=True,
     )
 
+    @api.model
+    def name_search(self, name, args=None, operator='ilike', limit=100):
+        # esto lo hacemos porque suele ser utili poder buscar por cuenta
+        # anallitica
+        args = args or []
+        domain = [
+            '|', '|', ('analytic_account_id', operator, name),
+            ('code', operator, name), ('name', operator, name)]
+        partners = self.env['res.partner'].search([('name', operator, name)], limit=limit)
+        if partners:
+            domain = ['|'] + domain + [('partner_id', 'in', partners.ids)]
+        rec = self.search(domain + args, limit=limit)
+        return rec.name_get()
+
     @api.multi
     def _prepare_invoice_data(self):
         """ Copy the terms and conditions of the subscription as part of the

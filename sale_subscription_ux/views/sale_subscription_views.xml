@@ -29,4 +29,16 @@
         </field>
     </record>
 
+    <record id="sale_subscription_view_search" model="ir.ui.view">
+        <field name="name">sale.subscription.view.search</field>
+        <field name="model">sale.subscription</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_search"/>
+        <field name="arch" type="xml">
+            <!-- hacemos este arreglo porque el campo name de odoo no parece tener mucho uso y no se actualiza al cambiar el ref. O sea, casi no tiene sentido que busque por ese name -->
+            <field name="name" position="attributes">
+                <attribute name="filter_domain">['|', '|', ('analytic_account_id', 'ilike', self), ('code', 'ilike', self), ('name', 'ilike', self)]</attribute>
+            </field>
+        </field>
+    </record>
+
 </odoo>
