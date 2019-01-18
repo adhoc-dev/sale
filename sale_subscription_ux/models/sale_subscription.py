@@ -45,6 +45,10 @@ class SaleSubscription(models.Model):
         if self.template_id.copy_description_to_invoice:
             res.update({'comment':
                         res.get('comment', '') + '\n\n' + self.description})
+        # TODO delete update date_invoice in V12
+        res.update(
+            {'date_invoice': self.recurring_next_date}
+        )
         return res
 
     @api.onchange('date_start', 'template_id')
