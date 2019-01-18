@@ -80,3 +80,16 @@ class SaleSubscription(models.Model):
             for line in subscription.recurring_invoice_line_ids:
                 line.onchange_product_quantity()
         self._compute_recurring_total()
+
+    def _prepare_invoice(self):
+        """ Improove prepare invoice to use _set_additional_fields method
+        """
+        vals = super(SaleSubscription, self)._prepare_invoice()
+        temp_invoice = self.env['account.invoice'].new(vals)
+        new_lines = []
+        for temp_line in temp_invoice.invoice_line_ids:
+            temp_line._set_additional_fields(temp_invoice)
+            new_lines.append(
+                (0, 0, temp_line._convert_to_write(temp_line._cache)))
+        vals['invoice_line_ids'] = new_lines
+        return vals
