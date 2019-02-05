@@ -44,7 +44,8 @@ class SaleSubscription(models.Model):
         res = super(SaleSubscription, self)._prepare_invoice_data()
         if self.template_id.copy_description_to_invoice:
             res.update({'comment':
-                        res.get('comment', '') + '\n\n' + self.description})
+                        res.get('comment', '') + '\n\n' + (
+                            self.description or '')})
         # TODO delete update date_invoice in V12
         res.update(
             {'date_invoice': self.recurring_next_date}
