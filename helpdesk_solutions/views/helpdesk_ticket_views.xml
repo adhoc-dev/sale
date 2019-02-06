@@ -25,10 +25,16 @@
                     <field name="ticket_description" placeholder="Add ticket description..."/>
                     <!-- TODO include? {'default_categ_ids':categ_ids} -->
                 </page>
+                <page string="Internal Description (*)" class="oe_read_only" attrs="{'invisible': [('description', 'in', [False, '&lt;p&gt;&lt;br&gt;&lt;/p&gt;'])]}">
+                    <field name="description_copy" widget="html" groups="base.group_user"/>
+                </page>
             </xpath>
+            <field name="description" position="attributes">
+                <attribute name="widget">html</attribute>
+            </field>
             <xpath expr="//field[@name='description']/.." position="attributes">
                 <attribute name="string">Internal Description</attribute>
-                <attribute name="groups">base.group_user</attribute>
+                <attribute name="class">oe_edit_only</attribute>
             </xpath>
             <xpath expr="//field[@name='description']/.." position="after">
                 <page string="Solution">

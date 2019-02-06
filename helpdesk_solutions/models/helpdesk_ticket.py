@@ -19,6 +19,10 @@ class HelpdeskTicket(models.Model):
     )
     solution_description = fields.Html(
     )
+    description_copy = fields.Text(
+        related='description',
+        readonly=True,
+    )
 
     @api.constrains('stage_id')
     def change_stage_id(self):
