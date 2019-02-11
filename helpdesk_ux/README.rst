@@ -16,6 +16,7 @@ Helpdesk UX
 
 * Add sequence field to Tickets and change default order to the following criteria: "Priority desc, Sequence & ID"
 * Remove the restriction of the messaging in the tickets, so that messages can be sent no matter the state of the ticket.
+* Add option to disable automatic emails when setting ticket to blocked.
 
 Installation
 ============
