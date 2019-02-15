@@ -94,3 +94,8 @@ class SaleSubscription(models.Model):
                 (0, 0, temp_line._convert_to_write(temp_line._cache)))
         vals['invoice_line_ids'] = new_lines
         return vals
+
+    def prepare_renewal_order(self):
+        # Set default company as the same in the subscription
+        return super(SaleSubscription, self.with_context(
+            default_company_id=self.company_id.id)).prepare_renewal_order()
