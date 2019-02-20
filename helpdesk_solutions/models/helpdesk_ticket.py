@@ -21,7 +21,7 @@ class HelpdeskTicket(models.Model):
     )
     description_copy = fields.Text(
         related='description',
-        readonly=True,
+        readonly=False,
     )
 
     @api.constrains('stage_id')
