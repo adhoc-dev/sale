@@ -27,6 +27,7 @@ Sale Subscription UX
    subscription lines.
 #. Update prices in subscriptions: update price in subscription lines from the
    values in the related products.
+#. Add option for 'Not update prices' when update quantity in sale subscription line.
 
 Installation
 ============
@@ -47,6 +48,7 @@ Usage
 
 #. Update prices from subscription form with button "Update Lines Prices"
 #. Update prices from subscription list selecting the ones you want to update and then going in to "Action / Update Lines Prices"
+#. Within subscription template has option 'Do not update prices', tick to no update price.
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot

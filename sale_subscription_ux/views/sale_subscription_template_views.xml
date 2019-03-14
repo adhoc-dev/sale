@@ -17,6 +17,7 @@
                 <group>
                     <field name="dates_required"/>
                     <field name="copy_description_to_invoice"/>
+                    <field name="do_not_update_price"/>
                 </group>
             </group>
         </field>

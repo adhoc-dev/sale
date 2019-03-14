@@ -37,6 +37,14 @@ class SaleSubscriptionLine(models.Model):
     @api.onchange('product_id', 'quantity')
     def onchange_product_quantity(self):
         res = super(SaleSubscriptionLine, self).onchange_product_quantity()
+        if hasattr(self, '_origin') and self._origin \
+                and self.analytic_account_id.template_id.do_not_update_price \
+                and self._origin.read(
+                    ["quantity"])[0]["quantity"] != self.quantity \
+                and self._origin.read(["product_id"])[0]["product_id"][0] == \
+                self.product_id.id:
+            self.price_unit = self._origin.price_unit
+            return res
         pricelist = self.analytic_account_id.pricelist_id
         if self.product_id and \
                 pricelist.discount_policy == 'without_discount':
