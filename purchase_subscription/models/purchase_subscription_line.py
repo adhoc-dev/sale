@@ -80,18 +80,6 @@ class PurchaseSubscriptionLine(models.Model):
             rec.update({'quantity': rec.purchase_quantity})
 
     @api.onchange('product_id')
-    def onchange_product_id(self):
-        product = self.product_id
-        partner = self.purchase_subscription_id.partner_id
-        if partner.lang:
-            self.product_id.with_context(lang=partner.lang)
-
-        name = product.display_name
-        if product.description_sale:
-            name += '\n' + product.description_sale
-        self.name = name
-
-    @api.onchange('product_id')
     def product_id_change(self):
         product = self.product_id.with_context({
             'lang': self.purchase_subscription_id.partner_id.lang,

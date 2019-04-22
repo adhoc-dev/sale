@@ -225,7 +225,7 @@ class PurchaseSubscription(models.Model):
             company = self.env['res.company'].browse(
                 self.env.context['force_company'])
         else:
-            company = line.analytic_account_id.company_id
+            company = line.purchase_subscription_id.company_id
             line = line.with_context(
                 force_company=company.id, company_id=company.id)
 
@@ -272,6 +272,13 @@ class PurchaseSubscription(models.Model):
         invoice = self._prepare_invoice_data()
         invoice['invoice_line_ids'] = self._prepare_invoice_lines(
             invoice['fiscal_position_id'])
+        temp_invoice = self.env['account.invoice'].new(invoice)
+        new_lines = []
+        for temp_line in temp_invoice.invoice_line_ids:
+            temp_line._set_additional_fields(temp_invoice)
+            new_lines.append(
+                (0, 0, temp_line._convert_to_write(temp_line._cache)))
+        invoice['invoice_line_ids'] = new_lines
         return invoice
 
     @api.multi
