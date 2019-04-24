@@ -3,4 +3,26 @@
     <template id="tickets_followup" name="Helpdesk Tickets Inherit" inherit_id="helpdesk.tickets_followup">
         <t t-set="disable_composer" position="replace"/>
     </template>
+    <template id="portal_tickets" name="Portal Tickets Inherit" inherit_id="helpdesk.portal_helpdesk_ticket">
+        <div class="table-responsive" position="replace">
+            <t t-foreach="grouped_tickets" t-as="tickets">
+                  <table class="table table-hover o_portal_my_doc_table">
+                    <thead>
+                        <tr class="active">
+                            <th t-if="groupby == 'none'" class="col-md-9">Ticket Number</th>
+                            <th t-else="" class="col-md-9">Ticket Number for project: <span t-field="tickets[0].sudo().stage_id.name"/></th>
+                            <!--<th>Description</th><th/>-->
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <t t-foreach="tickets" t-as="ticket">
+                        <tr>
+                            <td><a t-attf-href="/helpdesk/ticket/#{ticket.id}"><t t-esc="ticket.display_name"/></a></td>
+                            <td><span t-field="ticket.stage_id.name"/></td>
+                        </tr>
+                    </t>
+                </table>
+            </t>
+        </div>
+    </template>
 </odoo>
