@@ -16,7 +16,6 @@ Timesheet UX
 
 #. Do not let to create new projects or new tasks from timesheets form and list
    view.
-#. Only let to select active tasks which progress is not 100%
 
 Installation
 ============
