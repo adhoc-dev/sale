@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Helpdesk UX',
-    'version': '11.0.1.1.2',
+    'version': '12.0.1.0.0',
     'category': 'Projects & Services',
     'sequence': 14,
     'summary': '',
