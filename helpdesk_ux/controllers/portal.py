@@ -87,7 +87,7 @@ class CustomerPortal(CustomerPortal):
             order = "stage_id desc, %s" % order  # force sort on stage first to group by stage in view
         # tasks = request.env['project.task'].search(domain, order=order, limit=self._items_per_page, offset=(page - 1) * self._items_per_page)
         # tickets = request.env['helpdesk.ticket'].sudo().search(domain, order=order, limit=self._items_per_page, offset=(page - 1) * self._items_per_page)
-        tickets = request.env['helpdesk.ticket'].sudo().search(domain, order=order, limit=self._items_per_page, offset=pager['offset'])
+        tickets = request.env['helpdesk.ticket'].search(domain, order=order, limit=self._items_per_page, offset=pager['offset'])
         request.session['my_tickets_history'] = tickets.ids[:100]
 
         if groupby == 'stage':
