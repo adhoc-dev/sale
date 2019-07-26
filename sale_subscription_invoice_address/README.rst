@@ -10,33 +10,28 @@
    :target: https://www.gnu.org/licenses/agpl
    :alt: License: AGPL-3
 
-============
-Timesheet UX
-============
+=================================
+Sale Subscription Invoice Address
+=================================
 
-#. Do not let to create new projects or new tasks from timesheets form and list
-   view.
+Add Invoice Address field to the subscription, similar to the one in the sale.order in order to be used when creating recurring invoicees
 
 Installation
 ============
 
 To install this module, you need to:
 
-#. Only need to install the module
+#. Just Install this module
 
 Configuration
 =============
 
 To configure this module, you need to:
 
-#. Nothing to configure
+#. No configuration needed
 
 Usage
 =====
-
-To use this module, you need to:
-
-#. Go to ...
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
