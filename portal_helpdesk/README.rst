@@ -10,12 +10,11 @@
    :target: https://www.gnu.org/licenses/agpl
    :alt: License: AGPL-3
 
-============
-Timesheet UX
-============
+===============
+Portal Helpdesk
+===============
 
-#. Do not let to create new projects or new tasks from timesheets form and list
-   view.
+This module clean the domain for the fields "User" and "Member" in ticket and helpdesk team, because now you can select portal user for this fields.
 
 Installation
 ============
@@ -33,10 +32,6 @@ To configure this module, you need to:
 
 Usage
 =====
-
-To use this module, you need to:
-
-#. Go to ...
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
