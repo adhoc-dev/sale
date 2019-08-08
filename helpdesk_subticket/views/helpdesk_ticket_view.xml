@@ -1,0 +1,25 @@
+<odoo>
+    <record id="helpdesk_ticket_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.inherit.view.form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+                <div class="oe_button_box" name="button_box" position="inside">
+                    <button class="oe_stat_button" icon="fa-arrow-up" type="object" name="action_open_parent_ticket" string="Parent Ticket" attrs="{'invisible' : [('parent_id', '=', False)]}"/>
+
+                    <button name="action_subticket" type="object" class="oe_stat_button" icon="fa-arrow-down" attrs="{'invisible' : [('parent_id', '!=', False)]}" context="{'default_parent_id': id}">
+                        <field string="Subticket" name="subticket_count" widget="statinfo"/>
+                    </button>
+                </div>
+                <field name="tag_ids" position="after">
+                    <field name="parent_id" attrs="{'invisible' : [('subticket_count', '>=', '1')]}"/>
+                </field>
+        </field>
+    </record>
+    <record id="helpdesk_ticket_action_subticket" model="ir.actions.act_window">
+        <field name="name">Subtickets</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+</odoo>
