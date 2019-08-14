@@ -11,7 +11,7 @@
                 <field name="ticket_description"/>
                 <field name="solution_description"/>
                 <field name="tag_ids"/>
-                <filter string="Followed by Me" domain="[('message_is_follower','=',True)]"/>
+                <filter name="Followed by Me" string="Followed by Me" domain="[('message_is_follower','=',True)]"/>
             </search>
         </field>
     </record>
