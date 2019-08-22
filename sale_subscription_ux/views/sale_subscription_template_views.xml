@@ -6,20 +6,11 @@
         <field name="model">sale.subscription.template</field>
         <field name="inherit_id" ref="sale_subscription.sale_subscription_template_view_form"/>
         <field name="arch" type="xml">
-            <field name="recurring_rule_type" position="after">
-                <br/>
-                <label string="for"/>
-                <field name="period" class="oe_inline"/>
-                <label string="times"/>
+            <field name="payment_mode" position="before">
+                <field name="dates_required"/>
+                <field name="copy_description_to_invoice"/>
+                <field name="do_not_update_price"/>
             </field>
-            <group name="website_subscription" position="before">
-                <newline/>
-                <group>
-                    <field name="dates_required"/>
-                    <field name="copy_description_to_invoice"/>
-                    <field name="do_not_update_price"/>
-                </group>
-            </group>
         </field>
     </record>
 

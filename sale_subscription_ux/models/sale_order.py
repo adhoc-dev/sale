@@ -20,9 +20,8 @@ class SaleOrder(models.Model):
         """
         for sale in self:
             analytic_account = sale.analytic_account_id
-            subscriptions = \
-                sale.order_line.mapped('subscription_id').filtered(
-                    lambda x: not x.analytic_account_id)
+            subscriptions = sale.order_line.mapped('subscription_id').filtered(
+                lambda x: not x.analytic_account_id)
             if not analytic_account or not subscriptions:
                 continue
 
