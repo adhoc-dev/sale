@@ -16,11 +16,6 @@ class SaleSubscription(models.Model):
         readonly=True,
     )
 
-    period = fields.Integer(
-        related="template_id.period",
-        readonly=True,
-    )
-
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):
         # esto lo hacemos porque suele ser utili poder buscar por cuenta
@@ -43,35 +38,9 @@ class SaleSubscription(models.Model):
         self.ensure_one()
         res = super(SaleSubscription, self)._prepare_invoice_data()
         if self.template_id.copy_description_to_invoice:
-            res.update({'comment':
-                        res.get('comment', '') + '\n\n' + (
-                            self.description or '')})
-        # TODO delete update date_invoice in V12
-        res.update(
-            {'date_invoice': self.recurring_next_date}
-        )
+            res.update({'comment':res.get('comment', '') + '\n\n' + (
+                self.description or '')})
         return res
-
-    @api.onchange('date_start', 'template_id')
-    @api.constrains('date_start', 'template_id')
-    def update_date(self):
-        periods = {
-            'daily': 'days', 'weekly': 'weeks', 'monthly': 'months',
-            'yearly': 'years'}
-        to_update = self.filtered(
-            lambda x: x.template_id.period and x.date_start)
-        for rec in to_update:
-            date_start = fields.Date.from_string(rec.date_start)
-            end_date = date_start + relativedelta(
-                **{periods[rec.recurring_rule_type]: rec.period})
-            rec.date = fields.Date.to_string(end_date)
-
-    @api.constrains('date', 'date_start')
-    def validate_dates(self):
-        for sub in self:
-            if sub.date and sub.date_start and sub.date < sub.date_start:
-                raise ValidationError(
-                    _("The date end must be greater than the start date!"))
 
     @api.multi
     def update_lines_prices_from_products(self):

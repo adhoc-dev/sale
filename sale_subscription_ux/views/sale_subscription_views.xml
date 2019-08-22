@@ -15,14 +15,9 @@
             <field name="date_start" position="attributes">
                 <attribute name="attrs">{'required': [('dates_required', '=', True)]}</attribute>
             </field>
-            <!-- TODO K review with jjs if we needeed in the subscription
-            <field name="analytic_account_id" position="after">
-                <field name="journal_id"/>
+            <field name="recurring_next_date" position="after">
+                <button class="oe_link" name="update_lines_prices_from_products" string="⇒ Actualizar precios" type="object" confirm="Se van a actualizar los precios las lineas de la suscripcion con los precios actualizados para la lista seleccionada"/>
             </field>
-            -->
-            <button name="recurring_invoice" position="after">
-                <button class="oe_link" name="update_lines_prices_from_products" string="⇒ Update Data from Products" type="object"/>
-            </button>
             <field name="product_id" position="before">
                 <field name="sequence" widget="handle"/>
             </field>

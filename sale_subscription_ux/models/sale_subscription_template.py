@@ -12,16 +12,8 @@ class SaleSubscriptionTemplate(models.Model):
     dates_required = fields.Boolean(
         "Dates Required",
     )
-
-    period = fields.Integer(
-        string='Period',
-        help='If you set a period, then when changing date "Start Date" '
-        'the "End Date" will be automatically updated'
-    )
-
     copy_description_to_invoice = fields.Boolean(
         help="Copy Subscription Template description to recurring invoices")
-
     do_not_update_price = fields.Boolean(
         help="Don't update price when quantity change"
     )

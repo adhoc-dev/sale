@@ -15,10 +15,8 @@ Sale Subscription UX
 ====================
 
 #. This module add a boolean field to the Subscription template that let us copy or not its desctiprion in the recurring invoice notes.
-#. We add constraint so that subscription End date must be equal or greater than Start date.
 #. Add Dates required boolean field on Subscription Template model, if setted, then the Start date and End date will be required
 #. Improove prepare invoice to use _set_additional_fields method
-#. Add Period field on Subscription Template model that let us know how many times will be repeated the subscription taking into account the recurrence, if setted, compute automatically the End date of the subscription everytime the start date or the subscription tempalte is change.
 #. Add funcionality to use "without discount" in subscription lines.
 #. If you have a sale order that have both, subscription products and products
    that generate projects or tasks, then the created subscriptions will re use
