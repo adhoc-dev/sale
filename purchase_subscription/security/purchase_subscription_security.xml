@@ -18,7 +18,7 @@
         <field name="category_id" ref="module_category_purchase_subscription_management"/>
         <field name="comment">The user will have write access to contracts.</field>
         <field name="implied_ids" eval="[(4, ref('purchase_subscription.group_purchase_subscription_user'))]"/>
-        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
     </record>
 
     <record id="purchase.group_purchase_user" model="res.groups">

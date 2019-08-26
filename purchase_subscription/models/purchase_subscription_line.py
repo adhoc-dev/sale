@@ -38,7 +38,7 @@ class PurchaseSubscriptionLine(models.Model):
         required=True,
     )
     uom_id = fields.Many2one(
-        'product.uom',
+        'uom.uom',
         'Unit of Measure',
         required=True,
     )

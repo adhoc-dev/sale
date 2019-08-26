@@ -9,6 +9,7 @@ from odoo import models, fields
 class PurchaseSubscriptionCloseReason(models.Model):
     _name = "purchase.subscription.close.reason"
     _order = "sequence, id"
+    _description = "Purchase Subscription Close Reason"
 
     name = fields.Char(required=True)
     sequence = fields.Integer(default=10)

@@ -17,22 +17,24 @@
                 <filter name="cancelled" string="Cancelled" domain="[('state','=','cancelled')]" help="Cancelled Subscriptions"/>
                 <separator/>
                 <filter
+                    name="expired"
                     string="Expired"
                     domain="[('state','in',('open','draft','pending')), '|', ('date', '!=', False), ('date', '&lt;=', time.strftime('%%Y-%%m-%%d'))]"
                     help="End date passed" />
                 <filter
+                    name="expiring_soon"
                     string="Expiring soon"
                     domain="[('date', '!=', False), ('date', '&lt;=', (context_today() + datetime.timedelta(30)).strftime('%%Y-%%m-%%d') )]"
                     help="End date is in the next month" />
                 <separator/>
-                <filter string="Subscriptions not assigned" help="Subscriptions that are not assigned to an account manager." domain="[('manager_id', '=', False)]"/>
+                <filter name="Subscriptions not assigned" string="Subscriptions not assigned" help="Subscriptions that are not assigned to an account manager." domain="[('manager_id', '=', False)]"/>
                 <separator/>
                 <group expand="0" string="Group By">
-                    <filter string="Status" domain="[]" context="{'group_by':'state'}"/>
-                    <filter string="Account Manager" domain="[]" context="{'group_by':'manager_id'}"/>
-                    <filter string="Partner" domain="[]" context="{'group_by':'partner_id'}"/>
-                    <filter string="Start Month" domain="[]" context="{'group_by' : 'date_start'}" />
-                    <filter string="End Month" domain="[]" context="{'group_by' : 'date'}" />
+                    <filter name="groupby_status" string="Status" domain="[]" context="{'group_by':'state'}"/>
+                    <filter name="groupby_account_manager" string="Account Manager" domain="[]" context="{'group_by':'manager_id'}"/>
+                    <filter name="groupby_partner" string="Partner" domain="[]" context="{'group_by':'partner_id'}"/>
+                    <filter name="groupby_start_month" string="Start Month" domain="[]" context="{'group_by' : 'date_start'}" />
+                    <filter name="groupby_end_month" string="End Month" domain="[]" context="{'group_by' : 'date'}" />
                 </group>
             </search>
         </field>
