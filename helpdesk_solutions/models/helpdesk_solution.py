@@ -32,6 +32,10 @@ class HelpdeskSolution(models.Model):
         compute='_compute_ticket_count',
         store=True,
     )
+    active = fields.Boolean(
+        default=True,
+        copy=False,
+    )
 
     @api.depends('ticket_ids')
     def _compute_ticket_count(self):
