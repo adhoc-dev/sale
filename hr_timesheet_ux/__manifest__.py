@@ -29,18 +29,10 @@
     "depends": [
         "timesheet_grid",
     ],
-    'external_dependencies': {
-    },
     "data": [
         'views/account_analytic_line_views.xml',
     ],
-    'qweb': [
-    ],
-    'demo': [
-    ],
-    'test': [
-    ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
