@@ -19,23 +19,21 @@ class CustomerPortal(CustomerPortal):
     def my_helpdesk_tickets(self, page=1, date_begin=None, date_end=None,
                             sortby=None, filterby=None, search=None,
                             search_in='content', groupby='stage', **kw):
-        # groupby = kw.get('groupby', 'project') #TODO master fix this
         values = self._prepare_portal_layout_values()
         user = request.env.user
         domain = ['|', ('user_id', '=', user.id), ('partner_id', 'child_of', user.partner_id.commercial_partner_id.id)]
+
         searchbar_sortings = {
             'date': {'label': _('Newest'), 'order': 'create_date desc'},
-            'name': {'label': _('Title'), 'order': 'name'},
+            'name': {'label': _('Subject'), 'order': 'name'},
             'stage': {'label': _('Priority'), 'order': 'stage_id desc, %s' % request.env['helpdesk.ticket']._order},
         }
         searchbar_filters = {
             'all': {'label': _('All'), 'domain': []},
             'open': {'label': _('Open'),
-                     'domain': [('stage_id.fold', '=', False)]},
-                    # por ahora dejamos los desplegados como abiertos por el
-                    # caso de notificado. TODO analizar si implementar de otra
-                    # manera
-                    #  'domain': [('stage_id.is_close', '=', False)]},
+                     'domain': [('stage_id.is_close', '=', False)]},
+            'closed': {'label': _(' Resolved'),
+                       'domain': [('stage_id.is_close', '=', True)], 'order': 'close_date'},
         }
         searchbar_inputs = {
             'content': {'input': 'content', 'label': _('Search <span class="nolabel"> (in Content)</span>')},
@@ -52,10 +50,12 @@ class CustomerPortal(CustomerPortal):
         if not sortby:
             sortby = 'stage'
         order = searchbar_sortings[sortby]['order']
+
         # default filter by value
         if not filterby:
             filterby = 'open'
         domain += searchbar_filters[filterby]['domain']
+
         # archive groups - Default Group By 'create_date'
         archive_groups = self._get_archive_groups('helpdesk.ticket', domain)
         if date_begin and date_end:
@@ -83,10 +83,9 @@ class CustomerPortal(CustomerPortal):
             step=self._items_per_page
         )
 
+        # group by
         if groupby == 'stage':
             order = "stage_id desc, %s" % order  # force sort on stage first to group by stage in view
-        # tasks = request.env['project.task'].search(domain, order=order, limit=self._items_per_page, offset=(page - 1) * self._items_per_page)
-        # tickets = request.env['helpdesk.ticket'].sudo().search(domain, order=order, limit=self._items_per_page, offset=(page - 1) * self._items_per_page)
         tickets = request.env['helpdesk.ticket'].search(domain, order=order, limit=self._items_per_page, offset=pager['offset'])
         request.session['my_tickets_history'] = tickets.ids[:100]
 

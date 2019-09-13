@@ -15,8 +15,13 @@ Helpdesk UX
 ===========
 
 * Add sequence field to Tickets and change default order to the following criteria: "Priority desc, Sequence & ID"
-* Remove the restriction of the messaging in the tickets, so that messages can be sent no matter the state of the ticket.
-* Add option to disable automatic emails when setting ticket to blocked.
+* Remove the restriction that do not let the portal users to post messages in a ticket when this one has been marked as done, now the user can post messages no matter the status of the ticket.
+* Add option to disable stage's automatic emails when a ticket has been set to blocked (kanan_status button).
+* Add new filters in ticket portal in order to be able to:
+
+  * Sort By: Priority, ( Subject vs Title? )
+  * Filter by: Open, All
+  * Group by: None, Stage
 
 Installation
 ============

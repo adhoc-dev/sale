@@ -13,15 +13,14 @@ class HelpdeskTicket(models.Model):
     sequence = fields.Integer(
         index=True,
         default=10,
-        help="Gives the sequence order when "
-        "displaying a list of tasks."
+        help="Gives the sequence order when displaying a list of tickets."
     )
 
     @api.multi
     def _track_template(self, tracking):
         ticket = self[0]
         # PATCH START: Remove this part after odoo fix the error ...
-        res = super(HelpdeskTicket, self)._track_template(tracking)
+        res = super()._track_template(tracking)
         changes, tracking_value_ids = tracking[ticket.id]
         if 'stage_id' in changes and ticket.stage_id.template_id:
             res['stage_id'] = (ticket.stage_id.template_id, {'auto_delete_message': True})
