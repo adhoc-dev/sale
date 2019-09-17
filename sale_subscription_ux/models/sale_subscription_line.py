@@ -156,7 +156,8 @@ class SaleSubscriptionLine(models.Model):
                 cur_factor = 1.0
             else:
                 cur_factor = currency_id._get_conversion_rate(
-                    product_currency, currency_id)
+                    product_currency, currency_id,
+                    self.analytic_account_id.company_id or self.env.user.company_id, fields.Date.today())
 
         product_uom = self.env.context.get('uom') or product.uom_id.id
         if uom and uom.id != product_uom:
