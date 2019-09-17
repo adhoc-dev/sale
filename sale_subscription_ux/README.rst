@@ -26,6 +26,7 @@ Sale Subscription UX
 #. Update prices in subscriptions: update price in subscription lines from the
    values in the related products.
 #. Add option for 'Not update prices' when update quantity in sale subscription line.
+#. Add Invoice Address field to the subscription, similar to the one in the sale.order in order to be used when creating recurring invoicees (optional by subscription template)
 
 Installation
 ============

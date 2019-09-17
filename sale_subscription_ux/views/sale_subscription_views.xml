@@ -6,8 +6,12 @@
         <field name="model">sale.subscription</field>
         <field name="inherit_id" ref="sale_subscription.sale_subscription_view_form"/>
         <field name="arch" type="xml">
-            <field name="date" position="before">
+            <form>
                 <field name="dates_required" invisible="1"/>
+                <field name="use_different_invoice_address" invisible="1"/>
+            </form>
+            <field name="partner_id" position="after">
+                <field name="partner_invoice_id" context="{'default_type':'invoice'}" options='{"always_reload": True}' attrs="{'invisible': [('use_different_invoice_address', '=', False)]}"/>
             </field>
             <field name="date" position="attributes">
                 <attribute name="attrs">{'required': [('dates_required', '=', True)]}</attribute>

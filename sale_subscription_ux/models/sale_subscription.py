@@ -13,7 +13,14 @@ class SaleSubscription(models.Model):
 
     dates_required = fields.Boolean(
         related="template_id.dates_required",
-        readonly=True,
+    )
+    use_different_invoice_address = fields.Boolean(
+        related="template_id.use_different_invoice_address",
+    )
+    partner_invoice_id = fields.Many2one(
+        'res.partner',
+        string='Invoice Address',
+        help="Invoice address for new invoices.",
     )
 
     @api.model
@@ -38,8 +45,10 @@ class SaleSubscription(models.Model):
         self.ensure_one()
         res = super(SaleSubscription, self)._prepare_invoice_data()
         if self.template_id.copy_description_to_invoice:
-            res.update({'comment':res.get('comment', '') + '\n\n' + (
+            res.update({'comment': res.get('comment', '') + '\n\n' + (
                 self.description or '')})
+        if self.template_id.use_different_invoice_address and self.partner_invoice_id:
+            res.update({'partner_id': self.partner_invoice_id.id})
         return res
 
     @api.multi

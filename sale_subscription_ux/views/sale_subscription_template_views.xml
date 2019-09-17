@@ -10,6 +10,7 @@
                 <field name="dates_required"/>
                 <field name="copy_description_to_invoice"/>
                 <field name="do_not_update_price"/>
+                <field name="use_different_invoice_address"/>
             </field>
         </field>
     </record>

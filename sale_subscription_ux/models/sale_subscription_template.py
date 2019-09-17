@@ -9,6 +9,10 @@ class SaleSubscriptionTemplate(models.Model):
 
     _inherit = "sale.subscription.template"
 
+    use_different_invoice_address = fields.Boolean(
+        string="Use different invoice address?",
+        help="Set specific billing partner (that could be different from subscription partner)",
+    )
     dates_required = fields.Boolean(
         "Dates Required",
     )
