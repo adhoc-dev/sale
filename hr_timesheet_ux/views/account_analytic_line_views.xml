@@ -40,6 +40,9 @@
             <field name="task_id" position="attributes">
                 <attribute name="options">{'no_create': True}</attribute>
             </field>
+            <group position="after">
+                <field name="name" nolabel="1" widget="text" placeholder="Describe your activity" colspan="4"/>
+            </group>
         </field>
     </record>
 
