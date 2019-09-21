@@ -19,13 +19,6 @@ This module ensures that:
 * You can configure a project to have or not related tickets, by default they
   are not related to tickets.
 
-* In project kanban view we are able to see the project related tickets
-  analogous to tasks work, also have a Ticket Analysis submenu that let us
-  to analyze the ticket data from a pivot or graph view.
-
-* You can only close a ticket if they don't have any active task (we consider
-  active task the ones in stages without option "folded")
-
 * You can only close projects if they don't have any active ticket (we
   consider active tickets the ones in stages without option "folded")
 
