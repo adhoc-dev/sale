@@ -35,7 +35,7 @@
     <record id="view_project_kanban" model="ir.ui.view">
         <field name="name">project.project.kanban</field>
         <field name="model">project.project</field>
-        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="inherit_id" ref="helpdesk_timesheet.project_project_view_project_tickets_kanban_inherited"/>
         <field name="arch" type="xml">
             <field name="partner_id" position="after">
                 <field name="allow_tickets" invisible="1"/>
@@ -46,13 +46,11 @@
                     <a name="%(helpdesk_ticket_project_analysis_action)d" type="action">Tickets</a>
                 </div>
             </xpath>
-            <xpath expr="//div[hasclass('o_project_kanban_boxes')]" position="inside">
-                <a t-if="record.allow_tickets.raw_value" class="o_project_kanban_box" name="%(act_ticket_by_project)d" type="action" groups="helpdesk.group_helpdesk_user">
-                    <div>
-                        <span class="o_value"><t t-esc="record.ticket_count.value"/></span>
-                        <span class="o_label"><span title="Tickets" class="fa fa-life-ring"/></span>
-                    </div>
-                </a>
+            <xpath expr="//div[hasclass('o_project_kanban_boxes')]//field[@name='ticket_count']" position="replace">
+                <div>
+                    <span class="o_value"><t t-esc="record.ticket_count.value"/></span>
+                    <span class="o_label"><span title="Tickets" class="fa fa-life-ring"/></span>
+                </div>
             </xpath>
 
         </field>

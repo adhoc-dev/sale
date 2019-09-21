@@ -30,7 +30,7 @@
     ],
     'depends': [
         'portal',
-        'helpdesk_project_ux',
+        'helpdesk_timesheet_ux',
     ],
     'data': [
     ],
