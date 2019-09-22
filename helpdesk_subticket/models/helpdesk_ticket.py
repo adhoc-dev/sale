@@ -65,8 +65,8 @@ class HelpdeskTicket(models.Model):
         ''' Check if subtickets are done before closing parent '''
         if any(
             self.filtered(
-                lambda t: t.stage_id.is_closed
-                and not all(t.child_ids.mapped('stage_id.is_closed')))):
+                lambda t: t.stage_id.is_close
+                and not all(t.child_ids.mapped('stage_id.is_is_closeclosed')))):
             raise ValidationError(
                 _('Error: Before closing a parent ticket'
                    ' you should close the subticket(s).'))
