@@ -31,11 +31,7 @@ class HelpdeskTicket(models.Model):
     def _compute_subticket_count(self):
         """ Compute subtickets """
         for ticket in self:
-            ticket.subticket_count = self.search_count(
-                [('id', 'child_of', ticket.id),
-                 ('id', '!=', ticket.id),
-                 '|', ('stage_id.fold', '=', False),
-                 ('stage_id', '=', False)])
+            ticket.subticket_count = self.search_count([('id', 'child_of', ticket.id), ('id', '!=', ticket.id)])
 
     def action_open_parent_ticket(self):
         """ Create parent ticket window action """
@@ -69,8 +65,8 @@ class HelpdeskTicket(models.Model):
         ''' Check if subtickets are done before closing parent '''
         if any(
             self.filtered(
-                lambda t: t.stage_id.fold
-                and not all(t.child_ids.mapped('stage_id.fold')))):
+                lambda t: t.stage_id.is_closed
+                and not all(t.child_ids.mapped('stage_id.is_closed')))):
             raise ValidationError(
                 _('Error: Before closing a parent ticket'
                    ' you should close the subticket(s).'))

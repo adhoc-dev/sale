@@ -29,7 +29,7 @@
     'images': [
     ],
     'depends': [
-        'helpdesk',
+        'helpdesk_timesheet',
     ],
     'data': [
         'views/helpdesk_ticket_view.xml',
