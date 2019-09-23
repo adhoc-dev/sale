@@ -66,7 +66,7 @@ class HelpdeskTicket(models.Model):
         if any(
             self.filtered(
                 lambda t: t.stage_id.is_close
-                and not all(t.child_ids.mapped('stage_id.is_is_closeclosed')))):
+                and not all(t.child_ids.mapped('stage_id.is_close')))):
             raise ValidationError(
                 _('Error: Before closing a parent ticket'
                    ' you should close the subticket(s).'))
