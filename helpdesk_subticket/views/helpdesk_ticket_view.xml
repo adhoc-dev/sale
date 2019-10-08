@@ -22,4 +22,22 @@
         <field name="res_model">helpdesk.ticket</field>
         <field name="view_mode">kanban,tree,form</field>
     </record>
+    <record id="view_helpdesk_ticket_search" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search"/>
+        <field name="arch" type="xml">
+            <filter name="ticket_type_id" position="before">
+                <separator/>
+                <filter string="Is Ticket" name="is_ticket" domain="[('parent_id','=', False)]"/>
+                <filter string="Is Sub-Ticket" name="is_sub_ticket" domain="[('parent_id','!=', False)]"/>
+                <separator/>
+            </filter>
+            <filter name="team" position="after">
+                <separator/>
+                <filter string="Parent Ticket" name="parent_ticket" context="{'group_by':'parent_id'}"/>
+                <separator/>
+            </filter>
+        </field>
+    </record>
 </odoo>
