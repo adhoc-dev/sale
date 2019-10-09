@@ -41,7 +41,7 @@
                 <attribute name="options">{'no_create': True}</attribute>
             </field>
             <group position="after">
-                <field name="name" nolabel="1" widget="text" placeholder="Describe your activity" colspan="4"/>
+                <field name="name" nolabel="1" widget="text" placeholder="Describe your activity" colspan="4" required="0"/>
             </group>
         </field>
     </record>
