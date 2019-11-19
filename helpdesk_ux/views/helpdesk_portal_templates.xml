@@ -23,5 +23,10 @@
                 </table>
             </t>
         </t>
+        <t t-foreach="grouped_tickets" t-as="tickets" position="after">
+            <div t-if="pager" class="o_portal_pager text-center">
+                <t t-call="portal.pager"/>
+            </div>
+        </t>
     </template>
 </odoo>
