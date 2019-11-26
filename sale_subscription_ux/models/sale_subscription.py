@@ -2,9 +2,7 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, api, fields, _
-from odoo.exceptions import ValidationError
-from dateutil.relativedelta import relativedelta
+from odoo import models, api, fields
 
 
 class SaleSubscription(models.Model):
@@ -25,8 +23,8 @@ class SaleSubscription(models.Model):
 
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):
-        # esto lo hacemos porque suele ser utili poder buscar por cuenta
-        # anallitica
+        # esto lo hacemos porque suele ser util poder buscar por cuenta
+        # analitica
         args = args or []
         domain = [
             '|', '|', ('analytic_account_id', operator, name),
@@ -40,15 +38,19 @@ class SaleSubscription(models.Model):
     @api.multi
     def _prepare_invoice_data(self):
         """ Copy the terms and conditions of the subscription as part of the
-        invoice note.
+        invoice note. Also fix a core Odoo behavior to get payment terms.
         """
         self.ensure_one()
-        res = super(SaleSubscription, self)._prepare_invoice_data()
+        res = super()._prepare_invoice_data()
         if self.template_id.copy_description_to_invoice:
             res.update({'comment': res.get('comment', '') + '\n\n' + (
                 self.description or '')})
         if self.template_id.use_different_invoice_address and self.partner_invoice_id:
             res.update({'partner_id': self.partner_invoice_id.id})
+        sale_order = self.env['sale.order'].search([('order_line.subscription_id', 'in', self.ids)],
+        order="id desc", limit=1)
+        res.update({'payment_term_id': sale_order.payment_term_id.id if sale_order.payment_term_id
+            else self.partner_id.property_payment_term_id.id})
         return res
 
     @api.multi
@@ -61,9 +63,9 @@ class SaleSubscription(models.Model):
         self._compute_recurring_total()
 
     def _prepare_invoice(self):
-        """ Improove prepare invoice to use _set_additional_fields method
+        """ Improve prepare invoice to use _set_additional_fields method
         """
-        vals = super(SaleSubscription, self)._prepare_invoice()
+        vals = super()._prepare_invoice()
         temp_invoice = self.env['account.invoice'].new(vals)
         new_lines = []
         for temp_line in temp_invoice.invoice_line_ids:

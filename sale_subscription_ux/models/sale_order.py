@@ -29,7 +29,7 @@ class SaleOrder(models.Model):
                 'analytic_account_id': analytic_account.id})
 
     def _prepare_subscription_data(self, template):
-        res = super(SaleOrder, self)._prepare_subscription_data(template)
+        res = super()._prepare_subscription_data(template)
         if template.use_different_invoice_address and self.partner_invoice_id != self.partner_id:
             res.update({'partner_invoice_id': self.partner_invoice_id.id})
         return res

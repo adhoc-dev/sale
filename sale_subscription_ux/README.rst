@@ -27,6 +27,7 @@ Sale Subscription UX
    values in the related products.
 #. Add option for 'Not update prices' when update quantity in sale subscription line.
 #. Add Invoice Address field to the subscription, similar to the one in the sale.order in order to be used when creating recurring invoicees (optional by subscription template)
+#. Fixes the default behavior that brings payment term to generated invoices from SO even if it's empty, so if SO hasn't got any payment term value, it's brought from the partner's payment term.
 
 Installation
 ============
