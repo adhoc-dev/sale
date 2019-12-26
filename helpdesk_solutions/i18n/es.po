@@ -1,0 +1,371 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* helpdesk_solutions
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-12-26 00:27+0000\n"
+"PO-Revision-Date: 2019-12-26 00:27+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_followup_solution
+msgid "<strong>Description:</strong>"
+msgstr "<strong>Descripción:</strong>"
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_followup_solution
+msgid "<strong>Solution:</strong>"
+msgstr "<strong>Solución:</strong>"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_needaction
+msgid "Action Needed"
+msgstr "Acción requerida"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__active
+msgid "Active"
+msgstr "Activo"
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_form_view
+msgid "Add a solution description..."
+msgstr "Agregar una descripción de solución..."
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_form_view
+msgid "Add a ticket description..."
+msgstr "Agregar descripción de incidencia..."
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_ticket_view_form
+msgid "Add solution description..."
+msgstr "Agregar descripción de solución..."
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_ticket_view_form
+msgid "Add ticket description..."
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_search_view
+msgid "Archived"
+msgstr "Archivado"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_attachment_count
+msgid "Attachment Count"
+msgstr "Conteo de archivos adjuntos"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag__color
+msgid "Color Index"
+msgstr "Índice de Color"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__create_uid
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__create_date
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag__create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_ticket_view_form
+msgid "Description"
+msgstr "Descripción"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_ticket__description_copy
+msgid "Description (copy)"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__display_name
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag__display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_search_view
+msgid "Everywhere"
+msgstr "En todos los campos"
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_search_view
+msgid "Followed by Me"
+msgstr "Seguido por mí"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_follower_ids
+msgid "Followers"
+msgstr "Seguidores"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_channel_ids
+msgid "Followers (Channels)"
+msgstr "Seguidores (Canales)"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Seguidores (empresas)"
+
+#. module: helpdesk_solutions
+#: model:ir.model,name:helpdesk_solutions.model_helpdesk_solution
+msgid "Helpdesk Solution"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model:ir.model,name:helpdesk_solutions.model_helpdesk_solution_tag
+msgid "Helpdesk Solution Tag"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model:ir.actions.act_window,name:helpdesk_solutions.helpdesk_solution_act0
+msgid "Helpdesk Solutions"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model:ir.model,name:helpdesk_solutions.model_helpdesk_stage
+msgid "Helpdesk Stage"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model:ir.model,name:helpdesk_solutions.model_helpdesk_ticket
+msgid "Helpdesk Ticket"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__id
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag__id
+msgid "ID"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,help:helpdesk_solutions.field_helpdesk_solution__message_unread
+msgid "If checked new messages require your attention."
+msgstr "Si nuevos mensajes chequeados requieren su atención."
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,help:helpdesk_solutions.field_helpdesk_solution__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "Si está marcado, hay nuevos mensajes que requieren su atención."
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,help:helpdesk_solutions.field_helpdesk_solution__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr "Si se encuentra marcado, algunos mensajes tienen error de envío."
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,help:helpdesk_solutions.field_helpdesk_stage__solution_required
+msgid "If you set it to true, then tickets that has a contact and aremoved to this stage will require a solution."
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_ticket_view_form
+msgid "Internal Description"
+msgstr "Descripción Interna"
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_ticket_view_form
+msgid "Internal Description (*)"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_is_follower
+msgid "Is Follower"
+msgstr "Es un seguidor"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution____last_update
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__write_uid
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag__write_uid
+msgid "Last Updated by"
+msgstr "Última modificación por"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__write_date
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag__write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_ticket__helpdesk_solution_id
+msgid "Linked Solution"
+msgstr "Solución Vinculada"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "Adjuntos principales"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_has_error
+msgid "Message Delivery error"
+msgstr "Error de Envío de Mensaje"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_ids
+msgid "Messages"
+msgstr "Mensajes"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__name
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_form_view
+msgid "Name..."
+msgstr "Nombre..."
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Número de acciones"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_has_error_counter
+msgid "Number of error"
+msgstr "Número de error"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,help:helpdesk_solutions.field_helpdesk_solution__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr "Número de mensajes que requieren una acción"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,help:helpdesk_solutions.field_helpdesk_solution__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Número de mensajes con error de envío"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,help:helpdesk_solutions.field_helpdesk_solution__message_unread_counter
+msgid "Number of unread messages"
+msgstr "Número de mensajes sin leer"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__smart_search
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag__smart_search
+msgid "Smart Search"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_form_view
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_search_view
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_ticket_view_form
+msgid "Solution"
+msgstr "Solución"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__solution_description
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_ticket__solution_description
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_form_view
+msgid "Solution Description"
+msgstr "Descripción de Solución"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_stage__solution_required
+msgid "Solution Required?"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model:ir.ui.menu,name:helpdesk_solutions.menu_helpdesk_solution
+msgid "Solutions"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model:ir.actions.act_window,name:helpdesk_solutions.helpdesk_solution_tag_action
+#: model:ir.ui.menu,name:helpdesk_solutions.menu_helpdesk_solution_tag
+msgid "Solutions Tags"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: sql_constraint:helpdesk.solution.tag:0
+msgid "Tag name already exists !"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__tag_ids
+msgid "Tags"
+msgstr "Etiquetas"
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_form_view
+msgid "Tags..."
+msgstr "Etiquetas..."
+
+#. module: helpdesk_solutions
+#: model:ir.model,name:helpdesk_solutions.model_project_task_type
+msgid "Task Stage"
+msgstr "Etapa de la tarea"
+
+#. module: helpdesk_solutions
+#: model_terms:ir.actions.act_window,help:helpdesk_solutions.helpdesk_solution_act0
+msgid "The Helpdesk Solutions allows you to efficiantly\n"
+"                manage the solutions for tickets."
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__ticket_count
+msgid "Ticket Count"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__ticket_description
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_ticket__ticket_description
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_form_view
+msgid "Ticket Description"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__ticket_ids
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_form_view
+msgid "Tickets"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_unread
+msgid "Unread Messages"
+msgstr "Mensajes No Leídos"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr "Contador de mensajes no leídos"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__website_message_ids
+msgid "Website Messages"
+msgstr "Mensajes del sitio web"
+
+#. module: helpdesk_solutions
+#: model:ir.model.fields,help:helpdesk_solutions.field_helpdesk_solution__website_message_ids
+msgid "Website communication history"
+msgstr ""
+
+#. module: helpdesk_solutions
+#: code:addons/helpdesk_solutions/models/helpdesk_ticket.py:33
+#, python-format
+msgid "You need to complete solution description to change the stage"
+msgstr ""
+
