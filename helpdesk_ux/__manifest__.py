@@ -35,7 +35,7 @@
         'views/helpdesk_ticket_views.xml',
         'views/helpdesk_portal_templates.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'application': False,
 }
