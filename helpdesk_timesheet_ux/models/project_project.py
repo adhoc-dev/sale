@@ -23,7 +23,6 @@ class ProjectProject(models.Model):
                       "without option 'folded' (ticket IDs %s)" %
                       open_tickets.ids))
 
-    @api.multi
     def write(self, vals):
         """ When project.project status active/archived change also apply
         to its tickets """

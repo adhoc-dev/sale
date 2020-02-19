@@ -5,12 +5,6 @@
             <field name="name">project.project.form</field>
             <field name="model">project.project</field>
             <field name="inherit_id" ref="project.edit_project"/>
-            <field name="arch" type="xml">
-
-                <button name="toggle_active" position="attributes">
-                    <attribute name="confirm">(Un)archiving a project automatically (un)archives its tasks and tickets. Do you want to proceed?</attribute>
-                </button>
-
                 <xpath expr="//div[@name='options_active']" position="inside">
                     <div>
                         <field name="allow_tickets" class="oe_inline"/>
