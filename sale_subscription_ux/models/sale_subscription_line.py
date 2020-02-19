@@ -13,7 +13,6 @@ class SaleSubscriptionLine(models.Model):
 
     _inherit = "sale.subscription.line"
 
-    @api.multi
     def _get_display_price(self, product, pricelist):
         product_context = dict(
             self.env.context,
