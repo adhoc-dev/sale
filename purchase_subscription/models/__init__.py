@@ -5,4 +5,4 @@
 from . import purchase_subscription
 from . import purchase_subscription_line
 from . import purchase_subscription_close_reason
-from . import account_invoice_line
+from . import account_move_line

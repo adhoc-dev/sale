@@ -19,7 +19,6 @@ class PurchaseSubscriptionLine(models.Model):
         'Subscription',
         index=True,
         ondelete='cascade',
-        oldname='analytic_account_id',
     )
     quantity = fields.Float(
         'Quantity',
@@ -63,21 +62,19 @@ class PurchaseSubscriptionLine(models.Model):
         'purchase_subscription_id.currency_id'
     )
     def _compute_amount_line(self):
+        AccountTax = self.env['account.tax']
         for line in self:
-            price = line.product_id.taxes_id.\
-                _fix_tax_included_price(
-                    line.price_unit, line.product_id.taxes_id, [])
-            price_subtotal = line.\
-                quantity * price * (100.0 - line.discount) / 100.0
-            price_subtotal = line.purchase_subscription_id\
-                .currency_id.round(price_subtotal) if \
-                line.purchase_subscription_id.currency_id else price_subtotal
-            line.update({'price_subtotal': price_subtotal})
+            price = line.product_id.taxes_id._fix_tax_included_price(
+                line.price_unit, line.product_id.sudo().taxes_id, AccountTax)
+            price_subtotal = line.quantity * price * (100.0 - line.discount) / 100.0
+            price_subtotal = line.purchase_subscription_id.sudo().currency_id.round(price_subtotal) if \
+                line.purchase_subscription_id.sudo().currency_id else price_subtotal
+            line.price_subtotal = price_subtotal
 
     @api.depends('purchase_quantity')
     def _compute_quantity(self):
         for rec in self:
-            rec.update({'quantity': rec.purchase_quantity})
+            rec.quantity = rec.purchase_quantity
 
     @api.onchange('product_id')
     def product_id_change(self):

@@ -16,16 +16,8 @@
                 <filter name="closed" string="Closed" domain="[('state','=','close')]" help="Closed Subscriptions"/>
                 <filter name="cancelled" string="Cancelled" domain="[('state','=','cancelled')]" help="Cancelled Subscriptions"/>
                 <separator/>
-                <filter
-                    name="expired"
-                    string="Expired"
-                    domain="[('state','in',('open','draft','pending')), '|', ('date', '!=', False), ('date', '&lt;=', time.strftime('%%Y-%%m-%%d'))]"
-                    help="End date passed" />
-                <filter
-                    name="expiring_soon"
-                    string="Expiring soon"
-                    domain="[('date', '!=', False), ('date', '&lt;=', (context_today() + datetime.timedelta(30)).strftime('%%Y-%%m-%%d') )]"
-                    help="End date is in the next month" />
+                <filter name="expired" string="Expired" domain="[('state','in',('open','draft','pending')), '|', ('date', '!=', False), ('date', '&lt;=', time.strftime('%%Y-%%m-%%d'))]" help="End date passed" />
+                <filter name="expiring_soon" string="Expiring soon" domain="[('date', '!=', False), ('date', '&lt;=', (context_today() + datetime.timedelta(30)).strftime('%%Y-%%m-%%d') )]" help="End date is in the next month" />
                 <separator/>
                 <filter name="Subscriptions not assigned" string="Subscriptions not assigned" help="Subscriptions that are not assigned to an account manager." domain="[('manager_id', '=', False)]"/>
                 <separator/>
@@ -43,7 +35,6 @@
     <record id="purchase_subscription_action" model="ir.actions.act_window">
         <field name="name">Subscription</field>
         <field name="res_model">purchase.subscription</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="purchase_subscription_view_search"/>
         <field name="domain">[]</field>
@@ -65,10 +56,7 @@
                 </header>
                 <sheet string="Subscription">
                     <div class="oe_button_box" name="button_box" attrs="{'invisible': [('invoice_count','=',0)]}">
-                        <button class="oe_stat_button"
-                            icon="fa-book"
-                            name="action_subscription_invoice"
-                            type="object">
+                        <button class="oe_stat_button" icon="fa-book" name="action_subscription_invoice" type="object">
                             <field name="invoice_count" widget="statinfo" string="Invoices"/>
                         </button>
                     </div>
@@ -79,14 +67,13 @@
                     </div>
                     <group name="main">
                         <group>
-                            <field name="partner_id" string="Supplier" domain="[('supplier','=',True)]" context="{'default_supplier':True, 'default_customer':False}"/>
+                            <field name="partner_id" string="Supplier" domain="[('supplier_rank','>', 0)]"/>
                             <field name="code"/>
                             <field name="currency_id" />
                             <label for="recurring_next_date" string="Date of Next Invoice"/>
                             <div>
                                 <field name="recurring_next_date"/>
-                                <button string="&#8658; Generate Invoice" class="oe_link" name="recurring_invoice"
-                                        type="object"/>
+                                <button string="&#8658; Generate Invoice" class="oe_link" name="recurring_invoice" type="object"/>
                             </div>
                         </group>
                         <group>
@@ -118,25 +105,20 @@
                                     </tree>
                                 </field>
                                 <group class="oe_subtotal_footer oe_right">
-                                    <field name="recurring_total" class="oe_subtotal_footer_separator"
-                                        widget="monetary" options="{'currency_field': 'currency_id'}"
-                                        modifiers="{'readonly': true}"
-                                    />
+                                    <field name="recurring_total" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}" modifiers="{'readonly': true}" />
                                 </group>
                             </div>
                         </page>
                         <page string="Settings" id="settings">
                             <group>
                                 <field name="tag_ids" widget="many2many_tags"/>
-                                <field name="analytic_account_id"/>
+                                <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
                             </group>
-                            <group>
-                            </group>
+                            <div name="description">
+                                <field name="description" placeholder="Terms and Conditions"/>
+                            </div>
                         </page>
                     </notebook>
-                    <div>
-                        <field name="description"/>
-                    </div>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
@@ -163,6 +145,6 @@
             </tree>
         </field>
     </record>
-    
+
     <menuitem name="Subscriptions" id="purchase_subscription" parent="purchase.menu_purchase_root" action="purchase_subscription_action" sequence="2"/>
 </odoo>
