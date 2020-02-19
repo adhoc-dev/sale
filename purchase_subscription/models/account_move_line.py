@@ -5,7 +5,7 @@
 from odoo import fields, models
 
 
-class AccountInvoiceLine(models.Model):
-    _inherit = "account.invoice.line"
+class AccountMoveLine(models.Model):
+    _inherit = "account.move.line"
 
     purchase_subscription_id = fields.Many2one('purchase.subscription')

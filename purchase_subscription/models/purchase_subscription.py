@@ -17,13 +17,6 @@ class PurchaseSubscription(models.Model):
     _description = "Purchase Subscription"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    @api.depends('recurring_invoice_line_ids')
-    def _compute_recurring_price(self):
-        for account in self:
-            account.recurring_total = sum(
-                line.price_subtotal for line in account.
-                recurring_invoice_line_ids)
-
     name = fields.Char(
         required=True,
         track_visibility="always",
@@ -135,6 +128,13 @@ class PurchaseSubscription(models.Model):
         compute='_compute_invoice_count',
     )
 
+    @api.depends('recurring_invoice_line_ids')
+    def _compute_recurring_price(self):
+        for account in self:
+            account.recurring_total = sum(
+                line.price_subtotal for line in account.
+                recurring_invoice_line_ids)
+
     def set_open(self):
         return self.write({'state': 'open', 'date': False})
 
@@ -151,12 +151,11 @@ class PurchaseSubscription(models.Model):
         })
 
     def _compute_invoice_count(self):
-        Invoice = self.env['account.invoice']
+        Invoice = self.env['account.move']
         for rec in self:
             rec.update({'invoice_count': Invoice.search_count(
                 [('invoice_line_ids.purchase_subscription_id', '=', rec.id)])})
 
-    @api.multi
     def recurring_invoice(self):
         self._recurring_create_invoice()
         return self.action_subscription_invoice()
@@ -170,7 +169,6 @@ class PurchaseSubscription(models.Model):
             vals['name'] = vals['code']
         return super().create(vals)
 
-    @api.multi
     def _prepare_invoice_data(self):
         self.ensure_one()
         invoice = {}
@@ -203,15 +201,14 @@ class PurchaseSubscription(models.Model):
         currency_id = self.currency_id.id
 
         invoice = {
-            'account_id': partner.property_account_payable_id.id,
             'type': 'in_invoice',
-            'reference': "%s %s" % (self.name, fields.Date.from_string(
+            'narration': "%s %s" % (self.name, fields.Date.from_string(
                 self.recurring_next_date).strftime('%d-%m-%Y')),
             'partner_id': partner.id,
             'currency_id': currency_id,
             'journal_id': journals.id,
-            'date_invoice': self.recurring_next_date,
-            'origin': self.code,
+            'invoice_date': self.recurring_next_date,
+            'invoice_origin': self.code,
             'fiscal_position_id': fpos.id,
             'company_id': company.id,
         }
@@ -241,20 +238,18 @@ class PurchaseSubscription(models.Model):
         return {
             'name': line.name,
             'account_id': account_id,
-            'account_analytic_id': line.purchase_subscription_id
-            .analytic_account_id.id,
+            'analytic_account_id': line.purchase_subscription_id.analytic_account_id.id,
             'purchase_subscription_id': line.purchase_subscription_id.id,
             'price_unit': line.price_unit or 0.0,
             'discount': line.discount,
             'quantity': line.quantity,
-            'uom_id': line.uom_id.id,
+            'product_uom_id': line.uom_id.id,
             'product_id': line.product_id.id,
-            'invoice_line_tax_ids': [(6, 0, tax.ids)],
+            'tax_ids': [(6, 0, tax.ids)],
             'analytic_tag_ids': [
                 (6, 0, line.purchase_subscription_id.tag_ids.ids)]
         }
 
-    @api.multi
     def _prepare_invoice_lines(self, fiscal_position):
         self.ensure_one()
         fiscal_position = self.env['account.fiscal.position'].browse(
@@ -266,25 +261,15 @@ class PurchaseSubscription(models.Model):
     def _cron_recurring_create_invoice_purchase(self):
         return self._recurring_create_invoice(automatic=True)
 
-    @api.multi
     def _prepare_invoice(self):
         invoice = self._prepare_invoice_data()
-        invoice['invoice_line_ids'] = self._prepare_invoice_lines(
-            invoice['fiscal_position_id'])
-        temp_invoice = self.env['account.invoice'].new(invoice)
-        new_lines = []
-        for temp_line in temp_invoice.invoice_line_ids:
-            temp_line._set_additional_fields(temp_invoice)
-            new_lines.append(
-                (0, 0, temp_line._convert_to_write(temp_line._cache)))
-        invoice['invoice_line_ids'] = new_lines
+        invoice['invoice_line_ids'] = self._prepare_invoice_lines(invoice['fiscal_position_id'])
         return invoice
 
-    @api.multi
     def _recurring_create_invoice(self, automatic=False):
         auto_commit = self.env.context.get('auto_commit', True)
         cr = self.env.cr
-        invoices = self.env['account.invoice']
+        invoices = self.env['account.move']
         current_date = datetime.date.today()
         if len(self) > 0:
             subscriptions = self
@@ -311,15 +296,13 @@ class PurchaseSubscription(models.Model):
                         invoice_values = subscription.with_context(
                             lang=subscription.partner_id.lang).\
                             _prepare_invoice()
-                        new_invoice = self.env['account.invoice'].with_context(
+                        new_invoice = self.env['account.move'].with_context(
                             context_company).create(invoice_values)
                         new_invoice.message_post_with_view(
                             'mail.message_origin_link',
                             values={
                                 'self': new_invoice, 'origin': subscription},
                             subtype_id=self.env.ref('mail.mt_note').id)
-                        new_invoice.with_context(
-                            context_company).compute_taxes()
                         invoices += new_invoice
                         next_date = subscription.recurring_next_date or current_date
                         periods = {'daily': 'days', 'weekly': 'weeks',
@@ -351,7 +334,6 @@ class PurchaseSubscription(models.Model):
             env.user.company_id.currency_id.id
         self.currency_id = currency_id
 
-    @api.multi
     def name_get(self):
         res = []
         for sub in self:
@@ -361,18 +343,17 @@ class PurchaseSubscription(models.Model):
             res.append((sub.id, name))
         return res
 
-    @api.multi
     def action_subscription_invoice(self):
         self.ensure_one()
-        invoices = self.env['account.invoice'].search(
+        invoices = self.env['account.move'].search(
             [('invoice_line_ids.purchase_subscription_id', 'in', self.ids)])
-        action = self.env.ref('account.action_vendor_bill_template').read()[0]
+        action = self.env.ref('account.action_move_in_invoice_type').read()[0]
         action["context"] = {"create": False}
         if len(invoices) > 1:
             action['domain'] = [('id', 'in', invoices.ids)]
         elif len(invoices) == 1:
             action['views'] = [(self.env.ref(
-                'account.invoice_supplier_form').id, 'form')]
+                'purchase.view_move_form_inherit_purchase').id, 'form')]
             action['res_id'] = invoices.ids[0]
         else:
             action = {'type': 'ir.actions.act_window_close'}
@@ -414,11 +395,10 @@ class PurchaseSubscription(models.Model):
             ('date', '<', (datetime.datetime.today() + datetime.timedelta(30)))])
         base_url = self.env['ir.config_parameter'].sudo().get_param(
             'web.base.url')
-        action_id = self.env['ir.model.data'].get_object_reference(
-            'purchase_subscription', 'purchase_subscription_action')[1]
-        template_id = self.env['ir.model.data'].get_object_reference(
-            'purchase_subscription',
-            'purchase_account_analytic_cron_email_template')[1]
+        action_id = self.env.ref(
+            'purchase_subscription.purchase_subscription_action').id
+        template_id = self.env.ref(
+            'purchase_subscription.purchase_account_analytic_cron_email_template').id
         for user_id, data in remind.items():
             _logger.debug("Sending reminder to uid %s", user_id)
             self.env['mail.template'].browse(template_id).with_context(
