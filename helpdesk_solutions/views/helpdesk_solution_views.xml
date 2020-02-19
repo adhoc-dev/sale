@@ -41,15 +41,14 @@
                         <button class="oe_stat_button" type="action" name="%(helpdesk.helpdesk_ticket_action_main_tree)d" icon="fa-life-ring" context="{'search_default_helpdesk_solution_id': active_id}">
                             <field string="Tickets" name="ticket_count" widget="statinfo"/>
                         </button>
-                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
-                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
-                        </button>
                     </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
                         <h1 class="o_row">
                             <field name="name" placeholder="Name..." class="oe_inline"/>
                         </h1>
                     </div>
+                    <field name="active" invisible="1"/>
                     <field name="tag_ids" widget="many2many_tags" placeholder="Tags..." options="{'color_field': 'color', 'no_create_edit': True}"/>
                     <notebook>
                         <page string="Ticket Description">
@@ -71,7 +70,6 @@
     <record model="ir.actions.act_window" id="helpdesk_solution_act0">
         <field name="name">Helpdesk Solutions</field>
         <field name="res_model">helpdesk.solution</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" eval="False"/>
         <field name="domain" eval=""/>
