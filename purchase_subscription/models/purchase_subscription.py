@@ -16,6 +16,7 @@ class PurchaseSubscription(models.Model):
     _name = "purchase.subscription"
     _description = "Purchase Subscription"
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _check_company_auto= True
 
     name = fields.Char(
         required=True,
@@ -46,6 +47,7 @@ class PurchaseSubscription(models.Model):
     tag_ids = fields.Many2many(
         'account.analytic.tag',
         string='Tags',
+        check_company=True,
     )
     recurring_invoice_line_ids = fields.One2many(
         'purchase.subscription.line',
@@ -74,6 +76,7 @@ class PurchaseSubscription(models.Model):
     analytic_account_id = fields.Many2one(
         'account.analytic.account',
         'Analytic Account',
+        check_company=True,
     )
     date_start = fields.Date(
         default=fields.Date.today,
