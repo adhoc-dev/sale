@@ -15,13 +15,20 @@ class HelpdeskSolution(models.Model):
     name = fields.Char(
         required=True,
     )
-    solution_description = fields.Html(
+    internal_solution_description = fields.Html(
+        oldname='solution_description',
+    )
+    customer_solution_description = fields.Html(
     )
     ticket_description = fields.Html(
     )
     tag_ids = fields.Many2many(
         'helpdesk.solution.tag',
         string='Tags',
+    )
+    faq_category_ids = fields.Many2many(
+        'helpdesk.solution.faq.category',
+        string='FAQ Categories',
     )
     ticket_ids = fields.One2many(
         'helpdesk.ticket',

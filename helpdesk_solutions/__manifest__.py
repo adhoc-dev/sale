@@ -35,6 +35,7 @@
         'views/helpdesk_ticket_views.xml',
         'views/helpdesk_solution_views.xml',
         'views/helpdesk_solution_tag_views.xml',
+        'views/helpdesk_solution_faq_category_views.xml',
         'views/helpdesk_stage_views.xml',
         'views/helpdesk_templates.xml',
         'security/ir.model.access.csv',

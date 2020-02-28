@@ -6,12 +6,16 @@
         <field name="model">helpdesk.solution</field>
         <field name="arch" type="xml">
             <search string="Solution">
-                <field name="name" string="Everywhere" filter_domain="['|','|','|',('name','ilike',self),('ticket_description','ilike',self),('solution_description','ilike',self),('tag_ids','ilike',self)]"/>
+                <field name="name" string="Everywhere" filter_domain="['|','|','|',('name','ilike',self),('ticket_description','ilike',self),('internal_solution_description','ilike',self),('customer_solution_description','ilike',self),('tag_ids','ilike',self)]"/>
                 <field name="name"/>
                 <field name="ticket_description"/>
-                <field name="solution_description"/>
+                <field name="internal_solution_description"/>
+                <field name="customer_solution_description"/>
                 <field name="tag_ids"/>
+                <field name="faq_category_ids"/>
                 <filter name="Followed by Me" string="Followed by Me" domain="[('message_is_follower','=',True)]"/>
+                <separator/>
+                <filter string="Is FAQ" name="is_faq" domain="[('faq_category_ids', '!=', False)]"/>
                 <separator/>
                 <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
             </search>
@@ -25,6 +29,7 @@
             <tree decoration-muted="not active">
                 <field name="name"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="faq_category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="ticket_count"/>
                 <field name="active" invisible="True"/>
             </tree>
@@ -50,12 +55,17 @@
                     </div>
                     <field name="active" invisible="1"/>
                     <field name="tag_ids" widget="many2many_tags" placeholder="Tags..." options="{'color_field': 'color', 'no_create_edit': True}"/>
+                    <br/>
+                    <field name="faq_category_ids" widget="many2many_tags" placeholder="FAQ Categories..." options="{'color_field': 'color', 'no_create_edit': True, 'no_create': True}"/>
                     <notebook>
                         <page string="Ticket Description">
                             <field name="ticket_description" placeholder="Add a ticket description..."/>
                         </page>
-                        <page string="Solution Description">
-                            <field name="solution_description" placeholder="Add a solution description..."/>
+                        <page string="Internal Solution">
+                            <field name="internal_solution_description" placeholder="Add a solution description..."/>
+                        </page>
+                        <page string="Customer Solution">
+                            <field name="customer_solution_description" placeholder="Add a solution description..."/>
                         </page>
                     </notebook>
                 </sheet>

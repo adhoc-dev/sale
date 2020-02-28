@@ -1,4 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_helpdesk_solution_user,helpdesk_solution.user,helpdesk_solutions.model_helpdesk_solution,project.group_project_user,1,1,1,1
 access_helpdesk_solution_tag,helpdesk_solution.tag,helpdesk_solutions.model_helpdesk_solution_tag,base.group_user,1,1,1,1
+access_helpdesk_solution_faq_category,helpdesk_solution.faq.category,helpdesk_solutions.model_helpdesk_solution_faq_category,base.group_user,1,1,1,1
 access_helpdesk_solution_portal,helpdesk.solution.portal,helpdesk_solutions.model_helpdesk_solution,base.group_portal,1,0,0,0

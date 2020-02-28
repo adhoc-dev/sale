@@ -22,14 +22,16 @@ class HelpdeskTicket(models.Model):
     description_copy = fields.Text(
         related='description',
         readonly=False,
-        string= 'Description (copy)',
+        string='Description (copy)',
     )
 
     @api.constrains('stage_id')
     def change_stage_id(self):
-        for rec in self.filtered(
-                lambda x: x.partner_id and x.stage_id.solution_required):
-            if len(html2plaintext(rec.solution_description)) <= 1:
-                raise ValidationError(_(
-                    'You need to complete solution'
-                    ' description to change the stage'))
+        recs = self.filtered(lambda x: (
+                x.partner_id and
+                x.stage_id.solution_required and
+                len(html2plaintext(x.solution_description)) <= 1 and
+                len(html2plaintext(x.helpdesk_solution_id.customer_solution_description or '')) <= 1))
+        if recs:
+            raise ValidationError(_(
+                'You need to complete solution description to change the stage. Rec ids: %s') % recs.ids)

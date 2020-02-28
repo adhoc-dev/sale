@@ -6,4 +6,5 @@
 from . import helpdesk_ticket
 from . import helpdesk_solution
 from . import helpdesk_solution_tag
+from . import helpdesk_solution_faq_category
 from . import helpdesk_stage
