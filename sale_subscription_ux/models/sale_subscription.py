@@ -39,15 +39,14 @@ class SaleSubscription(models.Model):
         """ Copy the terms and conditions of the subscription as part of the
         invoice note. Also fix a core Odoo behavior to get payment terms.
         """
-        self.ensure_one()
         res = super()._prepare_invoice_data()
         if self.template_id.copy_description_to_invoice:
             res.update({'narration': res.get('narration', '') + '\n\n' + (
                 self.description or '')})
         if self.template_id.use_different_invoice_address and self.partner_invoice_id:
             res.update({'partner_id': self.partner_invoice_id.id})
-        sale_order = self.env['sale.order'].search([('order_line.subscription_id', 'in', self.ids)],
-        order="id desc", limit=1)
+        sale_order = self.env['sale.order'].search(
+            [('order_line.subscription_id', 'in', self.ids)], order="id desc", limit=1)
         res.update({'invoice_payment_term_id': sale_order.payment_term_id.id if sale_order.payment_term_id
             else self.partner_id.property_payment_term_id.id})
         return res
@@ -59,8 +58,3 @@ class SaleSubscription(models.Model):
             for line in subscription.recurring_invoice_line_ids:
                 line.onchange_product_quantity()
         self._compute_recurring_total()
-
-    def prepare_renewal_order(self):
-        # Set default company as the same in the subscription
-        return super(SaleSubscription, self.with_context(
-            default_company_id=self.company_id.id)).prepare_renewal_order()

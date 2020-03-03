@@ -13,6 +13,13 @@ class SaleSubscriptionLine(models.Model):
 
     _inherit = "sale.subscription.line"
 
+    sequence = fields.Integer(
+        'Sequence',
+        required=True,
+        default=10,
+        help="The sequence field is used to order lines"
+    )
+
     def _get_display_price(self, product, pricelist):
         product_context = dict(
             self.env.context,
@@ -65,7 +72,7 @@ class SaleSubscriptionLine(models.Model):
                 self.analytic_account_id.pricelist_id and
                 self.analytic_account_id.pricelist_id.
                 discount_policy == 'without_discount' and
-                self.env.user.has_group('sale.group_discount_per_so_line')):
+                self.env.user.has_group('product.group_discount_per_so_line')):
             return
 
         self.discount = 0.0
@@ -146,7 +153,7 @@ class SaleSubscriptionLine(models.Model):
 
         product_currency = product_currency or(
             product.company_id and product.company_id.currency_id
-        ) or self.env.user.company_id.currency_id
+        ) or self.env.company.currency_id
         if not currency_id:
             currency_id = product_currency
             cur_factor = 1.0
@@ -156,7 +163,7 @@ class SaleSubscriptionLine(models.Model):
             else:
                 cur_factor = currency_id._get_conversion_rate(
                     product_currency, currency_id,
-                    self.analytic_account_id.company_id or self.env.user.company_id, fields.Date.today())
+                    self.analytic_account_id.company_id or self.env.company, fields.Date.today())
 
         product_uom = self.env.context.get('uom') or product.uom_id.id
         if uom and uom.id != product_uom:

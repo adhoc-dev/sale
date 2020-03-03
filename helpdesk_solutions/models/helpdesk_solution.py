@@ -16,7 +16,6 @@ class HelpdeskSolution(models.Model):
         required=True,
     )
     internal_solution_description = fields.Html(
-        oldname='solution_description',
     )
     customer_solution_description = fields.Html(
     )
