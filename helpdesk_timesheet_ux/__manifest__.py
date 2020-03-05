@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Helpdesk Timesheet UX',
-    'version': "13.0.1.0.0",
+    'version': "13.0.1.1.0",
     'category': 'Projects & Services',
     'sequence': 14,
     'summary': '',
@@ -35,6 +35,8 @@
         'views/helpdesk_ticket_views.xml',
         'views/project_project_views.xml',
         'views/helpdesk_team_views.xml',
+        'views/project_task_views.xml',
+        'views/project_portal_template.xml',
     ],
     'demo': [
     ],
