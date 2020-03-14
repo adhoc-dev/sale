@@ -5,7 +5,6 @@
 
 import logging
 from odoo import models, fields, api
-from odoo.addons import decimal_precision as dp
 
 _logger = logging.getLogger(__name__)
 
@@ -47,12 +46,12 @@ class PurchaseSubscriptionLine(models.Model):
     )
     discount = fields.Float(
         'Discount (%)',
-        digits=dp.get_precision('Discount'),
+        digits='Discount',
     )
     price_subtotal = fields.Float(
         compute='_compute_amount_line',
         string='Sub Total',
-        digits=dp.get_precision('Account'),
+        digits='Account',
     )
 
     @api.depends(
