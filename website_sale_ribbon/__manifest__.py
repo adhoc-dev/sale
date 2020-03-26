@@ -1,6 +1,6 @@
 {
     'name': 'Website Sale Ribbon',
-    'version': '12.0.1.0.0',
+    'version': '13.0.1.0.0',
     'category': 'ecommerce',
     'author': 'ADHOC SA, 3Lines',
     'website': 'https://bitbucket.org/ingadhoc/adhoc-saas',
@@ -16,7 +16,7 @@
     ],
     'uninstall_hook': 'uninstall_hook',
     'post_init_hook': 'post_init_hook',
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
