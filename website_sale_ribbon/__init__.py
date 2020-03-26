@@ -6,11 +6,14 @@ def uninstall_hook(cr, registry):
     env = Environment(cr, SUPERUSER_ID, {})
     style = env.ref('website_sale.image_promo')
     sale_ribbon = env.ref('website_sale_ribbon.sale_product_ribbon')
-    products = env['product.template'].search([
-        ('ribbon_id', '=', sale_ribbon.id)])
-    products.write({
-        'website_style_ids': [(4, style.id)],
-    })
+
+    with_ribbon = env['product.template'].search([]).filtered('ribbon_id')
+    with_sale_ribbon = with_ribbon.filtered(lambda x: x.ribbon_id == sale_ribbon)
+    with_sale_ribbon.write({'website_style_ids': [(4, style.id)]})
+
+    wo_sale_ribbon = with_ribbon - with_sale_ribbon
+    wo_sale_ribbon.write({'website_style_ids': [(3, style.id)]})
+
     style.write({'name': 'Sale Ribbon'})
 
 
