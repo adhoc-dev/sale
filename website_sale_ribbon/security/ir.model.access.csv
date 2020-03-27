@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_ribbon,product_ribbon,model_product_ribbon,,1,0,0,0
+access_product_ribbon_user,product_ribbon_user,model_product_ribbon,base.group_user,1,1,1,0
+access_product_ribbon_manager,product_ribbon_manager,model_product_ribbon,base.group_system,1,1,1,1
