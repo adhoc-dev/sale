@@ -13,7 +13,7 @@ class HelpdeskTicket(models.Model):
     @api.constrains('stage_id')
     def validate_ticket(self):
         for ticket in self.filtered(lambda x: x.stage_id.is_close):
-            if ticket.task_id.stage_id.is_closed:
+            if not ticket.task_id.stage_id.is_closed:
                 raise ValidationError(_(
                     "You can not close a ticket with active task, we consider"
                     " active task the one in stages without option 'closed'"
