@@ -282,7 +282,7 @@ class AccountBalanceImport(models.TransientModel):
                 ("ref", "=", dict_data["name"])
             ]
 
-            partner = self.env["res.partner"].search(domain)
+            partner = self.env["res.partner"].search(domain, limit=1)
 
             # Skip if partner not found
             if not partner:

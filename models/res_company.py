@@ -5,7 +5,7 @@ class ResCompany(models.Model):
     _inherit = "res.company"
 
     @api.model
-    def setting_opening_move_action(self):
+    def setting_chart_of_accounts_action(self):
         """ Called by the 'Initial Balances' button of the setup bar."""
         form_view_id = self.env.ref(
             'account_balance_import.account_balance_import_wizard').id
