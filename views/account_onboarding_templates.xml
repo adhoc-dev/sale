@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="onboarding_initial_balance_step">
+        <t t-call="base.onboarding_step">
+            <t t-set="title">Alta Inicial de Saldos</t>
+            <t t-set="description">Registre sus saldos iniciales.</t>
+            <t t-set="btn_text">Registrar</t>
+            <t t-set="done_text">Alta Inicial Generada.</t>
+            <t t-set="method" t-value="'setting_intial_balances_action'" />
+            <t t-set="model" t-value="'res.company'" />
+            <t t-set="state" t-value="state.get('account_setup_ib_state')" />
+        </t>
+    </template>
+
+    <template id="onboarding_chart_of_account_step" inherit_id="account.onboarding_chart_of_account_step">
+        <xpath expr="//t[@t-set='description']" position="replace">
+            <t t-set="description">
+                Configura tu catálogo de cuentas
+            </t>
+        </xpath>
+    </template>
+
+    <template inherit_id="account.account_dashboard_onboarding_panel" id="account_initial_balance_dashboard_onboarding_panel" name="account.dashboard.onboarding.panel">
+        <xpath expr="//t[@name='chart_of_account_step']" position="after">
+            <t t-call="account_balance_import.onboarding_initial_balance_step" name="initial_balance_step" />
+        </xpath>
+    </template>
+</odoo>

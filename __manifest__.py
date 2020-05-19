@@ -1,6 +1,6 @@
 {
     'name': "Account Balance",
-    'version': '12.0.1.0.0',
+    'version': '13.0.1.0.0',
     'category': 'Planner',
     'sequence': 14,
     'author': 'ADHOC SA',
@@ -8,11 +8,12 @@
     'license': 'AGPL-3',
     'summary': 'Provides a wizard for importing initial account balances',
     "depends": [
-        "l10n_ar_afipws_fe",
+        "l10n_ar_edi",
         "account_ux",
         "account_check",
     ],
     'data': [
+        'views/account_onboarding_templates.xml',
         'wizards/account_balance_import_wizard.xml',
     ]
 }

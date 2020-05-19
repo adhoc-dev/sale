@@ -35,7 +35,7 @@
                         <field name="check_journal_third_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'third_check')],
                         'invisible': [('check_type', 'not in', 'third_check')] }" />
                         <br/>
-                        <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'partner_balance')] }" href="/account_balance_import/static/xls/check_balance.xls">
+                        <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'partner_balance')] }" href="/account_balance_import/static/xls/check_balance.xls" role="button">
                             <span class="fa fa-download" title="download"></span>
                             Descargar Plantilla de Importación de Cheques
                         </a>
@@ -47,7 +47,7 @@
                         <h3 colspan="4">Importación de Saldos Contables</h3>
                         <field name="account_opening_entries_journal_id" attrs="{'required': [('mode', '=', 'account_balance')] }" />
                         <br/>
-                        <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'account_balance')] }" href="/account_balance_import/generate_xls">
+                        <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'account_balance')] }" href="/account_balance_import/generate_xls" role="button">
                             <span class="fa fa-download" title="download"></span>
                             Descargar Plantilla de Importación de Saldos Contables
                         </a>
@@ -60,7 +60,7 @@
                         <field name="partner_balance_journal_id" attrs="{'required': [('mode', '=', 'partner_balance')] }" />
                         <field name="partner_balance_type" attrs="{'required': [('mode', '=', 'partner_balance')] }" />
                         <br/>
-                        <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'partner_balance')] }" href="/account_balance_import/static/xls/partner_balance.xls">
+                        <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'partner_balance')] }" href="/account_balance_import/static/xls/partner_balance.xls" role="button">
                             <span class="fa fa-download" title="download"></span>
                             Descargar Plantilla de Importación de Saldos de Partners
                         </a>
@@ -84,7 +84,6 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">account_balance_import</field>
         <field name="view_mode">tree,form</field>
-        <field name="view_type">form</field>
         <field name="view_id" ref="account_balance_import_wizard"/>
         <field name="target">new</field>
     </record>

@@ -18,12 +18,12 @@ class AccountBalanceImport(models.TransientModel):
     company_id = fields.Many2one(
         'res.company', string='Compañía',
         required=True,
-        default=lambda self: self.env.user.company_id)
+        default=lambda self: self.env.company)
 
     counterpart_account_id = fields.Many2one(
         "account.account", string="Cuenta de Contrapartida",
         default=lambda
-        self: self.env.user.company_id.get_unaffected_earnings_account(),
+        self: self.env.company.get_unaffected_earnings_account(),
         help="Recomendamos utilizar la misma cuenta de contrapartida "
         "para todos los asientos iniciales",
         domain="[('company_id','=', company_id), ('deprecated', '=', False)]")
@@ -253,8 +253,7 @@ class AccountBalanceImport(models.TransientModel):
 
         account_moves = list()  # For storing account moves before creating 'em
         errors = list()         # For storing possible errors
-        generated_move_ids = list()  # Used for storing ids of generated items
-        company = self.env.user.company_id
+        company = self.env.company
         journal = self.partner_balance_journal_id
 
         # Parse XLS file
@@ -278,17 +277,25 @@ class AccountBalanceImport(models.TransientModel):
             domain = [
                 "|", "|",
                 ("name", "=", dict_data["name"]),
-                ("main_id_number", "=", dict_data["name"]),
+                ("vat", "=", dict_data["name"]),
                 ("ref", "=", dict_data["name"])
             ]
 
-            partner = self.env["res.partner"].search(domain, limit=1)
+            partner = self.env["res.partner"].search(domain)
 
             # Skip if partner not found
             if not partner:
                 errors.append(
                     "Fila {}: No se encontró ningún partner "
                     "para el texto ingresado ({}).".format(
+                        str(row_no + 1), dict_data['name']))
+                continue
+
+            # Skip if more than one parter was found
+            if len(partner) > 1:
+                errors.append(
+                    "Fila {}: Se encontraron varios partners "
+                    "para el texto ingresado ({}). ¡Revise los datos Cargados!".format(
                         str(row_no + 1), dict_data['name']))
                 continue
 
@@ -413,13 +420,9 @@ class AccountBalanceImport(models.TransientModel):
             raise ValidationError("\n".join(errors))
 
         # Everything should be OK if we reached this part
-        # TODO: Optimizar, usar create multi
-        for item in account_moves:
-            account_move = self.env['account.move'].create(item)
-            # Post Account Move
-            account_move.post()
-            # Append generated move id
-            generated_move_ids.append(account_move.id)
+        generated_moves = self.env['account.move'].create(account_moves)
+        # Post Account Move
+        generated_moves.post()
 
         return {
             "name": "Importación de Saldos Iniciales",
@@ -429,7 +432,7 @@ class AccountBalanceImport(models.TransientModel):
             "res_model": "account.move",
             "views": [(False, "tree"), (False, "form")],
             "target": "current",
-            "domain": [("id", "in", generated_move_ids)]
+            "domain": [("id", "in", generated_moves.ids)]
         }
 
     def check_balance_import_xls(self):
@@ -484,7 +487,7 @@ class AccountBalanceImport(models.TransientModel):
             domain = [
                 "|", "|",
                 ("name", "=", dict_data["name"]),
-                ("main_id_number", "=", dict_data["name"]),
+                ("vat", "=", dict_data["name"]),
                 ("ref", "=", dict_data["name"])
             ]
 
