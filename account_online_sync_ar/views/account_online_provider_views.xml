@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="online_provider_account_form_view" model="ir.ui.view">
+        <field name="name">maccount.online.provider.form.view</field>
+        <field name="model">account.online.provider</field>
+        <field name="inherit_id" ref="account_online_sync.online_provider_account_form_view"/>
+        <field name="arch" type="xml">
+            <field name="next_refresh" position="after">
+                <field name="paybook_next_refresh"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="online_provider_account_list_view" model="ir.ui.view">
+        <field name="name">maccount.online.provider.tree.view</field>
+        <field name="model">account.online.provider</field>
+        <field name="inherit_id" ref="account_online_sync.online_provider_account_list_view"/>
+        <field name="arch" type="xml">
+            <field name="next_refresh" position="before">
+                <field name="paybook_next_refresh"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="view_company_form" model="ir.ui.view">
+        <field name="name">res.company.inherit.view.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <field name="sequence" position="after">
+                <field name="paybook_user_id" groups="saas_client.group_saas_support"/>
+                <field name="paybook_api_key" groups="saas_client.group_saas_support"/>
+            </field>
+        </field>
+    </record>
+</odoo>

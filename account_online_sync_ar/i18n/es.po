@@ -1,0 +1,306 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* account_online_sync_ar
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-08 20:56+0000\n"
+"PO-Revision-Date: 2020-06-08 20:56+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_online_sync_ar
+#: model:ir.actions.server,name:account_online_sync_ar.action_new_bank_setting
+#: model:ir.ui.menu,name:account_online_sync_ar.menu_action_account_bank_journal_form
+msgid "Add a Bank Account"
+msgstr "Añada una cuenta bancaria"
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:208
+#, python-format
+msgid "An error has occurred (code %s)"
+msgstr "Un error ha ocurrido (código %s)"
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:178
+#, python-format
+msgid "Bad Request."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model,name:account_online_sync_ar.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:187
+#, python-format
+msgid "Conflict - The institution does not allow to have more than one user logged in. If you have logged in to your institution using another device, please make sure to log out before trying again."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:206
+#, python-format
+msgid "ConnectionTimeout - An internal error has been ocurred while connecting to the institution."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:202
+#, python-format
+msgid "Error - An internal error has been ocurred while connecting to the institution"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:167
+#, python-format
+msgid "Finish - The connection has been successful. Data has been extracted"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:182
+#, python-format
+msgid "Forbidden or Invalidtoken - The given token value introduced was not accepted by the institution or the expiration time was reached."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:173
+#, python-format
+msgid "Incomplete - The connection has been successful. However, the data downloaded is incompleted."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model,name:account_online_sync_ar.model_account_online_journal
+msgid "Interface for Online Account Journal"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model,name:account_online_sync_ar.model_account_journal
+msgid "Journal"
+msgstr "Diario"
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:185
+#, python-format
+msgid "Locked - The institution has blocked the given credential, please contact your institution and make sure your connection to the site is working properly before trying again."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:199
+#, python-format
+msgid "LoginError - There is a error in Login Process, please try again."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:174
+#, python-format
+msgid "NoAccounts - The connection has been successful. However, there were no accounts linked to the given credentials."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:170
+#, python-format
+msgid "NoTransactions - The connection has been successful. However, no transactions were found."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:184
+#, python-format
+msgid "Not Found."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:171
+#, python-format
+msgid "PartialTransactions - The connection has been successful. However, more than one account does not have transactions."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: selection:account.online.provider,provider_type:0
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:106
+#, python-format
+msgid "Paybook"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.paybook_login
+msgid "Paybook Odoo"
+msgstr "Odoo Paybook"
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_res_company__paybook_user_id
+msgid "Paybook User ID"
+msgstr "ID Usuario Paybook"
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_res_company__paybook_user_token
+msgid "Paybook User Token"
+msgstr "Token de Usuario Paybook"
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_res_company__paybook_api_key
+msgid "Paybook API KEY"
+msgstr "API KEY Paybook"
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/res_company.py:81
+#, python-format
+msgid "Paybook fetch: Please comunicate with your Odoo Provider. This is what we got %s"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:181
+#, python-format
+msgid "Payment Required"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:168
+#, python-format
+msgid "Pending - The connection has been successful. We have partially extracted information but data will still be extracted in background processes."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: selection:account.online.provider,provider_type:0
+msgid "Plaid"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: selection:account.online.provider,provider_type:0
+msgid "Ponto"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_provider__provider_type
+msgid "Provider Type"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model,name:account_online_sync_ar.model_account_online_provider
+msgid "Provider for online account synchronization"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:161
+#, python-format
+msgid "Register - The API registers a new process (through a REST request)"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:163
+#, python-format
+msgid "Running - The process is running (login successful)"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/res_company.py:75
+#, python-format
+msgid "Server not reachable, please try again later"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:205
+#, python-format
+msgid "Service Unavailable."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:162
+#, python-format
+msgid "Starting - The process information was obtained to start operating"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.paybook_login
+msgid "Test it"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:64
+#: code:addons/account_online_sync_ar/models/res_company.py:48
+#, python-format
+msgid "There is not API KEY configure, we can not generate new token"
+msgstr "No hay un API KEY configurado, no podemos crar un nuevo token"
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/res_company.py:73
+#, python-format
+msgid "Timeout: the server did not reply within 60s"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:164
+#, python-format
+msgid "TokenReceived - The process received the token"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:194
+#, python-format
+msgid "Too Many Requests."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:198
+#, python-format
+msgid "TwofaTimeout - The time to introduce the MFA value has been exceeded."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:179
+#, python-format
+msgid "Unauthorized - The value of one of the given Authentication Fields was not accepted by the institution. Please verify the information and try again."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:203
+#, python-format
+msgid "Unavailable - The instituion has informed to us that there was a problem in the connection. Please wait 15 minutes and try again. If the problem persists contact Technical Support."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:207
+#, python-format
+msgid "UndergoingMaintenance - The institution is under maintenance."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/res_company.py:77
+#, python-format
+msgid "Unknown exception %s"
+msgstr "Excepción Desconocida %s"
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:190
+#, python-format
+msgid "UserAction - The institution requires attention from the user. We advise you to log in to the institution to confirm everything is working properly. Upon confirmation, try again."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:197
+#, python-format
+msgid "Waiting - Waiting for MFA Value"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:192
+#, python-format
+msgid "WrongSite - The given credentials seem to be valid but they belong to a different site from the same organization."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: selection:account.online.provider,provider_type:0
+msgid "Yodlee"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/res_company.py:89
+#, python-format
+msgid "You already have a pyabook user"
+msgstr "Ya tienes un usuario paybook"
+

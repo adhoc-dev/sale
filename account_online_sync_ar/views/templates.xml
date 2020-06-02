@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="paybook_login" name="Paybook Login">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title">Paybook Odoo</t>
+
+            <link rel="stylesheet" href="https://www.paybook.com/sync/widget/v2/widget.css"/>
+            <script type="text/javascript" src="https://www.paybook.com/sync/widget/v2/widget.js"></script>
+            <div id="widget"></div>
+
+            <form action="/account_online_sync_ar/paybook_success" id="paybook_success" method="post" t-att-class="'invisible' if not request.env.user.has_group('saas_client.group_saas_support') else ''">
+                <input id="paybook_user_token" t-att-value="paybook_user_token"/>
+                <input type="text" name="company_id" t-att-value="company_id"/>
+                <input type="text" name="journal_id" t-att-value="journal_id"/>
+                <input type="text" id="id_credential" name="id_credential"/>
+                <button type="submit" class="btn btn-primary">Test it</button>
+            </form>
+
+            <script>
+                const params = {
+                    token: document.getElementById("paybook_user_token").value,
+                    config: {
+                        locale: 'es',
+                        "entrypoint": {
+                            "country": "AR",
+                        },
+                        "navigation": {
+                            "hideAsideMenu": true,
+                        },
+                    }
+                };
+                syncWidget = new SyncWidget(params);
+                syncWidget.open();
+                syncWidget.$on('success', function(credential){
+                    syncWidget.close();
+                    form = document.getElementById("paybook_success")
+                    document.getElementById("id_credential").value = credential['id_credential'];
+                    form.submit();
+                });
+                syncWidget.$on("error", function(credential){
+                    syncWidget.close();
+                    form = document.getElementById("paybook_success")
+                    document.getElementById("id_credential").value = credential['id_credential'];
+                    form.submit();
+                })
+            </script>
+
+        </t>
+    </template>
+
+</odoo>
