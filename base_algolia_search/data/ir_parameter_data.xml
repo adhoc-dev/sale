@@ -1,0 +1,16 @@
+<odoo noupdate="1">
+
+    <record id="algolia_application_ident" model="ir.config_parameter">
+        <field name="key">base_algolia_search.algolia_application_ident</field>
+        <field name="value"></field>
+    </record>
+    <record id="algolia_api_key" model="ir.config_parameter">
+        <field name="key">base_algolia_search.algolia_api_key</field>
+        <field name="value"></field>
+    </record>
+    <record id="algolia_index_prefix" model="ir.config_parameter">
+        <field name="key">base_algolia_search.index_prefix</field>
+        <field name="value"></field>
+    </record>
+
+</odoo>
