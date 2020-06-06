@@ -123,7 +123,6 @@
     <!-- search icon on documntation breadcrumb -->
     <template id="breadcrumb_search" inherit_id="website_doc.documentation_post" name="Documentation breadcrumb search">
         <div id="doc-page" position="before">
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
             <style>
                 .algolia-autocomplete {
                     width: 100%;
@@ -177,7 +176,7 @@
                 minLength: 3,
                 templates: {
                     suggestion: function(suggestion) {
-                    return suggestion._highlightResult.name.value;
+                    return '<span>' + suggestion._highlightResult.name.value + '</span><span> (' + suggestion._highlightResult.parent_id.value + ')</span>';
                     }
                 }
                 }
