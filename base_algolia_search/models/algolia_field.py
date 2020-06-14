@@ -9,7 +9,7 @@ class AlgoliaField(models.Model):
     priority = fields.Integer(
         help='Priority used for search relevance (lower priority is higher relevance.\n'
         'Only relevant if attribute is set as searchable')
-    field_id = fields.Many2one('ir.model.fields', required=True)
+    field_id = fields.Many2one('ir.model.fields', required=True, ondelete='cascade')
     searchable = fields.Boolean(default=True)
     model_id = fields.Many2one('ir.model', required=True, ondelte='cascade')
     unordered = fields.Boolean(

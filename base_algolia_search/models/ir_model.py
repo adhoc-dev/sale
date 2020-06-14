@@ -25,26 +25,34 @@ def _get_use_algolia_name_search(self):
     return self.env['ir.model'].search([('model', '=', str(self._name))]).use_algolia_name_search
 
 
-# TODO move all this to register_hook
+class Base(models.AbstractModel):
 
+    # TODO perhaps better to create only the field when enabled on the model
+    _inherit = 'base'
 
-_add_magic_fields_original = models.BaseModel._add_magic_fields
+    algolia_search = fields.Char(
+        compute="_compute_algolia_search",
+        search="_search_algolia_search",
+    )
 
+    def _compute_algolia_search(self):
+        self.update({'algolia_search': False})
 
-@api.model
-def _add_magic_fields(self):
-    res = _add_magic_fields_original(self)
-
-    if (
-            'base_algolia_search' in self.env.registry._init_modules and
-            'algolia_search' not in self._fields):
-        self._add_field('algolia_search', fields.Char(
-            automatic=True, compute='_compute_algolia_search',
-            search='_search_algolia_search'))
-    return res
-
-
-models.BaseModel._add_magic_fields = _add_magic_fields
+    @api.model
+    def _search_algolia_search(self, operator, name):
+        """
+        Por ahora este método no llama a
+        self.name_search(name, operator=operator) ya que este no es tan
+        performante si se llama a ilimitados registros que es lo que el
+        name search debe devolver. Por eso se reimplementa acá nuevamente.
+        Además name_search tiene una lógica por la cual trata de devolver
+        primero los que mejor coinciden, en este caso eso no es necesario
+        Igualmente seguro se puede mejorar y unificar bastante código
+        """
+        if name and operator in ALLOWED_OPS:
+            rec_ids = self.env['ir.model'].search([('model', '=', str(self._name))])._agolia_search(name)
+            return [('id', 'in', rec_ids)]
+        return []
 
 
 class IrModel(models.Model):
@@ -155,7 +163,7 @@ class IrModel(models.Model):
 
     def _register_hook(self):
 
-        def make_algolia_name_search():
+        def patch_algolia_name_search():
             @api.model
             def name_search(self, name='', args=None, operator='ilike', limit=100):
                 if name and _get_use_algolia_name_search(self) and operator in ALLOWED_OPS:
@@ -194,35 +202,11 @@ class IrModel(models.Model):
                 return res
             return fields_view_get
 
-        def _compute_algolia_search(self):
-            self.update({'algolia_search': False})
-
-        @api.model
-        def _search_algolia_search(self, operator, name):
-            """
-            Por ahora este método no llama a
-            self.name_search(name, operator=operator) ya que este no es tan
-            performante si se llama a ilimitados registros que es lo que el
-            name search debe devolver. Por eso se reimplementa acá nuevamente.
-            Además name_search tiene una lógica por la cual trata de devolver
-            primero los que mejor coinciden, en este caso eso no es necesario
-            Igualmente seguro se puede mejorar y unificar bastante código
-            """
-            if name and operator in ALLOWED_OPS:
-                rec_ids = self.env['ir.model'].search([('model', '=', str(self._name))])._agolia_search(name)
-                return [('id', 'in', rec_ids)]
-            return []
-
-        # add methods of computed fields
-        if not hasattr(models.BaseModel, '_compute_algolia_search'):
-            models.BaseModel._compute_algolia_search = _compute_algolia_search
-        if not hasattr(models.BaseModel, '_search_algolia_search'):
-            models.BaseModel._search_algolia_search = _search_algolia_search
+        models.BaseModel._patch_method("fields_view_get", patch_fields_view_get())
 
         for model in self.sudo().search(self.ids or []):
             Model = self.env.get(model.model)
             if Model is not None:
-                Model._patch_method('name_search', make_algolia_name_search())
-                Model._patch_method('fields_view_get', patch_fields_view_get())
+                Model._patch_method('name_search', patch_algolia_name_search())
 
         return super(IrModel, self)._register_hook()
