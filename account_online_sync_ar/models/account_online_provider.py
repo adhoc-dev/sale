@@ -81,7 +81,7 @@ class PaybookProviderAccount(models.Model):
 
     @api.model
     def _paybook_open_login(self):
-        company = self.env.user.company_id
+        company = self.env.company
         if not company.sudo().paybook_api_key:
             raise UserError(_('There is not API KEY configure, we can not generate new token'))
         if not company.paybook_user_id:
@@ -93,7 +93,7 @@ class PaybookProviderAccount(models.Model):
     @api.model
     def _paybook_fetch(self, method, url, params, data, auth='token', response_status=False, raise_status=True):
         base_url = 'https://sync.paybook.com/v1'
-        company = self.company_id if self else self.env.user.company_id
+        company = self.company_id if self else self.env.company
         if not company.sudo().paybook_api_key:
             raise UserError(_('There is not API KEY configure, we can not generate new token'))
         if not company.paybook_user_id and url != '/users':

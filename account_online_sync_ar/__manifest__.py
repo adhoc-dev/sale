@@ -1,6 +1,6 @@
 {
     'name': "Account Online Sync Argentina",
-    'version': '12.0.1.0.0',
+    'version': '13.0.1.0.0',
     'category': 'Accounting/Accounting',
     'sequence': 14,
     'author': 'ADHOC SA',
@@ -13,7 +13,6 @@
     ],
     'data': [
         "views/templates.xml",
-        "views/paybook_views.xml",
         "views/res_company_views.xml",
         'views/account_online_provider_views.xml',
         "security/ir.model.access.csv",
