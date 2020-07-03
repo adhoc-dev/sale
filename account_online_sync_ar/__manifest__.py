@@ -9,7 +9,6 @@
     'summary': 'This module is used for Online bank synchronization for Argentina',
     "depends": [
         "account_online_sync",
-        "saas_client",
     ],
     'data': [
         "views/templates.xml",

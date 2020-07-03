@@ -138,16 +138,6 @@ msgid "Paybook User ID"
 msgstr "ID Usuario Paybook"
 
 #. module: account_online_sync_ar
-#: model:ir.model.fields,field_description:account_online_sync_ar.field_res_company__paybook_user_token
-msgid "Paybook User Token"
-msgstr "Token de Usuario Paybook"
-
-#. module: account_online_sync_ar
-#: model:ir.model.fields,field_description:account_online_sync_ar.field_res_company__paybook_api_key
-msgid "Paybook API KEY"
-msgstr "API KEY Paybook"
-
-#. module: account_online_sync_ar
 #: code:addons/account_online_sync_ar/models/res_company.py:81
 #, python-format
 msgid "Paybook fetch: Please comunicate with your Odoo Provider. This is what we got %s"

@@ -7,7 +7,6 @@ from datetime import timedelta
 import json
 import werkzeug
 import requests
-import uuid
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -63,48 +62,26 @@ class PaybookProviderAccount(models.Model):
         return super().unlink()
 
     @api.model
-    def _paybook_get_user_token(self, company):
-        """ Get the user token saved in the company, if this one is a valid one return it, if not create a new token """
-        data = {"id_user": company.paybook_user_id}
-        response = self._paybook_fetch('POST', '/sessions', {}, data, 'api_key')
-        _logger.info("New paybook token created: %s" % response.get('token'))
-        return response.get('token')
-
-    @api.model
-    def _paybook_register_new_user(self, company):
-        data = {'name': self.env.registry.db_name + '_' + str(uuid.uuid4())}
-        if company.paybook_user_id:
-            raise UserError(_('You already have a pyabook user'))
-        else:
-            response = self._paybook_fetch('POST', '/users', {}, data, 'api_key')
-            company.paybook_user_id = response.get('id_user')
-
-    @api.model
     def _paybook_open_login(self):
         company = self.env.company
-        if not company.sudo().paybook_api_key:
-            raise UserError(_('There is not API KEY configure, we can not generate new token'))
         if not company.paybook_user_id:
-            self._paybook_register_new_user(company)
+            company._paybook_register_new_user()
         journal_id = self.env.context.get('journal_id') or 0
         return {'type': 'ir.actions.act_url', 'target': 'self',
                 'url': '/account_online_sync_ar/configure_paybook/%s/%s' % (company.id, journal_id)}
 
     @api.model
-    def _paybook_fetch(self, method, url, params, data, auth='token', response_status=False, raise_status=True):
+    def _paybook_fetch(self, method, url, params, data, response_status=False, raise_status=True):
         base_url = 'https://sync.paybook.com/v1'
         company = self.company_id if self else self.env.company
-        if not company.sudo().paybook_api_key:
-            raise UserError(_('There is not API KEY configure, we can not generate new token'))
-        if not company.paybook_user_id and url != '/users':
-            self._paybook_register_new_user(company)
+        if not company.paybook_user_id:
+            company._paybook_register_new_user()
 
         parsed_data = ""
         if not url.startswith(base_url):
             url = base_url + url
 
-        headers = {"Authorization": "TOKEN token=" + self._paybook_get_user_token(company)
-                   if auth == 'token' else "API_KEY api_key=" + company.sudo().paybook_api_key}
+        headers = {"Authorization": "TOKEN token=" + company._paybook_get_user_token()}
         error = response = False
         try:
             if data:

@@ -10,7 +10,7 @@ class PaybookPortal(Controller):
         values = {
             'company_id': company_id,
             'journal_id': journal_id,
-            'paybook_user_token': request.env['account.online.provider']._paybook_get_user_token(company)}
+            'paybook_user_token': company._paybook_get_user_token()}
         response = request.render("account_online_sync_ar.paybook_login", values)
         return response
 

@@ -8,7 +8,6 @@
         <field name="arch" type="xml">
             <field name="sequence" position="after">
                 <field name="paybook_user_id" groups="saas_client.group_saas_support"/>
-                <field name="paybook_api_key" groups="saas_client.group_saas_support"/>
             </field>
         </field>
     </record>
