@@ -62,11 +62,6 @@ msgid "Activities"
 msgstr ""
 
 #. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__activity_state
-msgid "Activity State"
-msgstr ""
-
-#. module: website_doc
 #: model:ir.model.fields,help:website_doc.field_website_doc_toc__add_google_doc
 msgid "Add Google Doc after Page Content?"
 msgstr "¿Añadir Google Doc después del contenido de la página?"
@@ -284,7 +279,7 @@ msgstr ""
 #: model:ir.model.fields,help:website_doc.field_website_doc_toc__state
 msgid "If private, then it wont be accesible by portal or public users"
 msgstr ""
-"Si es privado, entonces no será accesible por el portal o los usuarios "
+"Si es pr stateivado, entonces no será accesible por el portal o los usuarios "
 "públicos"
 
 #. module: website_doc
@@ -296,11 +291,6 @@ msgstr "¿Es Artículo?"
 #: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__message_is_follower
 msgid "Is Follower"
 msgstr ""
-
-#. module: website_doc
-#: selection:website.doc.toc,state:0
-msgid "Is Private"
-msgstr "Es Privado"
 
 #. module: website_doc
 #: model:ir.model.fields,field_description:website_doc.field_website_doc_status____last_update
@@ -321,11 +311,6 @@ msgid "Last Updated on"
 msgstr "Last Updated on"
 
 #. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__message_main_attachment_id
-msgid "Main Attachment"
-msgstr ""
-
-#. module: website_doc
 #: model_terms:ir.ui.view,arch_db:website_doc.article_read_status
 msgid "Marcar este artículo como NO leído"
 msgstr "Marcar este artículo como NO leído"
@@ -336,34 +321,9 @@ msgid "Marcar este artículo como leído"
 msgstr "Marcar este artículo como leído"
 
 #. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__message_has_error
-msgid "Message Delivery error"
-msgstr ""
-
-#. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__message_ids
-msgid "Messages"
-msgstr ""
-
-#. module: website_doc
 #: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__name
 msgid "Name"
 msgstr "Nombre"
-
-#. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__activity_date_deadline
-msgid "Next Activity Deadline"
-msgstr ""
-
-#. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__activity_summary
-msgid "Next Activity Summary"
-msgstr ""
-
-#. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__activity_type_id
-msgid "Next Activity Type"
-msgstr ""
 
 #. module: website_doc
 #: code:addons/website_doc/models/website_doc_toc.py:156
@@ -392,64 +352,14 @@ msgid "No puede publicar este articulo porque hay articulos padres privados"
 msgstr "No puede publicar este articulo porque hay articulos padres privados"
 
 #. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__message_needaction_counter
-msgid "Number of Actions"
-msgstr ""
-
-#. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__message_has_error_counter
-msgid "Number of error"
-msgstr ""
-
-#. module: website_doc
-#: model:ir.model.fields,help:website_doc.field_website_doc_toc__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr ""
-
-#. module: website_doc
-#: model:ir.model.fields,help:website_doc.field_website_doc_toc__message_has_error_counter
-msgid "Number of messages with delivery error"
-msgstr ""
-
-#. module: website_doc
-#: model:ir.model.fields,help:website_doc.field_website_doc_toc__message_unread_counter
-msgid "Number of unread messages"
-msgstr ""
-
-#. module: website_doc
-#: selection:website.doc.toc,activity_state:0
-msgid "Overdue"
-msgstr ""
-
-#. module: website_doc
 #: model_terms:ir.ui.view,arch_db:website_doc.view_documentation_toc_filter
 msgid "Parent"
 msgstr "Padre"
 
 #. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__parent_path
-msgid "Parent Path"
-msgstr ""
-
-#. module: website_doc
 #: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__parent_id
 msgid "Parent Table Of Content"
 msgstr "Tabla de contenido principal"
-
-#. module: website_doc
-#: selection:website.doc.toc,activity_state:0
-msgid "Planned"
-msgstr ""
-
-#. module: website_doc
-#: selection:website.doc.toc,state:0
-msgid "Portal"
-msgstr "Portal"
-
-#. module: website_doc
-#: selection:website.doc.toc,state:0
-msgid "Published"
-msgstr "Publicado"
 
 #. module: website_doc
 #: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__read_status
@@ -462,19 +372,9 @@ msgid "Reading percentage"
 msgstr "Porcentaje de lectura"
 
 #. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__activity_user_id
-msgid "Responsible User"
-msgstr ""
-
-#. module: website_doc
 #: model_terms:ir.ui.view,arch_db:website_doc.view_documentation_toc_filter
 msgid "Root TOC"
 msgstr "Root TOC"
-
-#. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__is_seo_optimized
-msgid "SEO optimized"
-msgstr ""
 
 #. module: website_doc
 #: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__sequence
@@ -493,39 +393,15 @@ msgid "State"
 msgstr "Estado"
 
 #. module: website_doc
-#: model:ir.model.fields,help:website_doc.field_website_doc_toc__activity_state
-msgid ""
-"Status based on activities\n"
-"Overdue: Due date is already passed\n"
-"Today: Activity date is today\n"
-"Planned: Future activities."
-msgstr ""
-
-#. module: website_doc
 #: model_terms:ir.ui.view,arch_db:website_doc.documentation_post
 msgid "También dentro de \""
 msgstr "También dentro de \""
-
-#. module: website_doc
-#: selection:website.doc.toc,activity_state:0
-msgid "Today"
-msgstr ""
 
 #. module: website_doc
 #: code:addons/website_doc/controllers/website_search.py:113
 #, python-format
 msgid "Unable to get text page"
 msgstr "No se puede obtener la página de texto"
-
-#. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__message_unread
-msgid "Unread Messages"
-msgstr ""
-
-#. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__message_unread_counter
-msgid "Unread Messages Counter"
-msgstr ""
 
 #. module: website_doc
 #: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__url_suffix
@@ -540,31 +416,6 @@ msgstr "Usuario"
 #. module: website_doc
 #: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__website_message_ids
 msgid "Website Messages"
-msgstr ""
-
-#. module: website_doc
-#: model:ir.model.fields,help:website_doc.field_website_doc_toc__website_message_ids
-msgid "Website communication history"
-msgstr ""
-
-#. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__website_meta_description
-msgid "Website meta description"
-msgstr ""
-
-#. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__website_meta_keywords
-msgid "Website meta keywords"
-msgstr ""
-
-#. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__website_meta_title
-msgid "Website meta title"
-msgstr ""
-
-#. module: website_doc
-#: model:ir.model.fields,field_description:website_doc.field_website_doc_toc__website_meta_og_img
-msgid "Website opengraph image"
 msgstr ""
 
 #. module: website_doc
