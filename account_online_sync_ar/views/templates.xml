@@ -8,7 +8,7 @@
             <script type="text/javascript" src="https://www.paybook.com/sync/widget/v2/widget.js"></script>
             <div id="widget"></div>
 
-            <form action="/account_online_sync_ar/paybook_success" id="paybook_success" method="post" t-att-class="'invisible' if not request.env.user.has_group('saas_client.group_saas_support') else ''">
+            <form action="/account_online_sync_ar/paybook_success" id="paybook_success" method="post" class="invisible">
                 <input id="paybook_user_token" t-att-value="paybook_user_token"/>
                 <input type="text" name="company_id" t-att-value="company_id"/>
                 <input type="text" name="journal_id" t-att-value="journal_id"/>
