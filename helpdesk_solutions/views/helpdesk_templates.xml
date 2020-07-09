@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <strong>Solution:</strong> <span t-if="ticket.solution_description" t-field="ticket.solution_description"/> <span t-if="not ticket.solution_description" t-field="ticket.helpdesk_solution_id.solution_description"/>
+                <strong>Solution:</strong> <span t-if="ticket.solution_description" t-field="ticket.solution_description"/> <span t-if="not ticket.solution_description" t-field="ticket.helpdesk_solution_id.customer_solution_description"/>
             </div>
         </xpath>
 
