@@ -284,3 +284,21 @@ class WebsiteDocToc(models.Model):
                 'type': 'url',
                 'url': content['alternateLink']
             }).id
+
+    def read_google_doc(self):
+        '''
+        Export the content of Google Doc file which id was saved in field 'google_doc_code' and save it in 'content'
+        field
+        '''
+        google_doc_id = self.google_doc_code
+        mimetype = 'text/plain'
+        access_token = self.env['google.drive.config'].get_access_token()
+        request_url = "https://www.googleapis.com/drive/v2/files/%s/export/?mimeType=%s&access_token=%s" % (
+            google_doc_id, mimetype, access_token)
+        try:
+            req = requests.get(request_url, timeout=TIMEOUT)
+            req.raise_for_status()
+            content = req.text
+        except requests.HTTPError:
+            raise UserError(_("The Google document cannot be found. Maybe it has been deleted."))
+        self.content = content

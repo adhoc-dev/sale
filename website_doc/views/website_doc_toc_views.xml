@@ -61,6 +61,8 @@
                         <div attrs="{'invisible':['|', ('is_article', '=', False), ('article_type', '!=', 'google_doc')]}">
                             <field name="google_doc_code" class="oe_inline"/>
                             <button name="create_google_doc" type="object" string="Create gDoc" class="oe_link oe_inline" attrs="{'invisible':[('google_doc_code', '!=', False)]}"/>
+                            <button name="read_google_doc" type="object" string="Read gDoc" class="oe_inline oe_link"
+                            attrs="{'invisible':[('google_doc_code', '=', False)]}"/>
                         </div>
                         <field name="article_url" attrs="{'invisible':['|', ('is_article', '=', False), ('article_type', '!=', 'url')], 'required':[('is_article', '=', True), ('article_type', '=', 'url')]}" widget="url"/>
                     </group>
