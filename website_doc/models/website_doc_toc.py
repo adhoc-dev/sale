@@ -122,7 +122,9 @@ class WebsiteDocToc(models.Model):
     )
 
     def _compute_content_plain_text(self):
-        for rec in self.filtered('content'):
+        with_content = self.filtered('content')
+        (self - with_content).content_plain_text = False
+        for rec in with_content:
             # TODO mejorar esto, es un horrible hack para no alcanzar el limite que propone algolia para las free
             # accounts. De una que deberia ser un parametro y hacerlo mas elegante, pero tal vez mas lindo
             # alguna otra solucion tambien
