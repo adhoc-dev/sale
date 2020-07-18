@@ -120,7 +120,7 @@ class IrModel(models.Model):
                 domain = []
             if not self._context.get('update_all') and rec.algolia_last_sync:
                 domain = [('write_date', '>', rec.algolia_last_sync)] + domain
-            index = alg_client.init_index(self.algolia_index_name)
+            index = alg_client.init_index(rec.algolia_index_name)
             objects = []
             model_recs = rec.env[rec.model].search(domain)
             odoo_fields = rec.algolia_field_ids.mapped('field_id')
