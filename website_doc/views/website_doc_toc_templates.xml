@@ -176,7 +176,7 @@
                 minLength: 3,
                 templates: {
                     suggestion: function(suggestion) {
-                    return '<span>' + suggestion._highlightResult.name.value + '</span><span> (' + suggestion._highlightResult.parent_id.value + ')</span>';
+                    return '<span>' + suggestion._highlightResult.name.value + '</span><span> (' + (suggestion._highlightResult.parent_id ? suggestion._highlightResult.parent_id.value : '') + ')</span>';
                     }
                 }
                 }
