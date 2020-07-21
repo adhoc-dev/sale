@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models
+from odoo import api, models
 from datetime import datetime
 
 
@@ -8,6 +8,12 @@ class PaybookAccount(models.Model):
     _inherit = 'account.online.journal'
 
     """ The paybook account that is saved in Odoo. It knows how to fetch Paybook to get the new bank statements """
+
+    @api.model
+    def _update_with_value(self, trx_data, field_to_set, value):
+        if value:
+            old_value = trx_data.get(field_to_set)
+            trx_data[field_to_set] = old_value + ' - ' + str(value) if old_value else str(value)
 
     def retrieve_transactions(self):
         """ Get transsanctions from provider, prepare data, and create bank statements """
@@ -37,11 +43,14 @@ class PaybookAccount(models.Model):
                 'ref': trx.get('reference') or ''}
             extra_data = trx.get('extra')
             if extra_data:
-                if "order" in extra_data:
-                    trx_data['sequence'] = extra_data.get('order')
-                if "caption" in extra_data:
-                    trx_data['name'] += ' - ' + extra_data.get('caption')
-                if "caption2" in extra_data:
-                    trx_data['name'] += ' - ' + extra_data.get('caption2')
+                self._update_with_value(trx_data, 'sequence', extra_data.get('order'))
+                self._update_with_value(trx_data, 'name', extra_data.get('caption'))
+                self._update_with_value(trx_data, 'name', extra_data.get('caption2'))
+                self._update_with_value(trx_data, 'name', extra_data.get('caption3'))
+                self._update_with_value(trx_data, 'name', extra_data.get('caption4'))
+                self._update_with_value(trx_data, 'name', extra_data.get('voucher_number'))
+                self._update_with_value(trx_data, 'name', extra_data.get('group_of_concept'))
+                self._update_with_value(trx_data, 'name', extra_data.get('terminal_number'))
+
             transactions.append(trx_data)
         return self.env['account.bank.statement'].online_sync_bank_statement(transactions, self.journal_ids)
