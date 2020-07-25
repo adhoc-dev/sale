@@ -17,7 +17,8 @@ ALLOWED_OPS = set(['ilike', 'like'])
 @tools.ormcache(skiparg=0)
 def _get_add_algolia_search(self):
     "Add Smart Search on search views"
-    return self.env['ir.model'].search([('model', '=', str(self._name))]).add_algolia_search
+    return hasattr(self.env['ir.model'], 'add_algolia_search') and \
+        self.env['ir.model'].search([('model', '=', str(self._name))]).add_algolia_search
 
 
 @tools.ormcache(skiparg=0)
