@@ -300,6 +300,7 @@ class WebsiteDocToc(models.Model):
         try:
             req = requests.get(request_url, timeout=TIMEOUT)
             req.raise_for_status()
+            req.encoding = 'UTF-8'
             content = req.text
         except requests.HTTPError:
             raise UserError(_("The Google document cannot be found. Maybe it has been deleted."))
