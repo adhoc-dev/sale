@@ -131,10 +131,19 @@ class WebsiteDocToc(models.Model):
             rec.content_plain_text = html2plaintext(rec.content)[:8000]
 
     def get_facetFilters(self):
+        user = self.env.user
+        filters = []
+        if user.has_group('base.group_portal'):
+            filters += ['["state:Published", "state:Portal"]']
+        elif user._is_public():
+            filters += ['["state:Published"]']
+
         if self.documentation_id:
-            return 'facetFilters: "documentation_id:%s"' % self.documentation_id.name
-        else:
-            return ''
+            filters += ['"documentation_id:%s"' % self.documentation_id.name]
+
+        if filters:
+            return 'facetFilters: [%s]' % ','.join(filters)
+        return ''
 
     @api.model
     def default_get(self, fields):
