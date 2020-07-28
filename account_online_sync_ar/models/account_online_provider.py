@@ -63,17 +63,21 @@ class PaybookProviderAccount(models.Model):
 
     @api.model
     def _paybook_open_login(self):
-        company = self.env.company
+        journal_id = self.env.context.get('journal_id') or 0
+        company = self.env['account.journal'].browse(journal_id).company_id if journal_id else self.env.company
         if not company.paybook_user_id:
             company._paybook_register_new_user()
-        journal_id = self.env.context.get('journal_id') or 0
         return {'type': 'ir.actions.act_url', 'target': 'self',
                 'url': '/account_online_sync_ar/configure_paybook/%s/%s' % (company.id, journal_id)}
 
-    @api.model
     def _paybook_fetch(self, method, url, params, data, response_status=False, raise_status=True):
         base_url = 'https://sync.paybook.com/v1'
-        company = self.company_id if self else self.env.company
+        if self:
+            company = self.company_id
+        else:
+            company_id = self.env.context.get('paybook_company_id')
+            company = self.env['res.company'].browse(company_id) if company_id else self.env.company
+
         if not company.paybook_user_id:
             company._paybook_register_new_user()
 
@@ -156,7 +160,7 @@ class PaybookProviderAccount(models.Model):
 
         # Get info about accounts
         params = {'id_credential': id_credential}
-        account_info = self._paybook_fetch('GET', '/accounts', params, {}, raise_status=False)
+        account_info = self.with_context(paybook_company_id=company.id)._paybook_fetch('GET', '/accounts', params, {}, raise_status=False)
 
         # Check if provider already exist
         provider_account = self.search([('provider_account_identifier', '=', id_credential)])
@@ -182,7 +186,7 @@ class PaybookProviderAccount(models.Model):
                 }))
 
         # Extract online provider info
-        values = self._paybook_get_credentials(company, id_credential, account_info, account_values)
+        values = self.with_context(paybook_company_id=company.id)._paybook_get_credentials(company, id_credential, account_info, account_values)
 
         if provider_account:
             provider_account.sudo().write(values)
