@@ -54,12 +54,11 @@ class PaybookProviderAccount(models.Model):
         journal_id = journal_id[0] if len(journal_id) >= 1 else False
         return self.with_context(journal_id=journal_id)._paybook_open_login()
 
-    def unlink(self):
-        """ once the user has deleted the provider remove the date from paybook"""
+    def online_account_delete_credentials(self):
+        """ once the user has deleted the provider remove the data from paybook"""
         paybook_providers = self.filtered(lambda x: x.provider_type == 'paybook')
         for provider in paybook_providers:
             provider._paybook_fetch('DELETE', '/credentials/' + provider.provider_account_identifier, {}, {})
-        return super().unlink()
 
     @api.model
     def _paybook_open_login(self):

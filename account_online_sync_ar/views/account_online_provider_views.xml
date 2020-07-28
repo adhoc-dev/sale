@@ -9,6 +9,9 @@
             <field name="next_refresh" position="after">
                 <field name="paybook_next_refresh"/>
             </field>
+            <field name="provider_identifier" position="after">
+                <button name="online_account_delete_credentials" string="Delete Online Credentials" confirm="This action can not be undone. Are you sure?" icon="fa-trash" action="object" class="oe_link" groups="base.group_no_one"/>
+            </field>
         </field>
     </record>
 
