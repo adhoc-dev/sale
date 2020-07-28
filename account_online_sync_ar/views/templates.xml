@@ -9,9 +9,13 @@
             <div id="widget"></div>
 
             <form action="/account_online_sync_ar/paybook_success" id="paybook_success" method="post" class="invisible">
+                <label for="paybook_user_token">Paybook User Token</label>
                 <input id="paybook_user_token" t-att-value="paybook_user_token"/>
+                <br/><label for="company_id">Company ID</label>
                 <input type="text" name="company_id" t-att-value="company_id"/>
+                <br/><label for="journal_id">Journal ID</label>
                 <input type="text" name="journal_id" t-att-value="journal_id"/>
+                <br/><label for="id_credential">Credential ID</label>
                 <input type="text" id="id_credential" name="id_credential"/>
                 <button type="submit" class="btn btn-primary">Test it</button>
             </form>
