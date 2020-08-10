@@ -40,7 +40,7 @@ class WebsiteDoc(http.Controller):
             filters = "documentation_id:'%s'" % doc.name
         else:
             filters = None
-        rec_ids = env['ir.model'].search([('model', '=', 'website.doc.toc')])._agolia_search(search, filters=filters, limit=0)
+        rec_ids = env['ir.model'].sudo().search([('model', '=', 'website.doc.toc')])._agolia_search(search, filters=filters, limit=0)
         results = env['website.doc.toc'].search([('id', 'in', rec_ids)])
         # results = results.exists()
         # hacemos esto para filtar por los articulos que puede ver el usuario
