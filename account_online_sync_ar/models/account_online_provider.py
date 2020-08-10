@@ -188,14 +188,17 @@ class PaybookProviderAccount(models.Model):
         values = self.with_context(paybook_company_id=company.id)._paybook_get_credentials(company, id_credential, account_info, account_values)
 
         if provider_account:
+            prev_accounts = provider_account.account_online_journal_ids
             provider_account.sudo().write(values)
             method = 'edit'
+            added = provider_account.account_online_journal_ids - prev_accounts.filtered(lambda x: x.journal_ids)
         else:
             provider_account = self.create(values)
             method = 'add' if journal else 'edit'
+            added = provider_account.account_online_journal_ids
 
         res = {'status': provider_account.status, 'message': provider_account.message, 'method': method,
-               'added': provider_account.account_online_journal_ids.filtered(lambda x: not x.journal_ids)}
+               'added': added}
 
         if journal:
             res['journal_id'] = journal.id
