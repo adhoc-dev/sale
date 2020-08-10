@@ -128,7 +128,11 @@ class WebsiteDocToc(models.Model):
             # TODO mejorar esto, es un horrible hack para no alcanzar el limite que propone algolia para las free
             # accounts. De una que deberia ser un parametro y hacerlo mas elegante, pero tal vez mas lindo
             # alguna otra solucion tambien
-            rec.content_plain_text = html2plaintext(rec.content)[:8000]
+            try:
+                rec.content_plain_text = html2plaintext(rec.content)[:8000]
+            except Exception:
+                rec.content_plain_text = False
+                _logger.debug('Could not get plain text from rec %s', rec.id)
 
     def get_facetFilters(self):
         user = self.env.user
