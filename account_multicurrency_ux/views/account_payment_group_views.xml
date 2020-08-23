@@ -1,0 +1,17 @@
+<odoo>
+    <record id="view_account_payment_group_form" model="ir.ui.view">
+        <field name="name">account.payment.group.form</field>
+        <field name="model">account.payment.group</field>
+        <field name="inherit_id" ref="account_payment_group.view_account_payment_group_form"/>
+        <field name="arch" type="xml">
+            <form>
+                <field name="exchange_diff_adjustment_required" invisible="1"/>
+            </form>
+            <header position="after">
+                <div class="alert alert-info" role="alert" style="margin-bottom:0px;" attrs="{'invisible': [('exchange_diff_adjustment_required','=',False)]}">
+                    Debe realizar un <b>NC/ND</b> de ajuste por diferencia de cambio. Puede hacerlo haciendo click <button type="action" name="%(action_account_exchange_diff_invoice)d" string="aquí" class="oe_link oe_inline"/>
+                </div>
+            </header>
+        </field>
+    </record>
+</odoo>

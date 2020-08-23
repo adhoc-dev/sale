@@ -1,0 +1,91 @@
+<odoo>
+
+    <record id="no_create_invoice_tree" model="ir.ui.view">
+        <field name="name">account.document.invoice.tree</field>
+        <field name="model">account.invoice</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="account.invoice_tree"/>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <field name="company_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="partner_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <tree>
+                <button name="get_formview_action" icon="fa-external-link" string="Open Invoice" type="object"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="invoice_form" model="ir.ui.view">
+        <field name="name">account.invoice.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <form>
+                <field name="exchange_diff_adjustment_required" invisible="1"/>
+                <field name="exchange_diff_ignored" invisible="1"/>
+            </form>
+            <header position="after">
+                <div class="alert alert-warning" role="alert" style="margin-bottom:0px;" attrs="{'invisible': [('exchange_diff_adjustment_required','=',False)]}">
+                    Debe realizar un <b>NC/ND</b> de ajuste por diferencia de cambio. Puede hacerlo haciendo click <button type="action" name="%(action_account_exchange_diff_invoice)d" string="aquí" class="oe_link oe_inline"/>
+                </div>
+                <div class="alert alert-success" role="alert" style="margin-bottom:0px;" attrs="{'invisible': [('exchange_diff_ignored','=',False)]}">
+                    Se ha ignorado realizar NC/ND de ajustes por diferencia de cambio para esta factura. Puede des-ignorar haciendo click<button type="object" name="unignore_exchange_diff" string="aquí" class="oe_link oe_inline"/>
+                </div>
+                <!-- <div class="alert alert-info" role="alert" style="margin-bottom:0px;" attrs="{'invisible': ['|', ('exchange_diff_adjustment_required','=',False), ('exchange_diff_invoice_ids', '!=', False)]}">
+                    Debe realizar un <b>NC/ND</b> de ajuste por diferencia de cambio. Puede hacerlo haciendo click <button type="action" name="%(action_account_exchange_diff_invoice)d" string="aquí" class="oe_link oe_inline"/>
+                </div>
+                <div class="alert alert-info" role="alert" style="margin-bottom:0px;" attrs="{'invisible': ['|',('exchange_diff_adjustment_required','=',False), ('exchange_diff_invoice_ids', '=', False)]}">
+                    Debe validar o borrar la NC/ND de ajuste por diferencia de cambio vinculada a esta factura.
+                </div> -->
+            </header>
+            <notebook>
+                <page string="NC/ND de ajuste" attrs="{'invisible': [('exchange_diff_invoice_ids', '=', [])]}">
+                    <field name="exchange_diff_invoice_ids" attrs="{'invisible': [('exchange_diff_invoice_ids', '=', False)]}" context="{'tree_view_ref': 'account_multicurrency_ux.no_create_invoice_tree', 'form_view_ref': 'account.invoice_form'}"/>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <record id="manager_invoice_form" model="ir.ui.view">
+        <field name="name">account.invoice.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="invoice_form"/>
+        <field name="groups_id" eval="[(4, ref('account.group_account_user'))]"/>
+        <field name="arch" type="xml">
+            <field name="outstanding_credits_debits_widget" position="after">
+                <button name="open_partial_reconciles" type="object" string="=> Ver conciliaciones" class="oe_link oe_nolabel" groups="base.group_no_one"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_invioce_filter" model="ir.ui.view">
+        <field name="name">invoice.view.select</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <separator position="after">
+                <filter name="exchange_diff_adjustment_required" domain="[('move_id.line_ids.matched_credit_ids.exchange_diff_adjustment_required', '=', True), ('move_id.line_ids.matched_credit_ids.credit_move_id.date_maturity', '&lt;=', context_today().strftime('%Y-%m-%d'))]" string="Requiere ajuste por diferencia de cambio" help='IMPORTANTE. No se muestran facturas pagadas con cheques (u otro medio) y que no han llegado a la fecha de cobro'/>
+                <filter name="exchange_diff_adjustment_required" domain="[('exchange_diff_adjustment_required','=',True)]" string="Requiere ajuste por diferencia de cambio (TODOS)" help='Si incluyen también las facturas que han sido pagadas con cheques (u otro medio) y para las cuales no hay llegado todavía la fecha de cobro' groups="base.group_no_one"/>
+                <filter name="exchange_diff_ignored" domain="[('exchange_diff_ignored','=',True)]" string="Ajuste por diferencia de cambio ignorado"/>
+                <separator/>
+            </separator>
+        </field>
+    </record>
+
+    <record id="invoice_tree" model="ir.ui.view">
+        <field name="name">account.invoice.tree.inherit</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_tree"/>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="exchange_diff_adjustment_required" invisible="1"/>
+                <button name="%(action_account_exchange_diff_invoice)d" type="action" string="Crear NC/ND de ajuste por diferencia de cambio" attrs="{'invisible': [('exchange_diff_adjustment_required', '=', False)]}" icon="fa-adjust"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>
