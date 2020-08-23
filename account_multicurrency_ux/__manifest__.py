@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Accounting Multicurrency UX',
-    'version': '11.0.1.2.0',
+    'version': '13.0.1.0.0',
     'category': 'Accounting',
     'summary': '',
     'author': 'ADHOC SA',
@@ -34,7 +34,7 @@
     'data': [
         'wizards/account_exchange_diff_invoice_views.xml',
         'wizards/res_config_settings_views.xml',
-        'views/account_invoice_views.xml',
+        'views/account_move_views.xml',
         'views/account_partial_reconcile_views.xml',
         'views/account_payment_group_views.xml',
     ],

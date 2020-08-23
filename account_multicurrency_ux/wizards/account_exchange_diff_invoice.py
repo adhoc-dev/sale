@@ -9,6 +9,7 @@ from odoo.tools.misc import formatLang, format_date
 
 class AccountExchangeDiffInvoice(models.TransientModel):
     _name = 'account.exchange_diff_invoice'
+    _description = 'account.exchange_diff_invoice'
 
     line_ids = fields.One2many(
         'account.exchange_diff_invoice.line',
@@ -23,7 +24,7 @@ class AccountExchangeDiffInvoice(models.TransientModel):
         readonly=True,
     )
     invoice_ids = fields.Many2many(
-        'account.invoice',
+        'account.move',
         string='NC/ND a validar',
         readonly=True,
         help='NC/ND que se crearon pero todavía no se validaron. Debe validarlas o borrarlas para generar una nueva NC/ND de ajuste',
@@ -44,13 +45,13 @@ class AccountExchangeDiffInvoice(models.TransientModel):
         res = super().default_get(fct_fields)
         active_model = self._context.get('active_model')
         rec_ids = self._context.get('active_ids')
-        if active_model == 'account.invoice':
-            invoices = self.env['account.invoice'].browse(rec_ids)
+        if active_model == 'account.move':
+            invoices = self.env['account.move'].browse(rec_ids)
             if len(invoices.mapped('commercial_partner_id')) != 1:
                 raise ValidationError(_('Todas las facturas seleccionadas deben ser de la misma empresa.'))
             if len(invoices.mapped('company_id')) != 1:
                 raise ValidationError(_('Todas las facturas seleccionadas deben ser de la misma compañía.'))
-            partial_lines = invoices.mapped('move_id.line_ids.matched_credit_ids')
+            partial_lines = invoices.mapped('line_ids.matched_credit_ids')
             company = invoices.mapped('company_id')
         elif active_model == 'account.payment.group':
             pay_groups = self.env['account.payment.group'].browse(rec_ids)
@@ -60,7 +61,7 @@ class AccountExchangeDiffInvoice(models.TransientModel):
             raise ValidationError(_('Exchange Difference Wizard must be called from an invoice or payment'))
 
         partial_vals = partial_lines.filtered(lambda x: x.exchange_diff_adjustment_required and not x.exchange_diff_invoice_id)._get_partial_adjustment_vals()
-        to_validate = partial_lines.filtered(lambda x: x.exchange_diff_invoice_id.state not in ['open', 'paid']).mapped('exchange_diff_invoice_id')
+        to_validate = partial_lines.filtered(lambda x: x.exchange_diff_invoice_id.state not in ['posted']).mapped('exchange_diff_invoice_id')
         res.update({
             'line_ids': [(0, 0, x) for x in partial_vals.values()],
             'invoice_ids': [(6, 0, to_validate.ids)],
@@ -68,7 +69,6 @@ class AccountExchangeDiffInvoice(models.TransientModel):
         })
         return res
 
-    @api.multi
     def confirm(self):
         self.ensure_one()
 
@@ -80,18 +80,6 @@ class AccountExchangeDiffInvoice(models.TransientModel):
             invoice_type = 'out_refund'
 
         debit_line = self.line_ids[0].partial_line_id.debit_move_id
-        vals = {
-            'name': 'Ajuste por diferencia de cambio',
-            'origin': ', '.join(self.line_ids.mapped('debit_name')),
-            'journal_id': debit_line.journal_id.id,
-            'user_id': debit_line.invoice_id.user_id.id,
-            'partner_id': debit_line.invoice_id.partner_id.id,
-            'company_id': self.company_id.id,
-            'type': invoice_type,
-        }
-        new_invoice = self.env['account.invoice'].with_context(
-            force_company_id=self.company_id.id, internal_type='debit_note').create(vals)
-
         company_currency_id = self.company_currency_id
 
         message = "".join(self.line_ids.mapped(
@@ -105,36 +93,44 @@ class AccountExchangeDiffInvoice(models.TransientModel):
                 x.debit_rate,
                 formatLang(self.env, x.exchange_diff_amount, currency_obj=company_currency_id),
                 )))
-        line_vals = {
-            'account_id': account_id.id,
-            'name': 'Ajuste por diferencia de cambio\n%s' % message,
-            'price_unit': abs(self.exchange_diff_amount),
-            'invoice_id': new_invoice.id,
-        }
-        invoice_line = self.env['account.invoice.line'].new(line_vals)
-        invoice_line._onchange_account_id()
-        line_vals = invoice_line._convert_to_write(invoice_line._cache)
 
-        new_invoice.write({'invoice_line_ids': [(0, 0, line_vals)]})
-        new_invoice.compute_taxes()
+        vals = {
+            'ref': 'Ajuste por diferencia de cambio',
+            'invoice_origin': ', '.join(self.line_ids.mapped('debit_name')),
+            'journal_id': debit_line.journal_id.id,
+            'user_id': debit_line.move_id.user_id.id,
+            'partner_id': debit_line.move_id.partner_id.id,
+            'company_id': self.company_id.id,
+            'type': invoice_type,
+            'invoice_line_ids': [(0, 0, {
+                'account_id': account_id.id,
+                'name': 'Ajuste por diferencia de cambio\n%s' % message,
+                'price_unit': abs(self.exchange_diff_amount),
+            })],
+        }
+
+        new_invoice = self.env['account.move'].with_context(
+            force_company_id=self.company_id.id, company_id=self.company_id.id, internal_type='debit_note').create(vals)
+
         # por ahor no validamos para dar mas flexibilidad a cualquier ajuste necesario
-        # new_invoice.action_invoice_open()
+        # new_invoice.post()
         self.line_ids.mapped('partial_line_id').write({'exchange_diff_invoice_id': new_invoice.id})
-        action = self.env.ref('account.action_invoice_tree1').read()[0]
-        action['views'] = [(self.env.ref('account.invoice_form').id, 'form')]
+        action = self.env.ref('account.action_move_out_invoice_type').read()[0]
+        action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]
         action['res_id'] = new_invoice.id
         return action
 
-    @api.multi
     def ignore(self):
         partial_lines = self.mapped('line_ids.partial_line_id')
         partial_lines.write({'exchange_diff_ignored': True})
-        for invoice in partial_lines.mapped('debit_move_id.invoice_id'):
+        for invoice in partial_lines.mapped('debit_move_id.move_id'):
             invoice.message_post(body='Se ha ignorado realizar NC/ND de ajuste por diferencia de cambio')
+        return True
 
 
 class AccountExchangeDiffInvoice(models.TransientModel):
     _name = 'account.exchange_diff_invoice.line'
+    _description = 'account.exchange_diff_invoice.line'
 
     wizard_id = fields.Many2one(
         'account.exchange_diff_invoice',
@@ -195,12 +191,14 @@ class AccountExchangeDiffInvoice(models.TransientModel):
     @api.depends('credit_rate', 'reconciled_amount', 'debit_rate')
     def _compute_exchange_diff_amount(self):
         for rec in self:
-            rec.exchange_diff_amount = rec.company_currency_id.round(rec.reconciled_amount * (rec.credit_rate / rec.debit_rate - 1))
+            rec.exchange_diff_amount = rec.company_currency_id.round(
+                rec.reconciled_amount * (rec.credit_rate / rec.debit_rate - 1))
             rec.variation_perc = (rec.credit_rate / rec.debit_rate - 1) * 100.0
 
     @api.onchange('credit_rate')
     def _onchange_credit_rate(self):
-        oficial_rate = self.partial_line_id.debit_move_id.currency_id.with_context(date=self.credit_date_maturity).compute(1.0, self.wizard_id.company_id.currency_id)
+        oficial_rate = self.partial_line_id.debit_move_id.currency_id._convert(
+            1.0, self.wizard_id.company_id.currency_id, self.wizard_id.company_id, self.credit_date_maturity)
         allowed_perc = self.wizard_id.company_id.exchange_rate_tolerance
         if abs(self.credit_rate - oficial_rate) / oficial_rate > (allowed_perc / 100.0):
             raise ValidationError(
