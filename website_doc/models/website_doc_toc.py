@@ -218,6 +218,7 @@ class WebsiteDocToc(models.Model):
     @api.depends('is_article', 'parent_id')
     def _compute_documentation(self):
         _logger.info('Computing documentation')
+        self.documentation_id = False
         for rec in self:
             # if rec.is_article:
             #     parent_toc = rec.article_toc_id
