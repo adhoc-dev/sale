@@ -9,6 +9,7 @@ class SaleSubscription(models.Model):
 
     _inherit = "sale.subscription"
 
+    partner_id = fields.Many2one(check_company=True)
     dates_required = fields.Boolean(
         related="template_id.dates_required",
     )
@@ -18,6 +19,7 @@ class SaleSubscription(models.Model):
     partner_invoice_id = fields.Many2one(
         'res.partner',
         string='Invoice Address',
+        check_company=True,
         help="Invoice address for new invoices.",
     )
 
