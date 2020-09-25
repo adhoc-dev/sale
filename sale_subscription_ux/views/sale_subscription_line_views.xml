@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_sale_subscription_line_tree" model="ir.ui.view">
+        <field name="name">sale.subscription.line.usability.tree</field>
+        <field name="model">sale.subscription.line</field>
+        <field name="arch" type="xml">
+            <tree string="Sale Order Lines" create="false" edit="false">
+                <field name="analytic_account_id" readonly="1"/>
+                <field name="product_id" readonly="1"/>
+                <field name="name" readonly="1"/>
+                <field name="quantity" readonly="1"/>
+                <field name="uom_id" groups="uom.group_uom" readonly="1"/>
+                <field name="price_unit" readonly="1"/>
+                <field name="discount" groups="product.group_discount_per_so_line" readonly="1"/>
+                <field name="price_subtotal" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_sale_subscription_line_filter" model="ir.ui.view">
+        <field name="name">sale.subscription.line.search</field>
+        <field name="model">sale.subscription.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="analytic_account_id"/>
+                <separator/>
+                <filter name="open" string="Running" domain="[('analytic_account_id.in_progress','=',True)]" help="Running Subscriptions"/>
+                <filter name="pending" string="To Renew" domain="[('analytic_account_id.to_renew','=',True)]" help="Pending subscriptions"/>
+                <filter name="closed" string="Closed" domain="[('analytic_account_id.in_progress','=',False)]" help="Closed subscriptions"/>
+                <separator/>
+                <filter name="product_id" string="Product" domain="[]" context="{'group_by' : 'product_id'}" />
+                <filter name="analytic_account_id" string="Subscription" domain="[]" context="{'group_by' : 'analytic_account_id'}" />
+            </search>
+        </field>
+    </record>
+
+    <!-- add new menu for sale lines -->
+    <record model="ir.actions.act_window" id="action_sale_subscription_line_tree">
+        <field name="context">{'search_default_open': 1}</field>
+        <field name="name">Subscription Lines</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field name="res_model">sale.subscription.line</field>
+    </record>
+
+    <menuitem action="action_sale_subscription_line_tree"
+        id="menu_sale_subscription_line" parent="sale_subscription.menu_sale_subscription"
+        sequence="20" groups="sale_subscription.group_sale_subscription_manager"/>
+</odoo>
