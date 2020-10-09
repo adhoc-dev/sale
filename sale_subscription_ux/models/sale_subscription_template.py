@@ -21,3 +21,8 @@ class SaleSubscriptionTemplate(models.Model):
     do_not_update_price = fields.Boolean(
         help="Don't update price when quantity change"
     )
+    add_period_dates_to_description = fields.Boolean(
+        'Add Period Dates to Description',
+        help='If setted, a description of the invoiced period will be added to the invoice narration',
+        default=True,
+    )

@@ -42,6 +42,8 @@ class SaleSubscription(models.Model):
         invoice note. Also fix a core Odoo behavior to get payment terms.
         """
         res = super()._prepare_invoice_data()
+        if not self.template_id.add_period_dates_to_description:
+            res.update({'narration': ''})
         if self.template_id.copy_description_to_invoice:
             res.update({'narration': res.get('narration', '') + '\n\n' + (
                 self.description or '')})
