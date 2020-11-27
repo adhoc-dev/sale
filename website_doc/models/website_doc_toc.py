@@ -309,10 +309,10 @@ class WebsiteDocToc(models.Model):
         google_doc_id = self.google_doc_code
         mimetype = 'text/plain'
         access_token = self.env['google.drive.config'].get_access_token()
-        request_url = "https://www.googleapis.com/drive/v2/files/%s/export/?mimeType=%s&access_token=%s" % (
-            google_doc_id, mimetype, access_token)
+        request_url = "https://www.googleapis.com/drive/v2/files/%s/export/?mimeType=%s" % (google_doc_id, mimetype)
+        headers = {'Authorization': "Bearer %s" % access_token}
         try:
-            req = requests.get(request_url, timeout=TIMEOUT)
+            req = requests.get(request_url, headers=headers, timeout=TIMEOUT)
             req.raise_for_status()
             req.encoding = 'UTF-8'
             content = req.text
