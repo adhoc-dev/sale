@@ -35,6 +35,7 @@ class WebsiteDocToc(models.Model):
         ondelete='cascade',
         domain=[('is_article', '=', False)],
         auto_join=True,
+        default=lambda self: self._context.get('toc_parent_id', False)
     )
     child_ids = fields.One2many(
         'website.doc.toc',
@@ -248,7 +249,7 @@ class WebsiteDocToc(models.Model):
             'view_id': False,
             'type': 'ir.actions.act_window',
             'domain': [('parent_id', '=', self.id)],
-            'context': {'default_parent_id': self.id},
+            'context': {'toc_parent_id': self.id},
         }
 
     def create_google_doc(self):
