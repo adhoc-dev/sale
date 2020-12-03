@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="assets_frontend" inherit_id="website.assets_frontend">
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/website_helpdesk_solutions/static/src/js/solutions.js"
+            />
+        </xpath>
+    </template>
+    <template id="snippet_testimonial" name="Testimonial snippet">
+      <section class="snippet_testimonial">
+        <div class="container text-center">
+          <div class="row">
+            <div class="col-lg-4">
+              <img alt="client" class="rounded-circle" src="/   theme_tutorial/static/src/img/client_1.jpg"/>
+              <h3>Client Name</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing     elit.</p>
+            </div>
+            <div class="col-lg-4">
+              <img alt="client" class="rounded-circle" src="/   theme_tutorial/static/src/img/client_2.jpg"/>
+              <h3>Client Name</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing     elit.</p>
+            </div>
+            <div class="col-lg-4">
+              <img alt="client" class="rounded-circle" src="/   theme_tutorial/static/src/img/client_3.jpg"/>
+              <h3>Client Name</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing     elit.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </template>
+  <template id="test" name="Test">
+    <section class="s_faq_collapse pt48 pb32">
+        <div class="container">
+            <div class="row s_nb_column_fixed">
+                <div class="col-lg-12 s_title pt16 pb16">
+                    <h1 class="s_title_thin"><font style="font-size: 62px;">FAQ</font></h1>
+                </div>
+            </div>
+            <div class="row s_col_no_bgcolor">
+                <div class="col-lg-12 pt16 pb16">
+                    <div id="solution" class="accordion" role="tablist">
+                        <!-- <div class="card bg-white">
+                            <a href="#" role="tab" data-toggle="collapse" aria-expanded="true" class="card-header">Terms of service</a>
+                            <div class="collapse show" role="tabpanel">
+                                <div id="ticket_description" class="card-body">
+                                    <p t-att-value="test"/>
+                                    <p class="card-text">These terms of service ("Terms", "Agreement") are an agreement between the website ("Website operator", "us", "we" or "our") and you ("User", "you" or "your"). This Agreement sets forth the general terms and conditions of your use of this website and any of its products or services (collectively, "Website" or "Services").</p>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  </template>
+  <template id="place_into_bar" inherit_id="website.snippets" name="Place into bar">
+      <xpath expr="//div[@id='snippet_structure']/div[@class='o_panel_body']" position="inside">
+        <t t-snippet="website_helpdesk_solutions.snippet_testimonial"/>
+        <t t-snippet="website_helpdesk_solutions.test"/>
+      </xpath>
+   </template>
+</odoo>
