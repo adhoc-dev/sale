@@ -35,18 +35,6 @@
             <field name="partner_id" position="after">
                 <field name="ticket_count" invisible="1"/>
             </field>
-            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
-            <t t-if="project_count" t-call="portal.portal_docs_entry">
-                <t t-set="title">Projects</t>
-                <t t-set="url" t-value="'/my/projects'"/>
-                <t t-set="count" t-value="project_count"/>
-            </t>
-            <t t-if="task_count" t-call="portal.portal_docs_entry">
-                <t t-set="title">Tasks</t>
-                <t t-set="url" t-value="'/my/tasks'"/>
-                <t t-set="count" t-value="task_count"/>
-            </t>
-            </xpath>
             <xpath expr="//div[hasclass('o_project_kanban_boxes')]//field[@name='ticket_count']" position="replace">
                 <div>
                     <span class="o_value"><t t-esc="record.ticket_count.value"/></span>
