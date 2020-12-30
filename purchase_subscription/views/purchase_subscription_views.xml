@@ -67,7 +67,7 @@
                     </div>
                     <group name="main">
                         <group>
-                            <field name="partner_id" string="Supplier" domain="[('supplier_rank','>', 0)]"/>
+                            <field name="partner_id" string="Supplier" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}"/>
                             <field name="code"/>
                             <field name="currency_id" />
                             <label for="recurring_next_date" string="Date of Next Invoice"/>
