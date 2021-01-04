@@ -89,7 +89,7 @@ class PurchaseSubscription(models.Model):
         'res.currency',
         string='Currency',
         required=True,
-        default=lambda self: self.env.user.company_id.currency_id.id,
+        default=lambda self: self.env.company.currency_id.id,
     )
     recurring_rule_type = fields.Selection(
         [('daily', 'Day(s)'),
@@ -334,7 +334,7 @@ class PurchaseSubscription(models.Model):
     def on_change_partner(self):
         currency_id = self.\
             partner_id.property_purchase_currency_id.id or self.\
-            env.user.company_id.currency_id.id
+            env.company.currency_id.id
         self.currency_id = currency_id
 
     def name_get(self):
