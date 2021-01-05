@@ -7,8 +7,8 @@ from odoo.addons.web.controllers.main import content_disposition
 
 
 class GenerateXLS(http.Controller):
-    @http.route('/account_balance_import/generate_xls', type='http')
-    def generate_account_balance_xls(self):
+    @http.route('/account_balance_import/generate_xls/<int:company_id>/', type='http')
+    def generate_account_balance_xls(self, company_id):
         """ Generate a XLS file with that contains the existing
         non-payable and non-receivable accounts, so the user can
         fill it in.
@@ -16,7 +16,7 @@ class GenerateXLS(http.Controller):
         # Fetch accounts
         accounts = request.env["account.account"].search([
             ("user_type_id.type", "not in", ["receivable", "payable"]),
-            ("company_id", "=", request.env.company.id)
+            ("company_id", "=", company_id)
         ]).sorted().read(["code", "name"])
         # Create workbook
         workbook = xlwt.Workbook(encoding='utf8')

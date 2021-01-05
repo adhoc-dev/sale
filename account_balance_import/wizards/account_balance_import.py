@@ -90,6 +90,13 @@ class AccountBalanceImport(models.TransientModel):
 
     check_file = fields.Binary("Archivo de Importación de Cheques")
 
+    def action_generate_xls(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_url',
+            'url': '/account_balance_import/generate_xls/' + str(self.company_id.id),
+            'target': 'new'}
+
     def account_balance_import_xls(self):
         """ Triggered on when Account Balance XLS is imported
         This function will firstly read the entire XLS file and perform
@@ -100,6 +107,8 @@ class AccountBalanceImport(models.TransientModel):
         """
 
         # Set-up environment company
+        if not self.account_balance_file:
+            raise ValidationError('Debe subir el archivo "Archivo de Importación de Saldos Contables"')
         self = self.with_context(force_company=self.company_id.id)
 
         fields = [

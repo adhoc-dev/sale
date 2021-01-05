@@ -47,12 +47,9 @@
                         <h3 colspan="4">Importación de Saldos Contables</h3>
                         <field name="account_opening_entries_journal_id" attrs="{'required': [('mode', '=', 'account_balance')] }" />
                         <br/>
-                        <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'account_balance')] }" href="/account_balance_import/generate_xls" role="button">
-                            <span class="fa fa-download" title="download"></span>
-                            Descargar Plantilla de Importación de Saldos Contables
-                        </a>
+                        <button name="action_generate_xls" colspan="4" type="object" class=" oe_link oe_inline" string="⇒ Descargar Plantilla de Importación de Saldos Contables"/>
                         <br/>
-                        <field name="account_balance_file" attrs="{'required': [('mode', '=', 'account_balance')] }"/>
+                        <field name="account_balance_file"/>
                     </group>
                     <!-- Partner Balance Selected -->
                     <group attrs="{'invisible': [('mode', 'not in', 'partner_balance')] }">
