@@ -14,6 +14,13 @@ class AccountInvoice(models.Model):
         compute='_compute_sale_orders'
     )
 
+    @api.onchange('partner_id', 'company_id')
+    def _onchange_delivery_address(self):
+        import ipdb; ipdb.set_trace()
+        super(AccountInvoice,self)._onchange_delivery_address()
+        if not self.comment:
+            self.comment = self._origin.comment
+
     @api.multi
     def _compute_sale_orders(self):
         for rec in self:
