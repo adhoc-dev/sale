@@ -2,11 +2,17 @@
 <odoo>
 
     <!-- Page Index -->
+    <template id="backend_edit">
+        <a class="btn btn-sm" target="_blank" t-att-href="'/web#model=%s&amp;id=%s&amp;action=%s&amp;view_type=form' % (item._name, item.id, request.env.ref('website_doc.action_documentation_article').id)"><i class="fa fa-pencil"/></a>
+    </template>
+
     <template id="articles" name="Documentation Articles">
         <ul t-if="articles">
             <li t-foreach="articles" t-as="article">
                 <!-- <a t-attf-href="/doc/#{slug(article)}" t-field="article.name"/> -->
-                <a t-att-href="article.url_suffix" t-field="article.name" target="_blank"/>
+                <a t-att-href="article.url_suffix" t-field="article.name" target="_blank"/><span t-if="article.state == 'private'"> (privado)</span>
+                <t t-set="item" t-value="title"/>
+                    <t t-call="website_doc.backend_edit"/>
             </li>
         </ul>
     </template>
@@ -29,7 +35,9 @@
                 <!-- <div t-attf-class="h#{str(level+2) + (level&lt;2 and ' page-header' or '')}"> -->
                 <div t-attf-class="h#{str(level) + (level&lt;2 and ' page-header' or '')}" t-att-style="level&lt;2 and 'border-bottom: 1px solid #777777; line-height: 2;' or ''">
                     <!-- <a t-att-href="title.url_suffix" t-field="title.name"/> -->
-                    <t t-field="title.name"/>
+                    <t t-field="title.name"/><span t-if="title.state == 'private'"> (privado)</span>
+                    <t t-set="item" t-value="title"/>
+                    <t t-call="website_doc.backend_edit"/>
                 </div>
                 <t t-set="articles" t-value="title.article_ids"/>
                 <t t-call="website_doc.articles"/>
@@ -176,12 +184,17 @@
                 minLength: 3,
                 templates: {
                     suggestion: function(suggestion) {
-                    return '<span>' + suggestion._highlightResult.name.value + '</span><span> (' + (suggestion._highlightResult.parent_id ? suggestion._highlightResult.parent_id.value : '') + ')</span>';
+                        return `<span>${suggestion._highlightResult.name.value}${suggestion.parent_id ? ` (${suggestion._highlightResult.parent_id.value})` : ''}${suggestion.state === 'Is Private' ? ' - PRIVADO' : ''}</span>`
+
                     }
                 }
                 }
             ]).on('autocomplete:selected', function(event, suggestion, dataset, context) {
-                window.location.href = suggestion.url_suffix;
+                if (suggestion.article_type === "Google Doc") {
+                    window.open(suggestion.url_suffix, '_blank');
+                } else {
+                    window.location.href = suggestion.url_suffix;
+                }
             });
             </script>
 
