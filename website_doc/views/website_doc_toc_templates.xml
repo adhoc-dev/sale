@@ -11,8 +11,8 @@
             <li t-foreach="articles" t-as="article">
                 <!-- <a t-attf-href="/doc/#{slug(article)}" t-field="article.name"/> -->
                 <a t-att-href="article.url_suffix" t-field="article.name" target="_blank"/><span t-if="article.state == 'private'"> (privado)</span>
-                <t t-set="item" t-value="title"/>
-                    <t t-call="website_doc.backend_edit"/>
+                <t t-set="item" t-value="article"/>
+                <t t-call="website_doc.backend_edit"/>
             </li>
         </ul>
     </template>
