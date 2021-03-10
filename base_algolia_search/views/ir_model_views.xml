@@ -9,34 +9,38 @@
         <field name="arch" type="xml">
             <notebook>
                 <page string="Algolia Search" name="algolia_search">
+                    <field name="algolia_model" invisible="1"/>
                     <div class="alert alert-info" colspan="2" role="alert">
                         <p>
                             <span class="fa fa-info"></span>  Despues de crear el indice en algolia, recomendamos visitar el mismo en la web de algolia y afinar los ajustes de typo, idiomas y demaś
                         </p>
                     </div>
-                    <button name="algolia_index_sync" string="Index Sync (updated recs)" type="object" attrs="{'invisible': [('algolia_use_given_index', '!=', False)]}"/>
-                    <button name="algolia_index_sync" string="Index Sync (all recs)" context="{'update_all': True}" type="object" attrs="{'invisible': [('algolia_use_given_index', '!=', False)]}"/>
+                    <button name="button_algolia_index_sync" string="Index Sync (updated recs)" type="object" attrs="{'invisible': [('algolia_use_given_index', '!=', False)]}"/>
+                    <button name="button_algolia_index_sync" string="Index Sync (all recs)" context="{'update_all': True}" type="object" attrs="{'invisible': [('algolia_use_given_index', '!=', False)]}"/>
                     <group>
                         <group>
                             <!-- Todavia no implementado del todo TODO borrar o implementar, leer readme -->
-                            <field name="algolia_use_given_index" string="Use Existing Index" invisible="1"/>
-                            <field name="algolia_given_index_id_field" string="Algolia attrbitue that stores ID" attrs="{'required': [('algolia_use_given_index', '!=', False)], 'invisible': [('algolia_use_given_index', '=', False)]}" invisible="1"/>
+                            <field name="algolia_use_given_index" string="Use Existing Index"/>
+                            <field name="algolia_given_index_id_field" string="Algolia attrbitue that stores ID" attrs="{'required': [('algolia_use_given_index', '!=', False)], 'invisible': [('algolia_use_given_index', '=', False)]}"/>
                             <field name="algolia_index_name" string="Index Name"/>
-                            <field name="use_algolia_name_search" string="Use on name search"/>
-                            <field name="add_algolia_search" string="Use on model search view"/>
-                            <field name="algolia_domain" widget="domain" string="Domain" options="{'model': 'model', 'in_dialog': True}" attrs="{'invisible': [('algolia_use_given_index', '!=', False)]}"/>
-                            <field name="algolia_last_sync" attrs="{'invisible': [('algolia_use_given_index', '!=', False)]}"/>
+                            <field name="algolia_domain" widget="domain" string="Domain" options="{'model': 'algolia_model', 'in_dialog': True}" attrs="{'invisible': [('algolia_use_given_index', '!=', False)]}"/>
                         </group>
                         <group>
-                            <field name="algolia_field_ids" nolabel="1" attrs="{'invisible': [('algolia_use_given_index', '!=', False)]}">
-                                <tree editable="bottom">
-                                    <field name="field_id" domain="[('model_id', '=', parent.id), ('ttype', '!=', 'binary')]" options="{'no_create': True}"/>
-                                    <field name="searchable"/>
-                                    <field name="priority" attrs="{'invisible': [('searchable', '=', False)], 'required': [('searchable', '=', True)]}"/>
-                                    <field name="unordered" attrs="{'invisible': [('searchable', '=', False)], 'required': [('searchable', '=', True)]}"/>
-                                </tree>
-                            </field>
+                            <field name="use_algolia_name_search" string="Use on name search"/>
+                            <field name="add_algolia_search" string="Use on model search view"/>
+                            <field name="algolia_disable_cron_sync" attrs="{'invisible': [('algolia_use_given_index', '!=', False)]}"/>
+                            <field name="algolia_last_sync" attrs="{'invisible': ['|', ('algolia_disable_cron_sync', '=', True), ('algolia_use_given_index', '!=', False)]}"/>
                         </group>
+                        <field name="algolia_field_ids" nolabel="1" attrs="{'invisible': [('algolia_use_given_index', '!=', False)]}">
+                            <tree editable="bottom">
+                                <field name="field_id" domain="[('model_id', '=', parent.id), ('ttype', '!=', 'binary')]" options="{'no_create': True}"/>
+                                <field name="relation_model" invisible="1"/>
+                                <field name="sub_field_id" domain="[('model_id.model', '=', relation_model), ('ttype', '!=', 'binary')]" attrs="{'invisible': [('relation_model', '=', False)], 'required': [('relation_model', '!=', False)]}" options="{'no_create': True}" force_save="1"/>
+                                <field name="searchable"/>
+                                <field name="priority" attrs="{'invisible': [('searchable', '=', False)], 'required': [('searchable', '=', True)]}"/>
+                                <field name="unordered" attrs="{'invisible': [('searchable', '=', False)], 'required': [('searchable', '=', True)]}"/>
+                            </tree>
+                        </field>
                     </group>
                 </page>
             </notebook>

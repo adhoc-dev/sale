@@ -62,13 +62,24 @@ class IrModel(models.Model):
     use_algolia_name_search = fields.Boolean(help="Use Algolia as search engine on m2o fields",)
     add_algolia_search = fields.Boolean(help="Add Algolia Search on search views",)
     algolia_use_given_index = fields.Char()
+    algolia_disable_cron_sync = fields.Boolean(
+        help='If you disable cron you should sync data by an automation or manually')
     algolia_given_index_id_field = fields.Char(help='Field that store the ID on this index')
     algolia_index_name = fields.Char(compute='_compute_algolia_index_name')
     algolia_field_ids = fields.One2many('algolia.field', 'model_id', string='Algolia Attributes')
     algolia_domain = fields.Char(string="Odoo Domain",)
+    algolia_model = fields.Char(compute='_compute_algolia_model')
     algolia_last_sync = fields.Datetime(
         readonly="True",
         help="Only records that has been modified (write date) after this date are going to be syncked")
+
+    @api.depends('model')
+    def _compute_algolia_model(self):
+        """ If record is creating return model, if not return empty string so that widget=domain is not broken"""
+        if not self.ids:
+            return False
+        for rec in self:
+            rec.algolia_model = rec.model
 
     @api.depends('model')
     def _compute_algolia_index_name(self):
@@ -95,59 +106,76 @@ class IrModel(models.Model):
         """
         self.ensure_one()
         _logger.debug('Using algolia search')
+        hitsPerPage = limit or 1000
+        id_field = self.algolia_given_index_id_field or 'objectID'
+        rec_ids = []
         try:
             client = self._algolia_get_client()
             index = client.init_index(self.algolia_index_name)
-            # if no limit use 1000 limit of algolia (recommended for performance)
-            # we don't make pagination, we just return
-            limit = limit or 1000
-            # no necesario, pero lo agregamos para casos de name search donde limite es menor a 1000
-            # TODO probar mandarlo abajo directamente
-            # we dont want pagination, we use hitsPerPage = to paginationLimitedTo
-            # attributesToRetrieve = self.algolia_given_index_id_field and [self.algolia_given_index_id_field] or []
-            objects = index.search(name, {'attributesToRetrieve': [], 'hitsPerPage': limit, 'filters': filters})
+            # index.set_settings({'paginationLimitedTo': limit}) y entonces no podemos recibir en una pagina
+            # mas de 1000, por eso si limit es mayor a 1000 (o None) recorremos las paginas
+            attributesToRetrieve = self.algolia_given_index_id_field and [self.algolia_given_index_id_field] or []
+            objects = index.search(name, {'attributesToRetrieve': attributesToRetrieve, 'hitsPerPage': hitsPerPage})
+            # si hay 100 paginas la primera es la 0, la ultima es la 100 - 1 = 99
+            rec_ids += [int(rec.get(id_field)) for rec in objects['hits']]
+            page = objects['nbPages'] - 1
+            while page > 0 and (not limit or len(rec_ids) < limit):
+                objects = index.search(
+                    name, {'attributesToRetrieve': attributesToRetrieve, 'hitsPerPage': hitsPerPage, 'page': page})
+                rec_ids += [int(rec.get(id_field)) for rec in objects['hits']]
+                page -= 1
         except Exception as e:
             raise ValidationError(_('No pudimos conectarnos a Algolia. Esto es lo que recibimos: %s') % e)
-        id_field = self.algolia_given_index_id_field or 'objectID'
-        rec_ids = [int(rec.get(id_field)) for rec in objects['hits']]
         return rec_ids
 
-    def algolia_index_sync(self):
+    def button_algolia_index_sync(self):
+        return self.algolia_index_sync()
+
+    def algolia_index_sync(self, model_recs=None):
         alg_client = self._algolia_get_client()
-        for rec in self.filtered(lambda x: not x.algolia_use_given_index and x.algolia_field_ids):
-            if rec.algolia_domain:
-                domain = safe_eval(rec.algolia_domain)
-            else:
-                domain = []
-            if not self._context.get('update_all') and rec.algolia_last_sync:
-                domain = [('write_date', '>', rec.algolia_last_sync)] + domain
-            index = alg_client.init_index(rec.algolia_index_name)
+        for rec in self:
+            if not model_recs:
+                if rec.algolia_domain:
+                    domain = safe_eval(rec.algolia_domain)
+                else:
+                    domain = []
+                if not self._context.get('update_all') and rec.algolia_last_sync:
+                    domain = [('write_date', '>', rec.algolia_last_sync)] + domain
+                model_recs = rec.env[rec.model].search(domain)
+
+            index = alg_client.init_index(self.algolia_index_name)
             objects = []
-            model_recs = rec.env[rec.model].search(domain)
-            odoo_fields = rec.algolia_field_ids.mapped('field_id')
-            fields_list = odoo_fields.filtered(lambda x: x.ttype not in ['many2many', 'one2many']).mapped('name')
-            fields_2_many = odoo_fields.filtered(lambda x: x.ttype in ['many2many', 'one2many'])
+            fields_list = rec.algolia_field_ids.filtered(
+                lambda x: x.field_id.ttype not in ['many2many', 'one2many']).mapped(
+                    lambda x: x._get_algolia_field_name())
+
+            # on many2one fields we need to get the subfiled
+            fields_2_many = rec.algolia_field_ids.filtered(lambda x: x.field_id.ttype in ['many2many', 'one2many'])
             model_recs_datas = model_recs.export_data(['.id'] + fields_list)['datas']
             for model_rec, data in zip(model_recs, model_recs_datas):
                 item = dict(zip(['objectID'] + fields_list, data))
                 # odoo exporta los m2m en dos lineas (Exportando xml_id los separa con coma bien)
                 for field_2_many in fields_2_many:
-                    item[field_2_many.name] = model_rec.mapped('%s.display_name' % field_2_many.name)
+                    # los subimos con misma convesion de expo data para que sea mas visible que es un id y que no
+                    fi_name = field_2_many.field_id.name
+                    sub_fi_name = field_2_many.sub_field_id.name
+                    item[field_2_many._get_algolia_field_name()] = model_rec.mapped('%s.%s' % (fi_name, sub_fi_name))
                 objects.append(item)
             index.save_objects(objects)
 
             searchable_list = []
-            for priority in rec.algolia_field_ids.filtered('searchable').mapped('priority'):
+            for priority in set(rec.algolia_field_ids.filtered('searchable').mapped('priority')):
                 searchable_list.append(", ".join(rec.algolia_field_ids.filtered(
                     lambda x: x.searchable and x.priority == priority).mapped(
-                        lambda x: x.unordered and "unordered(%s)" % x.field_id.name or x.field_id.name)))
+                        lambda x: x.unordered and "unordered(%s)" % x._get_algolia_field_name() or
+                        x._get_algolia_field_name())))
             index.set_settings({'searchableAttributes': searchable_list})
             rec.algolia_last_sync = fields.Datetime.now()
 
     @api.model
     def _cron_algolia_index_sync(self):
         # just with algolia fields we sync so that user is allowed to test sync before enabling search
-        algolia_models = self.search([('algolia_field_ids', '!=', False)])
+        algolia_models = self.search([('algolia_field_ids', '!=', False), ('algolia_disable_cron_sync', '=', False)])
         if algolia_models:
             algolia_models.algolia_index_sync()
 
@@ -171,7 +199,8 @@ class IrModel(models.Model):
                     limit = limit or 0
                     # only request to argolia when we have at least 3 chars.
                     # TODO make parametrizable.
-                    if len(name) < 3:
+                    if len(name) < int(self.env["ir.config_parameter"].sudo().get_param(
+                            'base_algolia_search.min_name_search_lenght', '3')):
                         res = []
                     else:
                         rec_ids = self.env['ir.model'].search([('model', '=', str(self._name))])._agolia_search(

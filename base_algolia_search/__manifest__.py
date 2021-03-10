@@ -2,7 +2,7 @@
 {
     'name': 'Algolia Search',
     'summary': 'Algolia search on name_search and search views',
-    'version': '13.0.1.0.0',
+    'version': '13.0.1.1.0',
     'category': 'Uncategorized',
     'author': 'ADHOC SA',
     'license': 'AGPL-3',
