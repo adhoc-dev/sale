@@ -194,7 +194,7 @@ class IrModel(models.Model):
 
         def patch_algolia_name_search():
             @api.model
-            def name_search(self, name='', args=None, operator='ilike', limit=100):
+            def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
                 if name and _get_use_algolia_name_search(self) and operator in ALLOWED_OPS:
                     limit = limit or 0
                     # only request to argolia when we have at least 3 chars.
@@ -208,9 +208,11 @@ class IrModel(models.Model):
                         res = self.browse(rec_ids).name_get()
                 else:
                     # Perform standard name search
-                    res = name_search.origin(self, name=name, args=args, operator=operator, limit=limit)
+                    res = _name_search.origin(
+                        self, name=name, args=args, operator=operator, limit=limit, name_get_uid=name_get_uid
+                    )
                 return res
-            return name_search
+            return _name_search
 
         def patch_fields_view_get():
             @api.model
@@ -237,6 +239,6 @@ class IrModel(models.Model):
         for model in self.sudo().search(self.ids or []):
             Model = self.env.get(model.model)
             if Model is not None:
-                Model._patch_method('name_search', patch_algolia_name_search())
+                Model._patch_method('_name_search', patch_algolia_name_search())
 
         return super(IrModel, self)._register_hook()
