@@ -144,7 +144,7 @@ class WebsiteDocToc(models.Model):
             filters += ['["state:Published"]']
 
         if self.documentation_id:
-            filters += ['"documentation_id:%s"' % self.documentation_id.name]
+            filters += ['"documentation_id/display_name:%s"' % self.documentation_id.name]
 
         if filters:
             return 'facetFilters: [%s]' % ','.join(filters)
