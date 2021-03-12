@@ -35,9 +35,10 @@ class WebsiteDoc(http.Controller):
         #     }
         #     return request.render("website_doc.error_search_len", values)
 
+        # TODO, tal vez podriamos usar get_facetFilters?
         env = request.env
         if doc:
-            filters = "documentation_id:'%s'" % doc.name
+            filters = "documentation_id/display_name:'%s'" % doc.name
         else:
             filters = None
         rec_ids = env['ir.model'].sudo().search([('model', '=', 'website.doc.toc')])._agolia_search(search, filters=filters, limit=0)
