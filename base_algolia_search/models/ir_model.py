@@ -115,13 +115,13 @@ class IrModel(models.Model):
             # index.set_settings({'paginationLimitedTo': limit}) y entonces no podemos recibir en una pagina
             # mas de 1000, por eso si limit es mayor a 1000 (o None) recorremos las paginas
             attributesToRetrieve = self.algolia_given_index_id_field and [self.algolia_given_index_id_field] or []
-            objects = index.search(name, {'attributesToRetrieve': attributesToRetrieve, 'hitsPerPage': hitsPerPage})
+            objects = index.search(name, {'attributesToRetrieve': attributesToRetrieve, 'hitsPerPage': hitsPerPage, 'filters': filters})
             # si hay 100 paginas la primera es la 0, la ultima es la 100 - 1 = 99
             rec_ids += [int(rec.get(id_field)) for rec in objects['hits']]
             page = objects['nbPages'] - 1
             while page > 0 and (not limit or len(rec_ids) < limit):
                 objects = index.search(
-                    name, {'attributesToRetrieve': attributesToRetrieve, 'hitsPerPage': hitsPerPage, 'page': page})
+                    name, {'attributesToRetrieve': attributesToRetrieve, 'hitsPerPage': hitsPerPage, 'page': page, 'filters': filters})
                 rec_ids += [int(rec.get(id_field)) for rec in objects['hits']]
                 page -= 1
         except Exception as e:

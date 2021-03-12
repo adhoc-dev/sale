@@ -35,7 +35,9 @@ class WebsiteDoc(http.Controller):
         #     }
         #     return request.render("website_doc.error_search_len", values)
 
-        # TODO, tal vez podriamos usar get_facetFilters?
+        # TODO, tal vez podriamos usar get_facetFilters?. Si lo hacemos hay que cambiar la forma
+        # porque el get_facetFilters devuelve algo tipo 'facetFilters: ["documentation_id/display_name:Odoo by Adhoc"]
+        # pero el metodo _agolia_search espera algo tipo "documentation_id/display_name:'Odoo by Adhoc'"
         env = request.env
         if doc:
             filters = "documentation_id/display_name:'%s'" % doc.name
