@@ -6,6 +6,7 @@
     'author': 'ADHOC SA',
     'license': 'AGPL-3',
     'data': [
+        'views/shop_templates.xml',
     ],
     'external_dependencies': {
         'python': ['algoliasearch']
