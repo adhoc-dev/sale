@@ -2,7 +2,8 @@
 <odoo>
 
     <template id="search_box" name="Algolia Autocomplete Search box" inherit_id="website.website_search_box">
-        <xpath expr="//*[contains(@class,'input-group')]" position="after" >
+
+        <xpath expr="//input[@name='search']" position="after">
             <style>
                 .algolia-autocomplete {
                     width: 100%;
