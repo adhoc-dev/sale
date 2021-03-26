@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <strong>Solution:</strong> <span  t-if="ticket.stage_id.is_close and ticket.solution_description != '&lt;p&gt;&lt;br&gt;&lt;/p&gt;'" t-field="ticket.solution_description"/> <span t-if="ticket.stage_id.is_close and not ticket.solution_description or ticket.solution_description == '&lt;p&gt;&lt;br&gt;&lt;/p&gt;'" t-field="ticket.helpdesk_solution_id.customer_solution_description"/>
+                <strong>Solution:</strong> <span  t-if="ticket.stage_id.show_solution_on_portal and ticket.solution_description != '&lt;p&gt;&lt;br&gt;&lt;/p&gt;'" t-field="ticket.solution_description"/> <span t-if="ticket.stage_id.show_solution_on_portal and not ticket.solution_description or ticket.solution_description == '&lt;p&gt;&lt;br&gt;&lt;/p&gt;'" t-field="ticket.helpdesk_solution_id.customer_solution_description"/>
             </div>
         </xpath>
 
