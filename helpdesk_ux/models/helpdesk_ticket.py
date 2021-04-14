@@ -18,6 +18,7 @@ class HelpdeskTicket(models.Model):
 
     def _track_template(self, changes):
         ticket = self[0]
+        res = super()._track_template(changes)
         if 'stage_id' in res and ticket.kanban_state == 'blocked' and \
                 ticket.stage_id.template_id:
             res.pop('stage_id')
