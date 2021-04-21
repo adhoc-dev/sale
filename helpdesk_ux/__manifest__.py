@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Helpdesk UX',
-    'version': "13.0.1.1.0",
+    'version': "13.0.1.2.0",
     'category': 'Projects & Services',
     'sequence': 14,
     'summary': '',
@@ -34,6 +34,7 @@
     'data': [
         'views/helpdesk_ticket_views.xml',
         'views/helpdesk_portal_templates.xml',
+        'views/helpdesk_ticket_form_ext.xml',
     ],
     'installable': True,
     'auto_install': False,
