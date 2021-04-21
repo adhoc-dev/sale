@@ -8,7 +8,7 @@ from odoo import fields, models, api
 class HelpdeskSolution(models.Model):
 
     _name = 'helpdesk.solution'
-    _inherit = ['mail.thread']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Helpdesk Solution"
     _order = 'ticket_count desc'
 
