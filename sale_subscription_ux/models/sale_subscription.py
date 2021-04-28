@@ -51,8 +51,7 @@ class SaleSubscription(models.Model):
             res.update({'partner_id': self.partner_invoice_id.id})
         sale_order = self.env['sale.order'].search(
             [('order_line.subscription_id', 'in', self.ids)], order="id desc", limit=1)
-        res.update({'invoice_payment_term_id': sale_order.payment_term_id.id if sale_order.payment_term_id
-            else self.partner_id.property_payment_term_id.id})
+        res.update({'invoice_payment_term_id': self.partner_id.property_payment_term_id.id})
         return res
 
     def update_lines_prices_from_products(self):
