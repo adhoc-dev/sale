@@ -22,6 +22,12 @@ class SaleSubscription(models.Model):
         check_company=True,
         help="Invoice address for new invoices.",
     )
+    # TODO remove in v15
+    payment_term_id = fields.Many2one(
+        'account.payment.term', string='Default Payment Terms',
+        check_company=True, tracking=True,
+        help="These payment terms will be used when generating new invoices and renewal/upsell orders."
+        "Note that invoices paid using online payment will use 'Already paid' regardless of this setting.")
 
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):
@@ -49,9 +55,9 @@ class SaleSubscription(models.Model):
                 self.description or '')})
         if self.template_id.use_different_invoice_address and self.partner_invoice_id:
             res.update({'partner_id': self.partner_invoice_id.id})
-        sale_order = self.env['sale.order'].search(
-            [('order_line.subscription_id', 'in', self.ids)], order="id desc", limit=1)
-        res.update({'invoice_payment_term_id': self.partner_id.property_payment_term_id.id})
+        # TODO remove in v15
+        res.update(
+            {'invoice_payment_term_id': self.payment_term_id or self.partner_id.property_payment_term_id.id})
         return res
 
     def update_lines_prices_from_products(self):

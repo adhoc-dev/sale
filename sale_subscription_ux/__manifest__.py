@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Sale Subscription UX',
-    'version': "13.0.1.2.0",
+    'version': "13.0.1.3.0",
     'category': 'Sales Management',
     'sequence': 14,
     'summary': '',
