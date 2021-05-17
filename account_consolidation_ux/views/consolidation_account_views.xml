@@ -1,0 +1,14 @@
+<odoo>
+
+    <record id="consolidation_account_form" model="ir.ui.view">
+        <field name="name">consolidation.account.inherit.view.form</field>
+        <field name="model">consolidation.account</field>
+        <field name="inherit_id" ref="account_consolidation.consolidation_account_form"/>
+        <field name="arch" type="xml">
+            <field name="currency_mode" position="after">
+                <field name="additional_domain" widget="domain" options="{'in_dialog': True, 'model':'account.move.line'}"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
