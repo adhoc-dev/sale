@@ -77,7 +77,7 @@ class CustomerPortal(CustomerPortal):
         pager = portal_pager(
             url="/my/tickets",
             # url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby},
-            url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby, 'filterby': filterby, 'search_in': search_in, 'search': search},
+            url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby, 'filterby': filterby, 'search_in': search_in,'groupby': groupby, 'search': search},
             total=tickets_count,
             page=page,
             step=self._items_per_page
