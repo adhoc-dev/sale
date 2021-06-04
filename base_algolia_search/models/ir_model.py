@@ -109,6 +109,7 @@ class IrModel(models.Model):
         hitsPerPage = limit or 1000
         id_field = self.algolia_given_index_id_field or 'objectID'
         rec_ids = []
+        filters = filters or ''
         try:
             client = self._algolia_get_client()
             index = client.init_index(self.algolia_index_name)
