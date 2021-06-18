@@ -2,7 +2,7 @@ from odoo.addons.website_sale.controllers.main import WebsiteSale
 from odoo.http import request
 
 
-def new_get_search_domain(self, search, category, attrib_values):
+def new_get_search_domain(self, search, category, attrib_values, search_in_description=True):
     """ Monkey patch instead of overwriting method to allow others inheriting
     this method
     """
