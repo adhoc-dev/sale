@@ -8,7 +8,7 @@ def new_get_search_domain(self, search, category, attrib_values, search_in_descr
     """
     domain = request.website.sale_product_domain()
     if search:
-        rec_ids = request.env['ir.model'].search([('model', '=', 'product.template')])._agolia_search(search)
+        rec_ids = request.env['ir.model'].sudo().search([('model', '=', 'product.template')])._agolia_search(search)
         domain += [('id', 'in', rec_ids)]
 
     if category:
