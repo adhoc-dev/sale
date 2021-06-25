@@ -56,7 +56,7 @@ class PaybookProviderAccount(models.Model):
     def update_credentials(self):
         journal_id = self.account_online_journal_ids.mapped('journal_ids.id')
         journal_id = journal_id[0] if len(journal_id) >= 1 else False
-        return self.with_context(journal_id=journal_id)._paybook_open_login()
+        return self.with_context(journal_id=journal_id)._paybook_open_update_credential()
 
     def online_account_delete_credentials(self):
         """ Let to delete credential form paybook and also remove info from odoo online provider """
@@ -75,6 +75,17 @@ class PaybookProviderAccount(models.Model):
             company._paybook_register_new_user()
         return {'type': 'ir.actions.act_url', 'target': 'self',
                 'url': '/account_online_sync_ar/configure_paybook/%s/%s' % (company.id, journal_id)}
+
+    @api.model
+    def _paybook_open_update_credential(self):
+        """ Display the widget to let the user update a bank password, it will open directly
+        the bank page to be modified """
+        journal_id = self.env.context.get('journal_id') or 0
+        company = self.env['account.journal'].browse(journal_id).company_id if journal_id else self.env.company
+        if not company.paybook_user_id:
+            company._paybook_register_new_user()
+        return {'type': 'ir.actions.act_url', 'target': 'self',
+                'url': '/account_online_sync_ar/update_bank/%s/%s/%s' % (company.id, journal_id, self.id)}
 
     def _paybook_fetch(self, method, url, params={}, data={}, response_status=False, raise_status=True):
         base_url = 'https://sync.paybook.com/v1'
@@ -164,6 +175,26 @@ class PaybookProviderAccount(models.Model):
         if cred.get('code') < 400 and not cred.get('dt_ready') and cred.get('ready_in') == 0:
             self._paybook_fetch('PUT', '/credentials/' + id_credential + '/sync')
             # cred = self._paybook_fetch('GET', '/credentials/' + id_credential, raise_status=False)
+
+    @api.model
+    def _update_cred_response(self, credential_data):
+        """ method that receive the response of the update credential widget and prepare the data to b show to odoo if the credential was successfully updated or it has been
+        any problem """
+        company = self.env['res.company'].browse(int(credential_data.get('company_id')))
+        id_credential = credential_data.get('id_credential')
+
+        provider_account = self.search([('provider_account_identifier', '=', id_credential)])
+        values = self.with_context(paybook_company_id=company.id)._paybook_get_credentials(company, id_credential)
+
+        everything_ok = credential_data['state'] == 'success' and values['status_code'] < 400
+
+        res = {'status': 'SUCCESS' if everything_ok else 'FAILED',
+               'message': 'Se actualizo las credenciales del banco' if everything_ok else values['message'],
+               'method': 'refresh'}
+
+        url = '/web#model=account.online.wizard&id=%s&action=account_online_sync.action_account_online_wizard_form'
+        action = provider_account.show_result(res)
+        return werkzeug.utils.redirect(url % action.get('res_id'))
 
     @api.model
     def _paybook_success(self, credential_data):

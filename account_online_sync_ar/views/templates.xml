@@ -52,4 +52,55 @@
         </t>
     </template>
 
+    <!-- TODO unify this in one template, use javascript to add remove things of the config depending of the given data. -->
+    <template id="update_credential" name="Update Credential Widget">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title">Actualizar Credencial del Banco</t>
+
+            <link rel="stylesheet" href="https://www.paybook.com/sync/widget/v2/widget.css"/>
+            <script type="text/javascript" src="https://www.paybook.com/sync/widget/v2/widget.js"></script>
+            <div id="widget"></div>
+
+            <form action="/account_online_sync_ar/update_success" id="update_success" method="post" class="invisible">
+                <label for="paybook_user_token">Paybook User Token</label><input id="paybook_user_token" t-att-value="paybook_user_token"/>
+                <br/><label for="company_id">Company ID</label><input type="text" name="company_id" t-att-value="company_id"/>
+                <br/><label for="journal_id">Journal ID</label><input type="text" name="journal_id" t-att-value="journal_id"/>
+                <br/><label for="id_credential">Credential ID</label><input type="text" id="id_credential" name="id_credential" t-att-value="id_credential"/>
+                <br/><label for="id_site">ID Site</label><input type="text" id="id_site" name="id_site" t-att-value="id_site"/>
+                <br/><label for="state">State</label><input type="text" id="state" name="state" t-att-value="state"/>
+                <button type="submit" class="btn btn-primary">Test it</button>
+            </form>
+
+            <script>
+                const params = {
+                    token: document.getElementById("paybook_user_token").value,
+                    config: {
+                        locale: 'es',
+                        "entrypoint": {
+                            "credential": document.getElementById("id_credential").value,
+                            "site": document.getElementById("id_site").value,
+                        },
+                    }
+                };
+                syncWidget = new SyncWidget(params);
+                syncWidget.open();
+                syncWidget.$on('success', function(credential){
+                    syncWidget.close();
+                    form = document.getElementById("update_success")
+                    document.getElementById("id_credential").value = credential['id_credential'];
+                    document.getElementById("state").value = "success";
+                    form.submit();
+                });
+                syncWidget.$on("error", function(credential){
+                    syncWidget.close();
+                    form = document.getElementById("update_success")
+                    document.getElementById("id_credential").value = credential['id_credential'];
+                    document.getElementById("state").value = "error";
+                    form.submit();
+                })
+
+            </script>
+        </t>
+    </template>
+
 </odoo>
