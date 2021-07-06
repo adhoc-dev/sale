@@ -38,5 +38,5 @@ class HelpdeskTicket(models.Model):
     @api.onchange('project_id')
     def _onchange_project(self):
         """ Bring default partner_id if ticket created from project """
-        if self.project_id and self.project_id.partner_id:
+        if not self.partner_id and self.project_id and self.project_id.partner_id:
             self.partner_id = self.project_id.partner_id
