@@ -6,11 +6,17 @@
         <field name="model">account.online.provider</field>
         <field name="inherit_id" ref="account_online_sync.online_provider_account_form_view"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='status']" position="after">
+                <field name="action_required" attrs="{'invisible': [('provider_type', '!=', 'paybook')]}"/>
+            </xpath>
             <field name="next_refresh" position="after">
                 <field name="paybook_next_refresh"/>
             </field>
-            <field name="provider_identifier" position="after">
-                <button name="online_account_delete_credentials" string="Delete Online Credentials" confirm="This action can not be undone. Are you sure?" icon="fa-trash" action="object" class="oe_link" groups="base.group_no_one"/>
+            <field name="provider_type" position="after">
+                <div class="oe_link">
+                    <button name="action_paybook_force_sync" string="Force Sync" icon="fa-refresh" type="object" class="oe_link" groups="base.group_no_one"/>
+                    <button name="online_account_delete_credentials" string="Delete Online Credentials" confirm="This action can not be undone. Are you sure? This can affect any other database using the same credential" icon="fa-trash" type="object" class="oe_link" groups="base.group_no_one"/>
+                </div>
             </field>
         </field>
     </record>

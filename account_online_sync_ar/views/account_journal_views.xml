@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="account_journal_dashboard_inherit_online_sync" model="ir.ui.view">
+        <field name="name">account.journal.dashboard.inherit.online.sync</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account_online_sync.account_journal_dashboard_inherit_online_sync"/>
+        <field name="arch" type="xml">
+
+            <field name="next_synchronization" position="after">
+              <field name="paybook_last_transaction"/>
+              <field name="paybook_next_available"/>
+              <field name="account_online_provider_type"/>
+            </field>
+
+            <t t-if="record.synchronization_status.value == 'SUCCESS'" position="before">
+                <br/>
+                <span class="text-muted" t-if="(record.account_online_journal_id.value != '')" t-att-title="record.paybook_last_transaction.value">
+                  Last: <t t-esc="record.paybook_last_transaction.value"/>
+                  <br/>
+                </span>
+                <span class="text-muted" t-if="(record.account_online_journal_id.value != '')" t-att-title="record.paybook_next_available.value">
+                  Next: <t t-esc="record.paybook_next_available.value"/>
+                </span>
+                  <br/>
+            </t>
+
+            <span class="text-muted" t-if="(record.account_online_journal_id.value != '')" t-att-title="record.next_synchronization.value" position="attributes">
+              <attribute name="invisible">1</attribute>
+            </span>
+
+      </field>
+    </record>
+
+</odoo>
