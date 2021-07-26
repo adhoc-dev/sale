@@ -139,12 +139,13 @@ class PaybookProviderAccount(models.Model):
         """
         response = self._paybook_fetch('GET', '/credentials/' + id_credential, response_status=True, raise_status=False)
         cred = response.get('response')[0]
+        id_site = cred.get('id_site')
         values = {
-            'name': 'Sync Account',
+            'name': self.get_bank_name(id_site),
             'provider_type': 'paybook',
             'provider_account_identifier': id_credential,
             'company_id': company.id,  # TODO review if really needed"
-            'provider_identifier': cred.get('id_site'),
+            'provider_identifier': id_site,
 
             # dt_refresh disponible en cred y acc. es la fecha de la ultima transaccion sincronizada
             'last_refresh': datetime.fromtimestamp(cred.get('dt_refresh')) if cred.get('dt_refresh')
@@ -155,10 +156,8 @@ class PaybookProviderAccount(models.Model):
             else False,
         }
         values.update(self._paybook_check_credentials_response(response))
-
         if account_info and account_values:
             values.update({
-                'name': _('Sync Account') + ' ' + account_info[0].get('site', {}).get('name'),
                 'account_online_journal_ids': account_values,
             })
 
@@ -348,3 +347,35 @@ class PaybookProviderAccount(models.Model):
                      ' institution.'),
             '509': _('509: UndergoingMaintenance - The institution is under maintenance.'),
         }.get(str(code), _('An error has occurred (code %s)' % code))
+
+    @api.model
+    def get_bank_name(self, id_site):
+        """ this value we get it from the GET credential and with this we can now the bank site where the credentials
+        belongs """
+        data = {
+            '5941dd12056f29061d344ca1': 'Patagonia ebank Empresas',
+            '5980bb94056f292f433f0cd1': 'Banco Ciudad Empresas',
+            '59d2a397056f2925b252b982': 'BBVA Francés Net Cash',
+            '5a3da41e056f2905c6245d61': 'Banco Credicoop',
+            '5b0d8d1d056f2924ea7a2fb2': 'Santander Rio',
+            '5f0c5ef8479b243d4d67e611': 'Santander Rio Personal',
+            '5f0c5ef8479b243d4d67e612': 'Santander Rio Personal Select',
+            '5b566e0d7d8b6b0628564cf2': 'Banco Galicia Negocios',
+            '5be9c00b7d8b6b643726a300': 'Banco Galicia Personal',
+            '5c23bc89f9de2a1a022f0e52': 'Banco Macro Empresas',
+            '5f2dc493fd79f92aec276c01': 'Banco Macro Empresas Nuevo',
+            '5c3f82a4f9de2a08177b2d42': 'ICBC Empresas',
+            '5c7b6035f9de2a087b355c82': 'Banco Comafi Empresas',
+            '5d1ce9a6f9de2a07ed574492': 'Banco Provincia Empresas',
+            '5d430ba4f9de2a07fb58d612': 'Banco Supervielle Empresas',
+            '5d77c3fbf9de2a08f33d9032': 'Banco Nacion Empresas',
+            '5e2626c89be72331726b8502': 'Banco de Córdoba Empresas',
+
+            # Really not used at the moment
+            "60e72485510da807ddd7c89a": "Mercado Pago",
+            '5c65e306f9de2a080b61bb32': 'AFIP Alta usuario',
+            '5cf9816af9de2a7ae11c2981': 'AFIP Mis Comprobantes',
+            '5e18e47942eccb2dc5247ce1': 'AFIP Aceptar Relaciones',
+
+        }
+        return data.get(id_site, 'Banco/Monedero no encontrado')
