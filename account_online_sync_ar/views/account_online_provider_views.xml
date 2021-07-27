@@ -9,6 +9,12 @@
             <xpath expr="//field[@name='status']" position="after">
                 <field name="action_required" attrs="{'invisible': [('provider_type', '!=', 'paybook')]}"/>
             </xpath>
+
+            <!-- Esto es solo para poder sobre escribir el nombre del boton ya que no pude usando i18n_extra -->
+            <button name="update_credentials" position="attributes">
+                <attribute name="string">Update Credential</attribute>
+            </button>
+
             <field name="next_refresh" position="after">
                 <field name="paybook_next_refresh"/>
             </field>
