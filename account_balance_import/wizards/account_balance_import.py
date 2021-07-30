@@ -546,19 +546,21 @@ class AccountBalanceImport(models.TransientModel):
                         str(row_no + 1)))
                 continue
 
+            amount = self.company_id.currency_id.round(dict_data["amount"])
+
             account_move_line_1 = {
                 "name": "Cheque N°. {}".format(number),
                 "account_id": account.id,
-                "debit": self.company_id.currency_id.round(dict_data["amount"]),
-                "credit": 0.0,
+                "debit": 0.0 if self.check_type == 'issue_check' else amount,
+                "credit": amount if self.check_type == 'issue_check' else 0.0,
                 "partner_id": partner.id
             }
 
             account_move_line_2 = {
                 "name": "Cheque N°. {}".format(number),
                 "account_id": self.counterpart_account_id.id,
-                "debit": 0.0,
-                "credit": self.company_id.currency_id.round(dict_data["amount"]),
+                "debit": account_move_line_1['credit'],
+                "credit": account_move_line_1['debit'],
                 "partner_id": partner.id
             }
 
