@@ -130,7 +130,7 @@ class PaybookProviderAccount(models.Model):
         return response if response_status else response.get('response')
 
     @api.model
-    def _paybook_get_credentials(self, company, id_credential, account_info=None, account_values=None):
+    def _paybook_get_credentials(self, company, id_credential):
         """ Get data dictionary in order to create a new online.provider or update an exist one.
         This method will do a call to GET /credentials to get the credentials info.
 
@@ -157,11 +157,6 @@ class PaybookProviderAccount(models.Model):
             else False,
         }
         values.update(self._paybook_check_credentials_response(response))
-        if account_info and account_values:
-            values.update({
-                'account_online_journal_ids': account_values,
-            })
-
         return values
 
     def action_paybook_force_sync(self):
@@ -204,46 +199,16 @@ class PaybookProviderAccount(models.Model):
         journal = self.env['account.journal'].browse(int(journal_id)) if journal_id else False
         id_credential = credential_data.get('id_credential')
 
-        # Get info about accounts
-        params = {'id_credential': id_credential}
-
         # Check if provider already exist
         provider_account = self.search([('provider_account_identifier', '=', id_credential)])
 
-        account_info = self.with_context(
-            paybook_company_id=company.id)._paybook_fetch('GET', '/accounts', params, {}, raise_status=False)
-
-        # After create the credential if we consult the accounts maybe the accounts info is not available, we can wait
-        # one minute in order to wait for the account_info.
-        if not account_info:
-            time.sleep(60)
-            account_info = self.with_context(
-                paybook_company_id=company.id)._paybook_fetch('GET', '/accounts', params, {}, raise_status=False)
-
-        # Prepare info of accounts for Odoo
-        account_values = []
-        for acc in account_info:
-            online_account = provider_account.account_online_journal_ids.filtered(
-                lambda x: x.online_identifier == acc.get('id_account'))
-            if online_account:
-                account_values.append((1, online_account.id, {
-                    'balance': acc.get('balance', 0),
-                    'last_sync': datetime.fromtimestamp(acc.get('dt_refresh')) if acc.get('dt_refresh') else False,
-                }))
-            else:
-                account_values.append((0, 0, {
-                    'name': acc.get('site', {}).get('name') + ': ' + acc.get('name') +
-                    (' Nro. ' + acc.get('number') if acc.get('number') else ''),
-                    'account_number': acc.get('number'),
-                    'online_identifier': acc.get('id_account'),
-                    'balance': acc.get('balance', 0),
-                    'journal_ids': [(4, journal.id)] if journal and len(account_info) == 1 else False,
-                    'last_sync': datetime.fromtimestamp(acc.get('dt_refresh')) if acc.get('dt_refresh') else False,
-                }))
-
         # Extract online provider info
-        values = self.with_context(paybook_company_id=company.id)._paybook_get_credentials(
-            company, id_credential, account_info, account_values)
+        values = self.with_context(paybook_company_id=company.id)._paybook_get_credentials(company, id_credential)
+
+        # Get Account Data
+        account_values = provider_account._get_account_values(credential_data)
+        if account_values:
+            values.update({'account_online_journal_ids': account_values})
 
         if provider_account:
             prev_accounts = provider_account.account_online_journal_ids
@@ -261,8 +226,7 @@ class PaybookProviderAccount(models.Model):
         if journal:
             res['journal_id'] = journal.id
 
-
-        if not account_info:
+        if not account_values:
             res = {'status': 'FAILED',
                    'message': provider_account.message + '\nNo se pudieron sincronizar las cuentas intentar nuevamente',
                    'method': method, 'added': added}
@@ -349,6 +313,51 @@ class PaybookProviderAccount(models.Model):
                      ' institution.'),
             '509': _('509: UndergoingMaintenance - The institution is under maintenance.'),
         }.get(str(code), _('An error has occurred (code %s)' % code))
+
+    def _get_account_values(self, credential_data={}):
+        if credential_data:
+            company = self.env['res.company'].browse(int(credential_data.get('company_id')))
+            id_credential = credential_data.get('id_credential')
+        else:
+            company = self.company_id
+            id_credential = self.provider_account_identifier
+
+        journal_id = int(credential_data.get('journal_id') or False)
+        journal = self.env['account.journal'].browse(int(journal_id)) if journal_id else False
+
+        # Get info about accounts
+        account_info = self.with_context(paybook_company_id=company.id)._paybook_fetch(
+            'GET', '/accounts?id_credential=' + str(id_credential), raise_status=False)
+
+        # After create the credential if we consult the accounts maybe the accounts info is not available, we can wait
+        # one minute in order to wait for the account_info.
+        if not account_info:
+            _logger.info('Waiting 60 seconds to get account info')
+            time.sleep(60)
+            account_info = self.with_context(paybook_company_id=company.id)._paybook_fetch(
+                'GET', '/accounts?id_credential=' + str(id_credential), raise_status=False)
+
+        # Prepare info of accounts for Odoo
+        account_values = []
+        for acc in account_info:
+            online_account = self.account_online_journal_ids.filtered(
+                lambda x: x.online_identifier == acc.get('id_account'))
+            if online_account:
+                account_values.append((1, online_account.id, {
+                    'balance': acc.get('balance', 0),
+                    'last_sync': datetime.fromtimestamp(acc.get('dt_refresh')) if acc.get('dt_refresh') else False,
+                }))
+            else:
+                account_values.append((0, 0, {
+                    'name': acc.get('site', {}).get('name') + ': ' + acc.get('name') +
+                    (' Nro. ' + acc.get('number') if acc.get('number') else ''),
+                    'account_number': acc.get('number'),
+                    'online_identifier': acc.get('id_account'),
+                    'balance': acc.get('balance', 0),
+                    'journal_ids': [(4, journal.id)] if journal and len(account_info) == 1 else False,
+                    'last_sync': datetime.fromtimestamp(acc.get('dt_refresh')) if acc.get('dt_refresh') else False,
+                }))
+        return account_values
 
     @api.model
     def get_bank_name(self, id_site):
