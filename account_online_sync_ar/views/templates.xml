@@ -29,8 +29,8 @@
                             "country": "AR",
                         },
                         "navigation": {
-                            "hideAsideMenu": true,
-                        },
+                            "displaySiteOrganizationTypes": ['Bank', 'Digital Wallet'],
+                            "hideSelectCountry": ['Argentina'],                        },
                     }
                 };
                 syncWidget = new SyncWidget(params);
