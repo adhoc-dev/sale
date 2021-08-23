@@ -107,6 +107,7 @@ class PaybookProviderAccount(models.Model):
         try:
             if data:
                 parsed_data = json.dumps(data)
+            _logger.info('%s %s, params=%s, data=%s, headers=%s' % (method, url, params, parsed_data, headers))
             raw_response = requests.request(method=method, url=url, params=params, data=parsed_data, headers=headers,
                                             timeout=60)
             response = raw_response.json()
