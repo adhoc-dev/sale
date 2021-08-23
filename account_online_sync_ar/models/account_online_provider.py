@@ -232,7 +232,8 @@ class PaybookProviderAccount(models.Model):
                 }))
             else:
                 account_values.append((0, 0, {
-                    'name': acc.get('site', {}).get('name') + ': ' + acc.get('name') + ' Nro. ' + acc.get('number'),
+                    'name': acc.get('site', {}).get('name') + ': ' + acc.get('name') +
+                    (' Nro. ' + acc.get('number') if acc.get('number') else ''),
                     'account_number': acc.get('number'),
                     'online_identifier': acc.get('id_account'),
                     'balance': acc.get('balance', 0),
