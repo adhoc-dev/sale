@@ -360,33 +360,81 @@ class PaybookProviderAccount(models.Model):
         return account_values
 
     @api.model
-    def get_bank_name(self, id_site):
-        """ this value we get it from the GET credential and with this we can now the bank site where the credentials
-        belongs """
+    def get_available_banks(self):
+        """ Get the list of all available paybook syncfy connections to banks and wallets """
         data = {
+            "Argentina": "51ad446b3b8e77631200022a",
+            "Uruguay": "51ad44dd3b8e776312000487",
+            "Chile": "51ad447b3b8e776312000284",
+            "United States": "51ad44db3b8e77631200047d",
+        }
+        all_site_org = self._paybook_fetch('GET', '/catalogues/site_organizations')
+        all_sites = self._paybook_fetch('GET', '/catalogues/sites')
+
+        # Remove AFIP and another Government connections we don't wanted here
+        gov_type_id = "56cf4f5b784806cf028b4569"
+        all_site_org = [site_org for site_org in all_site_org if site_org.get('id_site_organization_type') != gov_type_id]
+
+        for country_name, id_country in data.items():
+            site_organizations = [
+                site_org.get('id_site_organization')
+                for site_org in all_site_org
+                if site_org.get('id_country') == id_country]
+            country_sites = [site for site in all_sites if site.get('id_site_organization') in site_organizations]
+            data.update({country_name: dict(
+                [(site.get('id_site'), site.get('name'))
+                 for site in country_sites])})
+
+        # import pprint
+        # pprint.pprint(data)
+        raise UserError(data)
+
+    @api.model
+    def get_bank_name(self, id_site):
+        """ when we received id_site from the GET credential we can use this method to now the bank site where the
+        credentials belongs. This information can be updated with result of calling the self.get_available_banks()
+        method and updating the dictionary on this method.
+
+        NOTE: We create this method to avoid making calls to the syncfy everytime we consult the credential """
+        data = {
+            # Argentina
             '5941dd12056f29061d344ca1': 'Patagonia ebank Empresas',
             '5980bb94056f292f433f0cd1': 'Banco Ciudad Empresas',
             '59d2a397056f2925b252b982': 'BBVA Francés Net Cash',
             '5a3da41e056f2905c6245d61': 'Banco Credicoop',
             '5b0d8d1d056f2924ea7a2fb2': 'Santander Rio',
-            '5f0c5ef8479b243d4d67e611': 'Santander Rio Personal',
-            '5f0c5ef8479b243d4d67e612': 'Santander Rio Personal Select',
             '5b566e0d7d8b6b0628564cf2': 'Banco Galicia Negocios',
             '5be9c00b7d8b6b643726a300': 'Banco Galicia Personal',
             '5c23bc89f9de2a1a022f0e52': 'Banco Macro Empresas',
-            '5f2dc493fd79f92aec276c01': 'Banco Macro Empresas Nuevo',
             '5c3f82a4f9de2a08177b2d42': 'ICBC Empresas',
             '5c7b6035f9de2a087b355c82': 'Banco Comafi Empresas',
             '5d1ce9a6f9de2a07ed574492': 'Banco Provincia Empresas',
             '5d430ba4f9de2a07fb58d612': 'Banco Supervielle Empresas',
             '5d77c3fbf9de2a08f33d9032': 'Banco Nacion Empresas',
             '5e2626c89be72331726b8502': 'Banco de Córdoba Empresas',
+            '5f0c5ef8479b243d4d67e611': 'Santander Rio Personal',
+            '5f0c5ef8479b243d4d67e612': 'Santander Rio Personal Select',
+            '5f2dc493fd79f92aec276c01': 'Banco Macro Empresas Nuevo',
+            '5fcfcdc733a1e24d2d3e2612': 'Banco Municipal Empresas',
+            '60e72485510da807ddd7c89a': 'Mercado Pago',
+            '610c10f66b98cf59668dff59': 'Banco Bind Home Banking',
+            '610c17422dae2f5aec631082': 'ICBC Multipay',
 
-            # Really not used at the moment
-            "60e72485510da807ddd7c89a": "Mercado Pago",
-            '5c65e306f9de2a080b61bb32': 'AFIP Alta usuario',
-            '5cf9816af9de2a7ae11c2981': 'AFIP Mis Comprobantes',
-            '5e18e47942eccb2dc5247ce1': 'AFIP Aceptar Relaciones',
+            # Chile
+            '5910b923056f2905ea05bbc2': 'Banco de Chile Empresas',
+            '5e349ca9ac8d7325fb717011': 'Banco de Chile Nuevo Portal',
+            '60b7b896a6cb132835331fda': 'Santander Office Banking',
+            '60dca020b591c74eebec61c4': 'BCI Empresas',
 
+            # United States
+            '5a29ccc0056f29062e404ec1': 'Coinbase',
+            '5a85d00f056f290c504cf9f2': 'BTC Blockchain',
+            '5a85d083056f290c4f19bdf2': 'ETH Blockchain',
+            '5a85d146056f290c5117f1f2': 'Paypal Business',
+            '5bdce2cf7d8b6b412a5c6902': 'Binance',
+            '5bdce4737d8b6b3b0b347ca2': 'Bittrex',
+            '5c0ec03cf9de2a0aab61d022': 'EOS Blockchain',
+
+            # Uruguay
         }
         return data.get(id_site, 'Banco/Monedero no encontrado')
