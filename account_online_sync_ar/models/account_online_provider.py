@@ -171,6 +171,30 @@ class PaybookProviderAccount(models.Model):
             self._paybook_fetch('PUT', '/credentials/' + id_credential + '/sync')
             # cred = self._paybook_fetch('GET', '/credentials/' + id_credential, raise_status=False)
 
+    def action_paybook_update_accounts(self):
+        """ Check the accounts available on the bank and let us to return the information of new accounts.
+
+        This is helpfull also when create a new credential for a new bank that is been integrated and we add the
+        accounts in a post process"""
+        self.ensure_one()
+
+        # Get Account Data
+        account_values = self._get_account_values()
+        prev_accounts = self.account_online_journal_ids
+        if account_values:
+            self.sudo().write({'account_online_journal_ids': account_values})
+
+        method = 'edit'
+        added = self.account_online_journal_ids - prev_accounts.filtered(lambda x: x.journal_ids)
+
+        res = {'status': 'SUCCESS', 'method': method, 'added': added}
+
+        if not added:
+            res['status'] = 'FAILED'
+            res['message'] = _("We don't find any new account to add / configure")
+
+        return self.show_result(res)
+
     @api.model
     def _update_cred_response(self, credential_data):
         """ method that receive the response of the update credential widget and prepare the data to b show to odoo if the credential was successfully updated or it has been
@@ -234,11 +258,6 @@ class PaybookProviderAccount(models.Model):
         url = '/web#model=account.online.wizard&id=%s&action=account_online_sync.action_account_online_wizard_form'
         action = provider_account.show_result(res)
         return werkzeug.utils.redirect(url % action.get('res_id'))
-
-    def _paybook_update_status(self, response):
-        """ Update the provider status """
-        self.write(self._paybook_check_credentials_response(response))
-        return True
 
     @api.model
     def _paybook_check_credentials_response(self, response):

@@ -20,6 +20,7 @@
             </field>
             <notebook position="before">
                 <div attrs="{'invisible': [('provider_type', '!=', 'paybook')]}" groups="base.group_no_one">
+                    <button name="action_paybook_update_accounts" string="Add new accounts" icon="fa-plus" type="object" class="oe_link"/>
                     <button name="action_paybook_force_sync" string="Force Sync" icon="fa-refresh" type="object" class="oe_link"/>
                     <button name="online_account_delete_credentials" string="Delete Online Credentials" confirm="This action can not be undone. Are you sure? This can affect any other database using the same credential" icon="fa-trash" type="object" class="oe_link"/>
                 </div>
