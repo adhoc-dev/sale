@@ -98,13 +98,13 @@ class PaybookProviderAccount(models.Model):
         if not company.paybook_user_id:
             company._paybook_register_new_user()
 
-        parsed_data = ""
         if not url.startswith(base_url):
             url = base_url + url
 
         headers = {"Authorization": "TOKEN token=" + company._paybook_get_user_token()}
         error = response = False
         try:
+            parsed_data = {}
             if data:
                 parsed_data = json.dumps(data)
             _logger.info('%s %s, params=%s, data=%s, headers=%s' % (method, url, params, parsed_data, headers))

@@ -28,7 +28,7 @@ class PaybookAccount(models.Model):
                   'id_account': self.online_identifier,
                   'dt_transaction_from': last_sync.strftime('%s')}
 
-        response = self.account_online_provider_id._paybook_fetch('GET', '/transactions', params, {})
+        response = self.account_online_provider_id._paybook_fetch('GET', '/transactions', params=params)
         transactions = []
         for trx in response:
             if trx.get('is_pending') != 0 or trx.get('is_disable') != 0 or trx.get('is_deleted') != 0:
