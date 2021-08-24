@@ -195,6 +195,13 @@ class PaybookProviderAccount(models.Model):
 
         return self.show_result(res)
 
+    def action_paybook_update_state(self):
+        self.ensure_one()
+        values = self._paybook_get_credentials(self.company_id, self.provider_account_identifier)
+        self.write(values)
+        res = {'status': self.status, 'message': self.message, 'method': 'refresh', 'added': []}
+        return self.show_result(res)
+
     @api.model
     def _update_cred_response(self, credential_data):
         """ method that receive the response of the update credential widget and prepare the data to b show to odoo if the credential was successfully updated or it has been
