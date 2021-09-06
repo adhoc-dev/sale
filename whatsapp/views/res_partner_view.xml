@@ -6,15 +6,9 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="priority">10</field>
         <field name="arch" type="xml">
-            <field name="phone" position="after">
-                <button name="whatsapp_redirect" attrs="{'invisible': [('phone', '=', False)]}" context="{'number': phone}"
-                        class="btn btn-link o_field_widget oe_read_only" title="Redirect to Whatsapp Web" type="object">
-                    <i class="fa fa-whatsapp"/>
-                    <small class="font-weight-bold ml-1">Whatsapp</small>
-                </button>
-            </field>
             <field name="mobile" position="after">
-                <button name="whatsapp_redirect" attrs="{'invisible': [('mobile', '=', False)]}" context="{'number': mobile}"
+                <field name="whatsapp_number" invisible="1"/>
+                <button name="whatsapp_redirect" attrs="{'invisible': [('whatsapp_number', '=', False)]}"
                         class="btn btn-link o_field_widget oe_read_only" title="Redirect to Whatsapp Web" type="object">
                     <i class="fa fa-whatsapp"/>
                     <small class="font-weight-bold ml-1">Whatsapp</small>
