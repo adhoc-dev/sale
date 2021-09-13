@@ -97,6 +97,21 @@ class AccountBalanceImport(models.TransientModel):
             'url': '/account_balance_import/generate_xls/' + str(self.company_id.id),
             'target': 'new'}
 
+    @api.model
+    def locate_currency(self, currency):
+        """ This method return the currency, if wasn't find any currency that match with the name in xls we return empty recordset
+        """
+        other_currency = self.env["res.currency"]
+        if currency:
+            domain = [
+                "|",
+                ("name", "=", currency),
+                ("l10n_ar_afip_code", "=", currency),
+            ]
+
+            other_currency = self.env["res.currency"].search(domain)
+        return other_currency
+
     def account_balance_import_xls(self):
         """ Triggered on when Account Balance XLS is imported
         This function will firstly read the entire XLS file and perform
@@ -115,7 +130,9 @@ class AccountBalanceImport(models.TransientModel):
             "code",
             "name",
             "amount",
-            "reference"
+            "reference",
+            "currency",
+            "amount_company_currency"
         ]
 
         errors = list()         # For storing possible errors
@@ -145,6 +162,19 @@ class AccountBalanceImport(models.TransientModel):
                 ("company_id", "=", company.id),
                 ("code", "=", dict_data["code"]),
             ])
+            
+            # Locate Currency
+            other_currency = self.locate_currency(dict_data["currency"])
+
+            if other_currency and not dict_data["amount_company_currency"]:
+                errors.append(
+                    "Fila {}: Si le establece otra moneda debe indicar el importe en esa otra moneda".format(str(row_no + 1)))
+                continue
+
+            if other_currency and other_currency != account.currency_id:
+                errors.append('La moneda elegida "{}" en el movimiento para la cuenta "{}" no coincide con la de la cuenta "{}".'
+                              '\n ¡Deberia cambiar la moneda en el movimiento!.'.format(dict_data["currency"], account.display_name, account.currency_id.name))
+                continue
 
             # Skip if account was not found
             if not account:
@@ -179,6 +209,8 @@ class AccountBalanceImport(models.TransientModel):
             else:
                 # Skip element if amount == 0
                 continue
+            
+            amount_company_currency = other_currency and other_currency.round(dict_data["amount_company_currency"]) or False
 
             line = {
                 "name": dict_data.get("reference", None) or
@@ -187,7 +219,12 @@ class AccountBalanceImport(models.TransientModel):
                 'company_id': self.company_id.id,
                 "debit": debit,
                 "credit": credit
-                }
+            }
+            if other_currency:
+                line.update({
+                    'currency_id': other_currency.id,
+                    'amount_currency': (-1.0 if line["debit"] == 0.0 else 1.0) * amount_company_currency,
+                })
 
             move_lines.append(line)
 
@@ -257,7 +294,9 @@ class AccountBalanceImport(models.TransientModel):
             "reference",
             "amount",
             "date",
-            "due_date"
+            "due_date",
+            "currency",
+            "amount_company_currency"
         ]
 
         account_moves = list()  # For storing account moves before creating 'em
@@ -291,6 +330,14 @@ class AccountBalanceImport(models.TransientModel):
             ]
 
             partner = self.env["res.partner"].search(domain)
+
+            # Locate Currency
+            other_currency = self.locate_currency(dict_data["currency"])
+
+            if other_currency and not dict_data["amount_company_currency"]:
+                errors.append(
+                    "Fila {}: Si le establece otra moneda debe indicar el importe en esa otra moneda".format(str(row_no + 1)))
+                continue
 
             # Skip if partner not found
             if not partner:
@@ -391,7 +438,9 @@ class AccountBalanceImport(models.TransientModel):
                         str(row_no + 1),
                         partner.name, company.name))
                 continue
-
+            
+            amount_company_currency = other_currency and other_currency.round(dict_data["amount_company_currency"]) or False
+            
             # Create move lines
             line_1 = {
                 "name": dict_data["reference"],
@@ -412,7 +461,15 @@ class AccountBalanceImport(models.TransientModel):
                 "date": accounting_date,
                 "date_maturity": due_date
             }
-
+            if other_currency:
+                line_1.update({
+                    'currency_id': other_currency.id,
+                    'amount_currency':  (-1.0 if line_1["debit"] == 0.0 else 1.0) * amount_company_currency,
+                })
+                line_2.update({
+                    'currency_id': other_currency.id,
+                    'amount_currency': (1.0 if line_2["credit"] == 0.0 else -1.0) * amount_company_currency,
+                })
             # Add account move to list
             account_moves.append({
                 "journal_id": journal.id,
@@ -458,7 +515,9 @@ class AccountBalanceImport(models.TransientModel):
             "payment_date",
             "name",
             "owner_name",
-            "owner_vat"
+            "owner_vat",
+            "currency",
+            "amount_company_currency"
         ]
 
         generated_move_ids = list()   # For storing generated account move ids
@@ -501,6 +560,14 @@ class AccountBalanceImport(models.TransientModel):
             ]
 
             partner = self.env["res.partner"].search(domain)
+
+            # Locate Currency
+            other_currency = self.locate_currency(dict_data["currency"])
+
+            if other_currency and not dict_data["amount_company_currency"]:
+                errors.append(
+                    "Fila {}: Si le establece otra moneda debe indicar el importe en esa otra moneda".format(str(row_no + 1)))
+                continue
 
             # Skip if partner not found
             if not partner:
@@ -547,6 +614,7 @@ class AccountBalanceImport(models.TransientModel):
                 continue
 
             amount = self.company_id.currency_id.round(dict_data["amount"])
+            amount_company_currency = other_currency and other_currency.round(dict_data["amount_company_currency"]) or False
 
             account_move_line_1 = {
                 "name": "Cheque N°. {}".format(number),
@@ -563,6 +631,15 @@ class AccountBalanceImport(models.TransientModel):
                 "credit": account_move_line_1['debit'],
                 "partner_id": partner.id
             }
+            if other_currency:
+                account_move_line_1.update({
+                    'currency_id': other_currency.id,
+                    'amount_currency':  (-1.0 if self.check_type == 'issue_check' else 1.0) * amount_company_currency,
+                })
+                account_move_line_2.update({
+                    'currency_id': other_currency.id,
+                    'amount_currency': (1.0 if self.check_type == 'issue_check' else -1.0) * amount_company_currency,
+                })
 
             move_data = {
                 "date": self.accounting_date,
@@ -587,6 +664,12 @@ class AccountBalanceImport(models.TransientModel):
                 "owner_name": dict_data["owner_name"],
                 "owner_vat": str(int(dict_data["owner_vat"])) if dict_data["owner_vat"] else None,
             }
+            if other_currency and amount_company_currency:
+                check_data.update({
+                    "amount": amount_company_currency,
+                    "amount_company_currency": dict_data["amount"],
+                    "currency_id": other_currency.id,
+                })
 
             pre_data.append((move_data, check_data, partner.id))
 

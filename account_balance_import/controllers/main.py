@@ -29,11 +29,15 @@ class GenerateXLS(http.Controller):
         sheet.col(1).width = 256 * 40
         sheet.col(2).width = 256 * 40
         sheet.col(3).width = 256 * 40
+        sheet.col(4).width = 256 * 20
+        sheet.col(5).width = 256 * 30
         # Write titles
         sheet.write(0, 0, "Código (No Editar)", style)
         sheet.write(0, 1, "Nombre (No Editar)", style)
         sheet.write(0, 2, "Saldo (Positivo o Negativo)", style)
         sheet.write(0, 3, "Referencia", style)
+        sheet.write(0, 4, "Otra Moneda (Opcional)", style)
+        sheet.write(0, 5, "Importe en Otra moneda (Opcional)", style)
         # Fill code and name columns
         for idx, account in enumerate(accounts):
             sheet.write(idx + 1, 0, account["code"])
