@@ -35,3 +35,7 @@ class HelpdeskTicket(models.Model):
         if recs:
             raise ValidationError(_(
                 'You need to complete solution description to change the stage. Rec ids: %s') % recs.ids)
+
+    def copy_solution(self):
+        for rec in self:
+            rec.solution_description = rec.helpdesk_solution_id.customer_solution_description
