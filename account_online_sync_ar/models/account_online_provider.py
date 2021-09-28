@@ -46,9 +46,11 @@ class PaybookProviderAccount(models.Model):
 
     @api.model
     def cron_fetch_online_transactions(self):
+        """ Only run cron for paybook provider synchronization record status is OK or if we receive any 5xx Connection
+        Error Codes """
         if self.provider_type != 'paybook':
             return super().cron_fetch_online_transactions()
-        if self.status == 'SUCCESS':
+        if self.status == 'SUCCESS' or self.status_code in ['500', '501', '503', '504', '509']:
             self.manual_sync()
             # TODO KZ only do the manual sync if the paybook next date is less than the current one
             # paybook_next_refresh
