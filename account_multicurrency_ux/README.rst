@@ -16,6 +16,12 @@ Accounting Reports UX
 
 Este modulo agrega un boton en la vista form de los reportes financieros para generar el menu de acceso al reporte si no lo tiene establecido.
 
+Es importante que antes de que se creen la conciliaciones ya esté bien definida la cotización para los días involucrados salvo que los pagos sean a futuro porque en tal caso se marca que van a requerir ajuste para revisar llegada la fecha.
+
+Una posible mejora sería agregar un cron que se encargue de recalcular todos los días al ir teniendo nuevas cotizaciones.
+
+Por ultimo, actualmente no estaría sugiriendo cuando se requiera hacer las NC y esto es una limitación conocida por como se debe hacer el calculo.
+
 Installation
 ============
 
