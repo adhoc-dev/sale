@@ -16,7 +16,6 @@ Sale Subscription UX
 
 #. Add an option to add or not period description on invoice narration
 #. check company consistency between subscription and partner
-#. This module add a boolean field to the Subscription template that let us copy or not its desctiprion in the recurring invoice notes.
 #. Add Dates required boolean field on Subscription Template model, if setted, then the Start date and End date will be required
 #. Add funcionality to use "without discount" in subscription lines.
 #. If you have a sale order that have both, subscription products and products

@@ -50,9 +50,6 @@ class SaleSubscription(models.Model):
         res = super()._prepare_invoice_data()
         if not self.template_id.add_period_dates_to_description:
             res.update({'narration': ''})
-        if self.template_id.copy_description_to_invoice:
-            res.update({'narration': res.get('narration', '') + '\n\n' + (
-                self.description or '')})
         if self.template_id.use_different_invoice_address and self.partner_invoice_id:
             res.update({'partner_id': self.partner_invoice_id.id})
         # TODO remove in v15
