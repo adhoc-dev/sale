@@ -293,7 +293,6 @@ class AccountBalanceImport(models.TransientModel):
             "name",
             "reference",
             "amount",
-            "date",
             "due_date",
             "currency",
             "amount_company_currency"
@@ -361,24 +360,6 @@ class AccountBalanceImport(models.TransientModel):
                     "Fila {}: El monto no es numérico.".format(
                         str(row_no + 1)))
                 continue
-
-            if dict_data["date"] != "":
-                try:
-                    accounting_date = datetime.datetime(
-                        *xlrd.xldate_as_tuple(
-                            dict_data["date"],
-                            workbook.datemode)).date()
-                except TypeError:
-                    # Skip if we're not able to parse date
-                    errors.append(
-                        "Fila {}: Formato de fecha desconocido. "
-                        "Asegúrese de que la columna posee "
-                        "formato de fecha.".format(
-                            str(row_no + 1)))
-                    continue
-            else:
-                # Default to accounting date if omitted
-                accounting_date = self.accounting_date
 
             if dict_data["due_date"] != "":
                 try:
@@ -448,7 +429,6 @@ class AccountBalanceImport(models.TransientModel):
                 "account_id": partner_account.id,
                 "debit": debit,
                 "credit": credit,
-                "date": accounting_date,
                 "date_maturity": due_date
             }
 
@@ -458,7 +438,6 @@ class AccountBalanceImport(models.TransientModel):
                 "account_id": self.counterpart_account_id.id,
                 "debit": credit,
                 "credit": debit,
-                "date": accounting_date,
                 "date_maturity": due_date
             }
             if other_currency:
