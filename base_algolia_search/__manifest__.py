@@ -20,6 +20,6 @@
             'algoliasearch'
         ],
     },
-    'installable': True,
+    'installable': False,
     "uninstall_hook": "uninstall_hook",
 }

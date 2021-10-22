@@ -15,5 +15,5 @@
         'base_algolia_search',
         'website_sale',
     ],
-    'installable': True,
+    'installable': False,
 }
