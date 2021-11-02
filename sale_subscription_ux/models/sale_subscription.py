@@ -3,6 +3,8 @@
 # directory
 ##############################################################################
 from odoo import models, api, fields
+from markupsafe import Markup
+from odoo.tools import is_html_empty
 
 
 class SaleSubscription(models.Model):
@@ -49,7 +51,12 @@ class SaleSubscription(models.Model):
         """
         res = super()._prepare_invoice_data()
         if not self.template_id.add_period_dates_to_description:
-            res.update({'narration': ''})
+            narration = ""
+            if not is_html_empty(self.description):
+                narration = Markup('<br/>') + self.description
+            elif self.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms') and not is_html_empty(self.company_id.invoice_terms):
+                narration += Markup('<br/>') + self.company_id.invoice_terms
+            res.update({'narration': narration})
         if self.template_id.use_different_invoice_address and self.partner_invoice_id:
             res.update({'partner_id': self.partner_invoice_id.id})
         # TODO remove in v15
