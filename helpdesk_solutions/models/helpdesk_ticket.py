@@ -19,7 +19,7 @@ class HelpdeskTicket(models.Model):
     )
     solution_description = fields.Html(
     )
-    description_copy = fields.Text(
+    description_copy = fields.Html(
         related='description',
         readonly=False,
         string='Description (copy)',
