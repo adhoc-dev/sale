@@ -43,7 +43,7 @@ class SaleSubscription(models.Model):
         compute='_compute_margin',
         help="The difference between the recurring total and the sum of "
         "all costs in this subscription",
-        currency_field='currency_id', digits='Product Price')
+        currency_field='currency_id')
 
     profitability = fields.Float(
         'Profitability (%)',

@@ -3,7 +3,7 @@
 {
     'name': 'Margins in Subscriptions',
     'category': 'Sales',
-    'version': '13.0.1.0.0',
+    'version': "15.0.1.0.0",
     'sequence': 14,
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
@@ -11,6 +11,6 @@
     'summary': 'Calculate margins and profitabilities in subscriptions',
     'depends': ['sale_subscription'],
     'data': ['views/sale_subscription_margin_view.xml'],
-    'installable': False,
+    'installable': True,
     'application': False
 }
