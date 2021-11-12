@@ -8,7 +8,7 @@
     'license': 'AGPL-3',
     'summary': 'This module is used for Online bank synchronization for Argentina',
     "depends": [
-        "account_online_sync",
+        "account_online_synchronization",
     ],
     'data': [
         "views/templates.xml",
