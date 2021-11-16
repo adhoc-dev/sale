@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="helpdesk_followup_solution" inherit_id="helpdesk.tickets_followup" name="Helpdesk Solution">
+    <template id="helpdesk_followup_solution" inherit_id="helpdesk.tickets_followup" name="Helpdesk Solution" priority="100">
 
         <xpath expr="//div[@t-field='ticket.description']/.." position="replace">
             <div class='row'>
