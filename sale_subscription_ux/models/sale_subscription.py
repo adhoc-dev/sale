@@ -12,24 +12,13 @@ class SaleSubscription(models.Model):
     _inherit = "sale.subscription"
 
     partner_id = fields.Many2one(check_company=True)
+    partner_invoice_id = fields.Many2one(check_company=True)
     dates_required = fields.Boolean(
         related="template_id.dates_required",
     )
     use_different_invoice_address = fields.Boolean(
         related="template_id.use_different_invoice_address",
     )
-    partner_invoice_id = fields.Many2one(
-        'res.partner',
-        string='Invoice Address',
-        check_company=True,
-        help="Invoice address for new invoices.",
-    )
-    # TODO remove in v15
-    payment_term_id = fields.Many2one(
-        'account.payment.term', string='Default Payment Terms',
-        check_company=True, tracking=True,
-        help="These payment terms will be used when generating new invoices and renewal/upsell orders."
-        "Note that invoices paid using online payment will use 'Already paid' regardless of this setting.")
 
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):
@@ -59,9 +48,6 @@ class SaleSubscription(models.Model):
             res.update({'narration': narration})
         if self.template_id.use_different_invoice_address and self.partner_invoice_id:
             res.update({'partner_id': self.partner_invoice_id.id})
-        # TODO remove in v15
-        res.update(
-            {'invoice_payment_term_id': self.payment_term_id or self.partner_id.property_payment_term_id.id})
         return res
 
     def update_lines_prices_from_products(self):
@@ -70,4 +56,4 @@ class SaleSubscription(models.Model):
         for subscription in self:
             for line in subscription.recurring_invoice_line_ids:
                 line.onchange_product_quantity()
-        self._compute_recurring_total()
+        self._amount_all()

@@ -15,12 +15,9 @@ Sale Subscription UX
 ====================
 
 #. Add an option to add or not period description on invoice narration
-#. check company consistency between subscription and partner
+#. Check company consistency between subscription and partner and partner invoice
 #. Add Dates required boolean field on Subscription Template model, if setted, then the Start date and End date will be required
 #. Add funcionality to use "without discount" in subscription lines.
-#. If you have a sale order that have both, subscription products and products
-   that generate projects or tasks, then the created subscriptions will re use
-   the analytic account that was created for the project/tasks.
 #. Add sequence on sale subscriptions lines that let us to order the
    subscription lines.
 #. Update prices in subscriptions: update price in subscription lines from the
@@ -29,7 +26,6 @@ Sale Subscription UX
 #. Add Invoice Address field to the subscription, similar to the one in the sale.order in order to be used when creating recurring invoicees (optional by subscription template)
 #. Fixes the default behavior that brings payment term to generated invoices from SO even if it's empty, so if SO hasn't got any payment term value, it's brought from the partner's payment term.
 #. Add menu item for subscription lines
-#. Add payment term in subscription, this shold be only for v13 and remove since v15.
 
 Installation
 ============
