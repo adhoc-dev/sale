@@ -197,8 +197,7 @@ msgstr ""
 #, python-format
 msgid ""
 "501: Unavailable - The instituion has informed to us that there was a "
-"problem in the connection. Please wait 15 minutes and try again. If the "
-"problem persists contact Technical Support."
+"problem in the connection"
 msgstr ""
 
 #. module: account_online_sync_ar

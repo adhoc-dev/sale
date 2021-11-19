@@ -334,8 +334,7 @@ class PaybookProviderAccount(models.Model):
 
             #  5xx Connection Error Codes
             '500': _('500: Error - An internal error has been ocurred while connecting to the institution'),
-            '501': _('501: Unavailable - The instituion has informed to us that there was a problem in the connection.'
-                     ' Please wait 15 minutes and try again. If the problem persists contact Technical Support.'),
+            '501': _('501: Unavailable - The instituion has informed to us that there was a problem in the connection'),
             '503': _('503: Service Unavailable.'),
             '504': _('504: ConnectionTimeout - An internal error has been ocurred while connecting to the'
                      ' institution.'),

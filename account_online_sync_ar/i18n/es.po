@@ -231,13 +231,11 @@ msgstr ""
 #: code:addons/account_online_sync_ar/models/account_online_provider.py:0
 #, python-format
 msgid ""
-"501: Unavailable - The instituion has informed to us that there was a "
-"problem in the connection. Please wait 15 minutes and try again. If the "
-"problem persists contact Technical Support."
+"501: Unavailable - The institución has informed to us that there was a "
+"problem in the connection"
 msgstr ""
-"501: No disponible - La instituion nos ha informado que hubo un problema en "
-"la conexión. Espere 15 minutos y vuelva a intentarlo. Si el problema "
-"persiste,  comuníquese con el Soporte técnico."
+"501: No disponible - La institución nos ha informado que hubo un problema en "
+"la conexión"
 
 #. module: account_online_sync_ar
 #: code:addons/account_online_sync_ar/models/account_online_provider.py:0
