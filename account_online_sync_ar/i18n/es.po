@@ -265,6 +265,11 @@ msgid "Actualizar Credencial del Banco"
 msgstr ""
 
 #. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.online_provider_account_form_view
+msgid "Add/Configure accounts"
+msgstr "Agregar/Configurar cuentas"
+
+#. module: account_online_sync_ar
 #: code:addons/account_online_sync_ar/models/account_online_provider.py:0
 #, python-format
 msgid "An error has occurred (code %s)"
@@ -275,6 +280,11 @@ msgstr "Un error ha ocurrido (código %s)"
 #, python-format
 msgid "Bad Request."
 msgstr ""
+
+#. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.online_provider_account_form_view
+msgid "Check Status"
+msgstr "Verificar Status"
 
 #. module: account_online_sync_ar
 #: model:ir.model,name:account_online_sync_ar.model_res_company
@@ -394,7 +404,7 @@ msgstr ""
 msgid ""
 "Paybook fetch: Please comunicate with your Odoo Provider. This is what we "
 "got %s"
-msgstr ""
+msgstr "Paybook fetch: Por favor comuniquese con tu Proveedor de Odoo. Esto es lo que obtenemos "
 
 #. module: account_online_sync_ar
 #: code:addons/account_online_sync_ar/models/account_online_provider.py:0
@@ -473,5 +483,11 @@ msgstr "Excepción Desconocida %s"
 
 #. module: account_online_sync_ar
 #: model_terms:ir.ui.view,arch_db:account_online_sync_ar.online_provider_account_form_view
-msgid "Update Credential"
-msgstr "Actualizar Credencial"
+msgid "Update Password"
+msgstr "Actualizar Contraseña"
+
+#. module: account_online_sync_ar
+#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#, python-format
+msgid "We don't find any new account to add / configure"
+msgstr "No encontramos ningúna cuenta que agregar / configurar "
