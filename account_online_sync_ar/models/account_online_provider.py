@@ -164,14 +164,15 @@ class PaybookProviderAccount(models.Model):
     def action_paybook_force_sync(self):
         """ This method will try to make a request to syncfy to force the update of the available transactions in order
         to try to sync new transactions from the bank """
+        self.ensure_one()
         id_credential = self.provider_account_identifier
         _logger.info('Syncfy Try force credential sync')
         response = self._paybook_fetch('GET', '/credentials/' + id_credential, response_status=True, raise_status=False)
         cred = response.get('response')[0]
         # The credential has not error byt has not been sync, force to sync
-        if cred.get('code') < 400 and not cred.get('dt_ready') and cred.get('ready_in') == 0:
+        if not cred.get('dt_ready') and cred.get('ready_in') == 0:
             self._paybook_fetch('PUT', '/credentials/' + id_credential + '/sync')
-            # cred = self._paybook_fetch('GET', '/credentials/' + id_credential, raise_status=False)
+            self.action_paybook_update_state()
 
     def action_paybook_update_accounts(self):
         """ Check the accounts available on the bank and let us to return the information of new accounts.
