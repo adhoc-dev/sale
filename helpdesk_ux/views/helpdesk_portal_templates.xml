@@ -1,34 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="tickets_followup" name="Helpdesk Tickets Inherit" inherit_id="helpdesk.tickets_followup">
-        <t t-set="disable_composer" position="replace"/>
-    </template>
-    <template id="portal_tickets" name="Portal Tickets Inherit" inherit_id="helpdesk.portal_helpdesk_ticket">
-        <t t-if="tickets" t-call="portal.portal_table" position="replace">
-            <t t-else="">
-                <t t-call="portal.portal_table">
-                    <t t-foreach="grouped_tickets" t-as="tickets">
-                        <thead>
-                            <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
-                                <th class="text-left">Ref</th>
-                                <th t-if="groupby == 'none'" class="w-100">Description</th>
-                                <th t-else="">
-                                    <em class="font-weight-normal text-muted">Tickets in stage:</em>
-                                    <span t-field="tickets[0].stage_id.name"/></th>
-                                <th/>
-                                <th t-if="groupby != 'stage'" class="text-center">Stage</th>
-                            </tr>
-                        </thead>
-                        <t t-foreach="tickets" t-as="ticket">
-                            <tr>
-                                <td class="text-left"><a t-attf-href="/helpdesk/ticket/#{ticket.id}"><small>#</small><t t-esc="ticket.id"/></a></td>
-                                <td><a t-attf-href="/helpdesk/ticket/#{ticket.id}"><span t-field="ticket.name"/></a></td><td/>
-                                <td t-if="groupby != 'stage'" class="text-center"><span class="badge badge-pill badge-info" t-field="ticket.stage_id.name"/></td>
-                            </tr>
-                        </t>
-                    </t>
-                </t>
-            </t>
+        <t t-set="disable_composer" position="attributes">
+            <attribute name="t-value">False</attribute>
         </t>
     </template>
 </odoo>
