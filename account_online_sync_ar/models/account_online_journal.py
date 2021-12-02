@@ -52,5 +52,16 @@ class PaybookAccount(models.Model):
                 self._update_with_value(trx_data, 'name', extra_data.get('group_of_concept'))
                 self._update_with_value(trx_data, 'name', extra_data.get('terminal_number'))
 
+                # We are appending the reference to the name. This will be repeated data but it will
+                # be an improve in the bank statement wizard. The wizard only show the name of the
+                # statement line. does not show the reference and we needed so the user can easily
+                # check anything to make the reconcile.
+                self._update_with_value(trx_data, 'name', trx_data.get('ref'))
+
+                # Used to improve name for Banco BIND (AR)
+                self._update_with_value(trx_data, 'name', extra_data.get('spei_doc_nro'))
+                self._update_with_value(trx_data, 'name', extra_data.get('spei_beneficiary_name'))
+                self._update_with_value(trx_data, 'name', extra_data.get('spei_concept'))
+
             transactions.append(trx_data)
         return self.env['account.bank.statement'].online_sync_bank_statement(transactions, self.journal_ids)
