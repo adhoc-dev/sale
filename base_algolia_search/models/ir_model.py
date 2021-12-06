@@ -206,7 +206,10 @@ class IrModel(models.Model):
                     else:
                         rec_ids = self.env['ir.model'].search([('model', '=', str(self._name))])._agolia_search(
                             name, limit=limit)
-                        res = self.browse(rec_ids).name_get()
+                        # TODO mejorar, no es lo mejor a nivel performance pero de esta manera aplicamos
+                        # permisos de usuario y filter de active
+                        res = self.search([('id', 'in', rec_ids)]).name_get()
+                        # res = self.browse(rec_ids).name_get()
                 else:
                     # Perform standard name search
                     res = _name_search.origin(
