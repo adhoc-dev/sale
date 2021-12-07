@@ -15,7 +15,9 @@ class HelpdeskTeam(models.Model):
             ("project_responsable", "Project Responsable"),
             ("specific_user", "Specific User"),
             ("unassigned", "Unassigned"),
-        ])
+        ],
+        ondelete={'project_responsable': 'set default', 'specific_user': 'set default', 'unassigned': 'set default'},
+    )
 
     user_id = fields.Many2one(
         'res.users',
@@ -33,12 +35,34 @@ class HelpdeskTeam(models.Model):
                 "You must have team members assigned to change the "
                 "assignation method."))
 
-    @api.constrains('use_helpdesk_timesheet', 'project_id')
-    def project_allow_tickets(self):
+    def write(self, vals):
         """ If use_helpdesk_timesheet then set the related project to
         allow_tickets
         """
-        projects = self.filtered('use_helpdesk_timesheet').mapped(
-            'project_id')
-        if projects:
-            projects.write({'allow_tickets': True})
+        if 'use_helpdesk_timesheet' in vals:
+            projects = self.filtered('use_helpdesk_timesheet').mapped('project_id')
+            if projects:
+                projects.write({'allow_tickets': True})
+        return super().write(vals)
+
+    @api.model
+    def create(self, vals):
+        """ If use_helpdesk_timesheet then set the related project to
+        allow_tickets
+        """
+        res = super().create(vals)
+        if res.use_helpdesk_timesheet and res.project_id:
+            res.project_id.allow_tickets = True
+        return res
+
+
+    def _determine_user_to_assign(self):
+        """ We add for 2 cases of assination of user from the team.
+        """
+        result = super()._determine_user_to_assign()
+        for team in self:
+            if team.assign_method == 'unassigned':
+                result[team.id] = False
+            elif team.assign_method == 'specific_user':
+                result[team.id] = team.user_id
+        return result

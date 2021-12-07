@@ -15,25 +15,18 @@ class HelpdeskTicket(models.Model):
         """ On creating a ticket, if not user is set, then we get if from
         _onchange_team_id """
         rec = super().create(vals)
-        if not rec.user_id:
-            rec._onchange_team_id()
+        if not rec.user_id and rec.team_id.assign_method == 'project_responsable':
+            rec.user_id = rec.project_id.user_id
         return rec
 
-    @api.onchange('team_id', 'project_id')
-    def _onchange_team_id(self):
-        """ No lo hacemos en el metodo de team "def get_new_user(self)" porque
-        el _onchange_team_id solo asigna si no tiene user, lo cual tiene
-        sentido para los metodos nativo de odoo "aleatorio" y "balanceado",
-        pero en estos casos nuevos que implementamos queremos que al cambiar de
-        equipo, por mas que ya tenga user, sugiera un cambio de user.
-        """
-        super()._onchange_team_id()
-        if self.team_id.assign_method == 'project_responsable':
-            self.user_id = self.project_id.user_id
-        elif self.team_id.assign_method == 'unassigned':
-            self.user_id = False
-        elif self.team_id.assign_method == 'specific_user':
-            self.user_id = self.team_id.user_id
+
+
+    @api.depends('team_id')
+    def _compute_user_and_stage_ids(self):
+        super()._compute_user_and_stage_ids()
+        for ticket in self.filtered(lambda ticket: ticket.team_id):
+            if not ticket.user_id and ticket.team_id.assign_method == 'project_responsable':
+                ticket.user_id = ticket.project_id.user_id
 
     @api.onchange('project_id')
     def _onchange_project(self):

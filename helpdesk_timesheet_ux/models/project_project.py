@@ -23,15 +23,6 @@ class ProjectProject(models.Model):
                       "without option 'folded' (ticket IDs %s)" %
                       open_tickets.ids))
 
-    def write(self, vals):
-        """ When project.project status active/archived change also apply
-        to its tickets """
-        res = super().write(vals)
-        if 'active' in vals:
-            self.with_context(active_test=False).mapped('ticket_ids').write({
-                'active': vals['active']})
-        return res
-
     @api.depends('ticket_ids.project_id')
     def _compute_ticket_count(self):
         if not self.user_has_groups('helpdesk.group_helpdesk_user'):

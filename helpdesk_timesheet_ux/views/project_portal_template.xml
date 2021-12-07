@@ -5,7 +5,7 @@
         <xpath expr="//table[hasclass('table-sm')]/thead/tr//th[2]" position="after">
             <th>Nº de Ticket</th>
         </xpath>
-        <xpath expr="//table[hasclass('table-sm')]/tr[@t-foreach='timesheets']/td[2]/t[@t-esc='timesheet.name']" position="after">
+        <xpath expr="//table[hasclass('table-sm')]/tr[@t-foreach='timesheets']/td[3]/t[@t-esc='timesheet.name']" position="after">
             <td>
                 <a t-attf-href="/helpdesk/ticket/#{timesheet.helpdesk_ticket_id.id}" t-esc="timesheet.helpdesk_ticket_id.id"/>
             </td>
