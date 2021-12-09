@@ -14,7 +14,7 @@ class ResCompany(models.Model):
         bank journal defined """
         return self.env['account.journal'].action_choose_institution()
 
-    def _paybook_get_user_token(self):
+    def _paybook_get_user_token(self, id_user=False):
         raise UserError(_('Falta configuración de credenciales de ADHOC para consulta del user token'))
 
     def _paybook_register_new_user(self):

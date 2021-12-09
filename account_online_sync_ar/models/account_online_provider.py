@@ -89,7 +89,7 @@ class PaybookProviderAccount(models.Model):
         return {'type': 'ir.actions.act_url', 'target': 'self',
                 'url': '/account_online_sync_ar/update_bank/%s/%s/%s' % (company.id, journal_id, self.id)}
 
-    def _paybook_fetch(self, method, url, params={}, data={}, response_status=False, raise_status=True):
+    def _paybook_fetch(self, method, url, params={}, data={}, response_status=False, raise_status=True, external_paybook_id_user=False):
         base_url = 'https://sync.paybook.com/v1'
         if self:
             company = self.company_id
@@ -97,13 +97,13 @@ class PaybookProviderAccount(models.Model):
             company_id = self.env.context.get('paybook_company_id')
             company = self.env['res.company'].browse(company_id) if company_id else self.env.company
 
-        if not company.paybook_user_id:
+        if not external_paybook_id_user and not company.paybook_user_id:
             company._paybook_register_new_user()
 
         if not url.startswith(base_url):
             url = base_url + url
 
-        headers = {"Authorization": "TOKEN token=" + company._paybook_get_user_token()}
+        headers = {"Authorization": "TOKEN token=" + company._paybook_get_user_token(id_user=external_paybook_id_user)}
         error = response = False
         try:
             parsed_data = {}
