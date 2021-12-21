@@ -198,7 +198,8 @@ class AccountExchangeDiffInvoice(models.TransientModel):
     @api.onchange('credit_rate')
     def _onchange_credit_rate(self):
         oficial_rate = self.partial_line_id.debit_move_id.currency_id._convert(
-            1.0, self.wizard_id.company_id.currency_id, self.wizard_id.company_id, self.credit_date_maturity)
+            1.0, self.wizard_id.company_id.currency_id, self.wizard_id.company_id,
+            self.credit_date_maturity or self.credit_date)
         allowed_perc = self.wizard_id.company_id.exchange_rate_tolerance
         if abs(self.credit_rate - oficial_rate) / oficial_rate > (allowed_perc / 100.0):
             raise ValidationError(

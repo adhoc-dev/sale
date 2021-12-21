@@ -38,7 +38,8 @@ class AccountPartialReconcile(models.Model):
             if credit_line.currency_id and credit_line.currency_id == debit_line.currency_id and credit_line.amount_currency:
                 credit_rate = credit_line.balance / credit_line.amount_currency
             else:
-                credit_rate = debit_line.currency_id._convert(1.0, rec.company_id.currency_id, rec.company_id, credit_line.date_maturity)
+                credit_rate = debit_line.currency_id._convert(
+                    1.0, rec.company_id.currency_id, rec.company_id, credit_line.date_maturity or credit_line.date)
 
             if not credit_rate:
                 continue
