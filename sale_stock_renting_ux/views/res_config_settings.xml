@@ -18,7 +18,7 @@
                             </div>
                             <div class="content-group" attrs="{'invisible': [('rental_create_picking','=',False)]}">
                                 <div class="mt8">
-                                    <field name="rental_picking_type_id" placeholder="Default Picking for rentals"/>
+                                    <field name="rental_picking_type_id" attrs="{'required': [('rental_create_picking', '=', True)]}" placeholder="Default Picking for rentals"/>
                                 </div>
                             </div>
                         </div>
