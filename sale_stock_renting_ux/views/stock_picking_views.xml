@@ -8,7 +8,7 @@
             <field name="immediate_transfer" position="after">
                 <field name="is_rental_picking" invisible="1"/>
             </field>
-            <xpath expr="//header//button[7]" position="attributes">
+            <xpath expr="//header//button[@name='%(stock.act_stock_return_picking)d']" position="attributes">
                 <attribute  name="attrs">
                         {'invisible': ['|','|', ('state', '!=', 'done'), ('is_locked', '=', False),('is_rental_picking','=',True)]}
                 </attribute>
