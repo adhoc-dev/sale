@@ -23,6 +23,11 @@ class PaybookProviderAccount(models.Model):
     paybook_next_refresh = fields.Datetime("Next transactions will be available at")
     paybook_username_hint = fields.Char("Login/User")
 
+    paybook_refresh_days = fields.Integer("Last Days to be Updated/fixed", compute="_compute_paybook_refresh_days")
+
+    def _compute_paybook_refresh_days(self):
+        self.paybook_refresh_days = int(self.env['ir.config_parameter'].sudo().get_param('account_online_sync_ar.update_last_days', "7"))
+
     def _get_available_providers(self):
         ret = super()._get_available_providers()
         ret.append('paybook')
@@ -36,6 +41,23 @@ class PaybookProviderAccount(models.Model):
         for account in self.account_online_journal_ids:
             if account.journal_ids:
                 trx_count = account.retrieve_transactions()
+                transactions.append({'journal': account.journal_ids[0].name, 'count': trx_count})
+
+        result = {'status': self.status, 'message': self.message, 'transactions': transactions, 'method': 'refresh',
+                  'added': self.env['account.online.journal']}
+        return self.show_result(result)
+
+    def action_paybook_update_transactions(self):
+        """ This method will review if there is refreshed transactions and will update its values on Odoo """
+        if self.provider_type != 'paybook':
+            return super().update_transactions()
+        self.ensure_one()
+        transactions = []
+        fix_days = int(self.env['ir.config_parameter'].sudo().get_param('account_online_sync_ar.update_last_days', "7"))
+        for account in self.account_online_journal_ids:
+            if account.journal_ids:
+                force_dt = fields.Datetime.today() - timedelta(days=fix_days)
+                trx_count = account.retrieve_refreshed_transactions(force_dt=force_dt)
                 transactions.append({'journal': account.journal_ids[0].name, 'count': trx_count})
 
         values = self._paybook_get_credentials(self.company_id, self.provider_account_identifier)

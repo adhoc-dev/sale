@@ -1,6 +1,6 @@
 {
     'name': "Account Online Sync Argentina",
-    'version': '13.0.1.4.0',
+    'version': '13.0.1.5.0',
     'category': 'Accounting/Accounting',
     'sequence': 14,
     'author': 'ADHOC SA',
@@ -16,6 +16,7 @@
         'views/account_online_provider_views.xml',
         'views/account_journal_views.xml',
         "security/ir.model.access.csv",
+        "data/ir_cron_data.xml",
     ],
     'auto_install': True,
     'installable': False,

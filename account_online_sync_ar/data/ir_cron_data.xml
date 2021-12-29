@@ -1,0 +1,15 @@
+<odoo>
+
+    <record id="ir_cron_paybook_update_transactions" model="ir.cron">
+        <field name="name">Paybook: Update transactions</field>
+        <field name="model_id" ref="model_account_journal"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_paybook_update_transactions()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+</odoo>
+

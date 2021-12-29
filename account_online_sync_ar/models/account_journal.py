@@ -1,4 +1,5 @@
 from odoo import models, fields
+from odoo.exceptions import UserError
 
 
 class AccountJournal(models.Model):
@@ -20,3 +21,15 @@ class AccountJournal(models.Model):
     def action_configure_bank_journal(self):
         """ Remove the normal account_online_sync and use the one in paybook """
         return self.env['account.online.provider'].with_context(journal_id=self.id)._paybook_open_login()
+
+    def cron_paybook_update_transactions(self):
+        """ method called from schedule action that will try to update/fix refreshed paybook transactions in odoo """
+        journals = self.search([('account_online_journal_id', '!=', False)])
+        if not journals:
+            return
+
+        for account_online_provider in journals.mapped('account_online_journal_id.account_online_provider_id'):
+            try:
+                account_online_provider.action_paybook_update_transactions()
+            except UserError:
+                continue
