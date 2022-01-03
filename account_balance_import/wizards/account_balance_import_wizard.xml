@@ -31,7 +31,8 @@
                         <h3 colspan="4">Importación de Cheques</h3>
                         <field name="check_type" attrs="{'required': [('mode', '=', 'check_balance')] }" />
                         <field name="check_journal_bank_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'issue_check')], 'invisible': [('check_type', 'not in', 'issue_check')] }" domain="[('type', 'in', ['cash', 'bank'])]" />
-                        <field name="check_checkbook_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'issue_check')], 'invisible': [('check_type', 'not in', 'issue_check')]}" domain="[('journal_id', '=', check_journal_bank_id)]"/>
+                        <!-- <field name="check_checkbook_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'issue_check')], 'invisible': [('check_type', 'not in', 'issue_check')]}" domain="[('journal_id', '=', check_journal_bank_id)]"/> -->
+                        <field name="check_checkbook_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'issue_check')], 'invisible': [('check_type', 'not in', 'issue_check')]}"/>
                         <field name="check_journal_third_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'third_check')],
                         'invisible': [('check_type', 'not in', 'third_check')] }" />
                         <br/>

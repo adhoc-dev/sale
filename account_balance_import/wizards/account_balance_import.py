@@ -16,17 +16,20 @@ class AccountBalanceImport(models.TransientModel):
 
     # Common Fields
     company_id = fields.Many2one(
-        'res.company', string='Compañía',
+        "res.company",
+        string="Compañía",
         required=True,
-        default=lambda self: self.env.company)
+        default=lambda self: self.env.company,
+    )
 
     counterpart_account_id = fields.Many2one(
-        "account.account", string="Cuenta de Contrapartida",
-        default=lambda
-        self: self.env.company.get_unaffected_earnings_account(),
+        "account.account",
+        string="Cuenta de Contrapartida",
+        default=lambda self: self.env.company.get_unaffected_earnings_account(),
         help="Recomendamos utilizar la misma cuenta de contrapartida "
         "para todos los asientos iniciales",
-        domain="[('company_id','=', company_id), ('deprecated', '=', False)]")
+        domain="[('company_id','=', company_id), ('deprecated', '=', False)]",
+    )
 
     mode = fields.Selection(
         [
@@ -36,71 +39,68 @@ class AccountBalanceImport(models.TransientModel):
         ],
         string="Modo de Importación",
         required=True,
-        default="account_balance"
+        default="account_balance",
     )
     accounting_date = fields.Date("Fecha Contable", required=True)
 
     # Account Balance Related Fields
     account_opening_entries_journal_id = fields.Many2one(
-        "account.journal", string="Diario de Asientos de Apertura",
-        domain="[('company_id', '=', company_id),"
-               "('type', '=', 'general')]")
+        "account.journal",
+        string="Diario de Asientos de Apertura",
+        domain="[('company_id', '=', company_id)," "('type', '=', 'general')]",
+    )
 
-    account_balance_file = fields.Binary(
-        "Archivo de Importación de Saldos Contables")
+    account_balance_file = fields.Binary("Archivo de Importación de Saldos Contables")
 
     # Company Balance Related Fields
     partner_balance_journal_id = fields.Many2one(
-        "account.journal", string=_("Diario"),
-        domain="[('company_id', '=', company_id),"
-               "('type', '=', 'general')]")
-
-    partner_balance_type = fields.Selection(
-        [("receivable", "Por Cobrar"),
-         ("payable", "A Pagar")],
-        "Tipo de Saldo",
-        default="receivable"
+        "account.journal",
+        string=_("Diario"),
+        domain="[('company_id', '=', company_id)," "('type', '=', 'general')]",
     )
 
-    partner_balance_file = fields.Binary(
-        "Archivo de Importación de Saldos de Partners")
+    partner_balance_type = fields.Selection(
+        [("receivable", "Por Cobrar"), ("payable", "A Pagar")],
+        "Tipo de Saldo",
+        default="receivable",
+    )
+
+    partner_balance_file = fields.Binary("Archivo de Importación de Saldos de Partners")
 
     # Check Related Fields
     check_type = fields.Selection(
-        [("issue_check", "Propios"),
-         ("third_check", "De Terceros")],
+        [("issue_check", "Propios"), ("third_check", "De Terceros")],
         string="Tipo de Cheques",
-        default="issue_check"
+        default="issue_check",
     )
 
     check_journal_bank_id = fields.Many2one(
         "account.journal",
         string="Diario de Banco",
-        domain="[('company_id', '=', company_id),"
-               "('type', '=', 'bank'),"
-               "('outbound_payment_method_ids.code', '=', 'issue_check')]")
+        domain="[('company_id', '=', company_id)," "('type', '=', 'cash')]",
+    )
 
     check_journal_third_id = fields.Many2one(
-        "account.journal", string="Diario de Cheques de Terceros",
-        domain="[('company_id', '=', company_id),"
-               "('inbound_payment_method_ids.code', '=', 'received_third_check')]")
+        "account.journal",
+        string="Diario de Cheques de Terceros",
+        domain="[('company_id', '=', company_id)," "('type', '=', 'cash'),"
+       "('outbound_payment_method_line_ids.code', 'in', ['in_third_checks', 'out_third_checks'])]")
 
-    check_checkbook_id = fields.Many2one(
-        "account.checkbook", string="Chequera")
+    check_checkbook_id = fields.Many2one("l10n_latam.checkbook", string="Chequera")
 
     check_file = fields.Binary("Archivo de Importación de Cheques")
 
     def action_generate_xls(self):
         self.ensure_one()
         return {
-            'type': 'ir.actions.act_url',
-            'url': '/account_balance_import/generate_xls/' + str(self.company_id.id),
-            'target': 'new'}
+            "type": "ir.actions.act_url",
+            "url": "/account_balance_import/generate_xls/" + str(self.company_id.id),
+            "target": "new",
+        }
 
     @api.model
     def locate_currency(self, currency):
-        """ This method return the currency, if wasn't find any currency that match with the name in xls we return empty recordset
-        """
+        """This method return the currency, if wasn't find any currency that match with the name in xls we return empty recordset"""
         other_currency = self.env["res.currency"]
         if currency:
             domain = [
@@ -113,7 +113,7 @@ class AccountBalanceImport(models.TransientModel):
         return other_currency
 
     def account_balance_import_xls(self):
-        """ Triggered on when Account Balance XLS is imported
+        """Triggered on when Account Balance XLS is imported
         This function will firstly read the entire XLS file and perform
         checks on each one of the rows to make sure the import looks good.
         If everything goes fine, the account moves are created and displayed.
@@ -123,8 +123,10 @@ class AccountBalanceImport(models.TransientModel):
 
         # Set-up environment company
         if not self.account_balance_file:
-            raise ValidationError('Debe subir el archivo "Archivo de Importación de Saldos Contables"')
-        self = self.with_context(force_company=self.company_id.id)
+            raise ValidationError(
+                'Debe subir el archivo "Archivo de Importación de Saldos Contables"'
+            )
+        self = self.with_company(self.company_id.id)
 
         fields = [
             "code",
@@ -132,17 +134,17 @@ class AccountBalanceImport(models.TransientModel):
             "amount",
             "reference",
             "currency",
-            "amount_company_currency"
+            "amount_company_currency",
         ]
 
-        errors = list()         # For storing possible errors
-        move_lines = list()     # For storing items before generating 'em
+        errors = list()  # For storing possible errors
+        move_lines = list()  # For storing items before generating 'em
 
         company = self.company_id
         journal = self.account_opening_entries_journal_id
 
         # Parse XLS file
-        decoded = base64.decodestring(self.account_balance_file)
+        decoded = base64.decodebytes(self.account_balance_file)
         workbook = xlrd.open_workbook(file_contents=decoded)
         sheet = workbook.sheet_by_index(0)
 
@@ -150,81 +152,101 @@ class AccountBalanceImport(models.TransientModel):
         for row_no in range(1, sheet.nrows):
             # Create a dict with current row data
             dict_data = {
-                fields[i]: sheet.row(row_no)[i].value
-                for i in range(0, len(fields))}
+                fields[i]: sheet.row(row_no)[i].value for i in range(0, len(fields))
+            }
 
             if dict_data["amount"] == "":
                 # No amount was provided for this line, skip silently
                 continue
 
             # Locate Account
-            account = self.env["account.account"].search([
-                ("company_id", "=", company.id),
-                ("code", "=", dict_data["code"]),
-            ])
-            
+            account = self.env["account.account"].search(
+                [
+                    ("company_id", "=", company.id),
+                    ("code", "=", dict_data["code"]),
+                ]
+            )
+
             # Locate Currency
             other_currency = self.locate_currency(dict_data["currency"])
 
             if other_currency and not dict_data["amount_company_currency"]:
                 errors.append(
-                    "Fila {}: Si le establece otra moneda debe indicar el importe en esa otra moneda".format(str(row_no + 1)))
+                    "Fila {}: Si le establece otra moneda debe indicar el importe en esa otra moneda".format(
+                        str(row_no + 1)
+                    )
+                )
                 continue
 
             if other_currency and other_currency != account.currency_id:
-                errors.append('La moneda elegida "{}" en el movimiento para la cuenta "{}" no coincide con la de la cuenta "{}".'
-                              '\n ¡Deberia cambiar la moneda en el movimiento!.'.format(dict_data["currency"], account.display_name, account.currency_id.name))
+                errors.append(
+                    'La moneda elegida "{}" en el movimiento para la cuenta "{}" no coincide con la de la cuenta "{}".'
+                    "\n ¡Deberia cambiar la moneda en el movimiento!.".format(
+                        dict_data["currency"],
+                        account.display_name,
+                        account.currency_id.name,
+                    )
+                )
                 continue
 
             # Skip if account was not found
             if not account:
                 errors.append(
                     "Fila {}: No se encontró ninguna cuenta para el "
-                    "texto ingresado ({}).".format(
-                        str(row_no + 1), dict_data['name']))
+                    "texto ingresado ({}).".format(str(row_no + 1), dict_data["name"])
+                )
                 continue
             elif account.deprecated:
                 errors.append(
                     "Fila {}: La cuenta '{}' ({}) se encuentra depreciada y "
                     "no puede utilizarse.".format(
-                        str(row_no + 1), account.name, account.code))
+                        str(row_no + 1), account.name, account.code
+                    )
+                )
                 continue
 
             # Skip if amount isn't numerical
-            if not isinstance(dict_data['amount'], numbers.Number):
+            if not isinstance(dict_data["amount"], numbers.Number):
                 errors.append(
                     "Fila {}: El monto ingresado no es númerico.".format(
-                        str(row_no + 1)))
+                        str(row_no + 1)
+                    )
+                )
                 continue
 
-            if dict_data['amount'] > 0:
-                debit = self.company_id.currency_id.round(dict_data['amount'])
+            if dict_data["amount"] > 0:
+                debit = self.company_id.currency_id.round(dict_data["amount"])
                 credit = 0.0
                 # counterpart_credit_move_line["credit"] += debit
-            elif dict_data['amount'] < 0:
+            elif dict_data["amount"] < 0:
                 debit = 0.0
-                credit = abs(self.company_id.currency_id.round(
-                    dict_data['amount']))
+                credit = abs(self.company_id.currency_id.round(dict_data["amount"]))
                 # counterpart_debit_move_line["debit"] += credit
             else:
                 # Skip element if amount == 0
                 continue
-            
-            amount_company_currency = other_currency and other_currency.round(dict_data["amount_company_currency"]) or False
+
+            amount_company_currency = (
+                other_currency
+                and other_currency.round(dict_data["amount_company_currency"])
+                or False
+            )
 
             line = {
-                "name": dict_data.get("reference", None) or
-                _("Opening balance"),
+                "name": dict_data.get("reference", None) or _("Opening balance"),
                 "account_id": account.id,
-                'company_id': self.company_id.id,
+                "company_id": self.company_id.id,
                 "debit": debit,
-                "credit": credit
+                "credit": credit,
             }
             if other_currency:
-                line.update({
-                    'currency_id': other_currency.id,
-                    'amount_currency': (-1.0 if line["debit"] == 0.0 else 1.0) * amount_company_currency,
-                })
+                line.update(
+                    {
+                        "currency_id": other_currency.id,
+                        "amount_currency": (-1.0 if line["debit"] == 0.0 else 1.0)
+                        * amount_company_currency,
+                    }
+                )
 
             move_lines.append(line)
 
@@ -233,8 +255,7 @@ class AccountBalanceImport(models.TransientModel):
             raise ValidationError("\n".join(errors))
 
         if len(move_lines) == 0:
-            raise ValidationError(
-                "El archivo importado no contiene movimientos.")
+            raise ValidationError("El archivo importado no contiene movimientos.")
 
         debits_sum = credits_sum = 0.0
         for line in move_lines:
@@ -244,28 +265,39 @@ class AccountBalanceImport(models.TransientModel):
         # Code taken from method opening_move_line_ids_changed
         currency = self.company_id.currency_id
         difference = abs(debits_sum - credits_sum)
-        debit_diff = (debits_sum > credits_sum) and float_round(
-            difference, precision_rounding=currency.rounding) or 0.0
-        credit_diff = (debits_sum < credits_sum) and float_round(
-            difference, precision_rounding=currency.rounding) or 0.0
+        debit_diff = (
+            (debits_sum > credits_sum)
+            and float_round(difference, precision_rounding=currency.rounding)
+            or 0.0
+        )
+        credit_diff = (
+            (debits_sum < credits_sum)
+            and float_round(difference, precision_rounding=currency.rounding)
+            or 0.0
+        )
 
         if debit_diff or credit_diff:
-            move_lines.append({
-                'name': _('Automatic Balancing Line'),
-                'account_id': self.counterpart_account_id.id,
-                'debit': credit_diff,
-                'credit': debit_diff,
-                'company_id': self.company_id.id,
-            })
+            move_lines.append(
+                {
+                    "name": _("Automatic Balancing Line"),
+                    "account_id": self.counterpart_account_id.id,
+                    "debit": credit_diff,
+                    "credit": debit_diff,
+                    "company_id": self.company_id.id,
+                }
+            )
 
         # Create account move and lines
-        account_move = self.env['account.move'].create(
-            {"journal_id": journal.id,
-             "date": self.accounting_date,
-             "line_ids": [(0, 0, item) for item in move_lines]})
+        account_move = self.env["account.move"].create(
+            {
+                "journal_id": journal.id,
+                "date": self.accounting_date,
+                "line_ids": [(0, 0, item) for item in move_lines],
+            }
+        )
 
         # Post movement
-        account_move.post()
+        account_move._post()
 
         return {
             "type": "ir.actions.act_window",
@@ -274,7 +306,7 @@ class AccountBalanceImport(models.TransientModel):
             "res_model": "account.move",
             "res_id": account_move.id,
             "views": [(False, "form")],
-            "target": "current"
+            "target": "current",
         }
 
     def partner_balance_import_xls(self):
@@ -287,7 +319,7 @@ class AccountBalanceImport(models.TransientModel):
         """
 
         # Set-up environment company
-        self = self.with_context(force_company=self.company_id.id)
+        self = self.with_company(self.company_id.id)
 
         fields = [
             "name",
@@ -295,16 +327,16 @@ class AccountBalanceImport(models.TransientModel):
             "amount",
             "due_date",
             "currency",
-            "amount_company_currency"
+            "amount_company_currency",
         ]
 
         account_moves = list()  # For storing account moves before creating 'em
-        errors = list()         # For storing possible errors
+        errors = list()  # For storing possible errors
         company = self.env.company
         journal = self.partner_balance_journal_id
 
         # Parse XLS file
-        decoded = base64.decodestring(self.partner_balance_file)
+        decoded = base64.decodebytes(self.partner_balance_file)
         workbook = xlrd.open_workbook(file_contents=decoded)
         sheet = workbook.sheet_by_index(0)
 
@@ -313,8 +345,8 @@ class AccountBalanceImport(models.TransientModel):
 
             # Create a dict with current row data
             dict_data = {
-                fields[i]: sheet.row(row_no)[i].value
-                for i in range(0, len(fields))}
+                fields[i]: sheet.row(row_no)[i].value for i in range(0, len(fields))
+            }
 
             # Parse name as string to prevent CUIT being read as float
             if isinstance(dict_data["name"], numbers.Number):
@@ -322,10 +354,11 @@ class AccountBalanceImport(models.TransientModel):
 
             # Locate Partner
             domain = [
-                "|", "|",
+                "|",
+                "|",
                 ("name", "=", dict_data["name"]),
                 ("vat", "=", dict_data["name"]),
-                ("ref", "=", dict_data["name"])
+                ("ref", "=", dict_data["name"]),
             ]
 
             partner = self.env["res.partner"].search(domain)
@@ -335,7 +368,10 @@ class AccountBalanceImport(models.TransientModel):
 
             if other_currency and not dict_data["amount_company_currency"]:
                 errors.append(
-                    "Fila {}: Si le establece otra moneda debe indicar el importe en esa otra moneda".format(str(row_no + 1)))
+                    "Fila {}: Si le establece otra moneda debe indicar el importe en esa otra moneda".format(
+                        str(row_no + 1)
+                    )
+                )
                 continue
 
             # Skip if partner not found
@@ -343,7 +379,9 @@ class AccountBalanceImport(models.TransientModel):
                 errors.append(
                     "Fila {}: No se encontró ningún partner "
                     "para el texto ingresado ({}).".format(
-                        str(row_no + 1), dict_data['name']))
+                        str(row_no + 1), dict_data["name"]
+                    )
+                )
                 continue
 
             # Skip if more than one parter was found
@@ -351,29 +389,30 @@ class AccountBalanceImport(models.TransientModel):
                 errors.append(
                     "Fila {}: Se encontraron varios partners "
                     "para el texto ingresado ({}). ¡Revise los datos Cargados!".format(
-                        str(row_no + 1), dict_data['name']))
+                        str(row_no + 1), dict_data["name"]
+                    )
+                )
                 continue
 
             # Skip if amount isn't numerical
-            if not isinstance(dict_data['amount'], numbers.Number):
+            if not isinstance(dict_data["amount"], numbers.Number):
                 errors.append(
-                    "Fila {}: El monto no es numérico.".format(
-                        str(row_no + 1)))
+                    "Fila {}: El monto no es numérico.".format(str(row_no + 1))
+                )
                 continue
 
             if dict_data["due_date"] != "":
                 try:
                     due_date = datetime.datetime(
-                        *xlrd.xldate_as_tuple(
-                            dict_data["due_date"],
-                            workbook.datemode)).date()
+                        *xlrd.xldate_as_tuple(dict_data["due_date"], workbook.datemode)
+                    ).date()
                 except TypeError:
                     # Skip if we're not able to parse due_date
                     errors.append(
                         "Fila {}: Formato de fecha de vencimiento desconocido. "
                         "Asegúrese de que la columna posee "
-                        "formato de fecha.".format(
-                            str(row_no + 1)))
+                        "formato de fecha.".format(str(row_no + 1))
+                    )
                     continue
             else:
                 # Default to blank if ommited
@@ -390,7 +429,7 @@ class AccountBalanceImport(models.TransientModel):
                     debit = 0.0
                     credit = self.company_id.currency_id.round(abs(dict_data["amount"]))
                 else:
-                    continue    # Skip silently if amount is 0
+                    continue  # Skip silently if amount is 0
             else:
                 # Payable
                 partner_account = partner.property_account_payable_id
@@ -401,27 +440,32 @@ class AccountBalanceImport(models.TransientModel):
                     debit = self.company_id.currency_id.round(abs(dict_data["amount"]))
                     credit = 0.0
                 else:
-                    continue    # Skip silently if amount is 0
+                    continue  # Skip silently if amount is 0
 
             # Skip if partner account account is obsolete
             if partner_account.deprecated:
                 errors.append(
                     "Fila {}: La cuenta asociada al partner {} "
-                    "se encuentra depreciada.".format(
-                        str(row_no + 1), partner.name))
+                    "se encuentra depreciada.".format(str(row_no + 1), partner.name)
+                )
                 continue
 
             # Check if accounts have the same company.
-            if (company.id != partner_account.company_id.id):
+            if company.id != partner_account.company_id.id:
                 errors.append(
                     "Fila {}: Una de las cuentas asociadas al "
                     "partner {} no pertenece a la compañía ({})".format(
-                        str(row_no + 1),
-                        partner.name, company.name))
+                        str(row_no + 1), partner.name, company.name
+                    )
+                )
                 continue
-            
-            amount_company_currency = other_currency and other_currency.round(dict_data["amount_company_currency"]) or False
-            
+
+            amount_company_currency = (
+                other_currency
+                and other_currency.round(dict_data["amount_company_currency"])
+                or False
+            )
+
             # Create move lines
             line_1 = {
                 "name": dict_data["reference"],
@@ -429,7 +473,7 @@ class AccountBalanceImport(models.TransientModel):
                 "account_id": partner_account.id,
                 "debit": debit,
                 "credit": credit,
-                "date_maturity": due_date
+                "date_maturity": due_date,
             }
 
             line_2 = {
@@ -438,36 +482,44 @@ class AccountBalanceImport(models.TransientModel):
                 "account_id": self.counterpart_account_id.id,
                 "debit": credit,
                 "credit": debit,
-                "date_maturity": due_date
+                "date_maturity": due_date,
             }
             if other_currency:
-                line_1.update({
-                    'currency_id': other_currency.id,
-                    'amount_currency':  (-1.0 if line_1["debit"] == 0.0 else 1.0) * amount_company_currency,
-                })
-                line_2.update({
-                    'currency_id': other_currency.id,
-                    'amount_currency': (1.0 if line_2["credit"] == 0.0 else -1.0) * amount_company_currency,
-                })
+                line_1.update(
+                    {
+                        "currency_id": other_currency.id,
+                        "amount_currency": (-1.0 if line_1["debit"] == 0.0 else 1.0)
+                        * amount_company_currency,
+                    }
+                )
+                line_2.update(
+                    {
+                        "currency_id": other_currency.id,
+                        "amount_currency": (1.0 if line_2["credit"] == 0.0 else -1.0)
+                        * amount_company_currency,
+                    }
+                )
             # Add account move to list
-            account_moves.append({
-                "journal_id": journal.id,
-                "ref": dict_data["reference"],
-                "date": self.accounting_date,
-                "line_ids": [
-                    (0, 0, line_1),
-                    (0, 0, line_2),
-                ]
-            })
+            account_moves.append(
+                {
+                    "journal_id": journal.id,
+                    "ref": dict_data["reference"],
+                    "date": self.accounting_date,
+                    "line_ids": [
+                        (0, 0, line_1),
+                        (0, 0, line_2),
+                    ],
+                }
+            )
 
         # Check if there were errors when iterating over XLS rows
         if len(errors) > 0:
             raise ValidationError("\n".join(errors))
 
         # Everything should be OK if we reached this part
-        generated_moves = self.env['account.move'].create(account_moves)
+        generated_moves = self.env["account.move"].create(account_moves)
         # Post Account Move
-        generated_moves.post()
+        generated_moves._post()
 
         return {
             "name": "Importación de Saldos Iniciales",
@@ -477,15 +529,14 @@ class AccountBalanceImport(models.TransientModel):
             "res_model": "account.move",
             "views": [(False, "tree"), (False, "form")],
             "target": "current",
-            "domain": [("id", "in", generated_moves.ids)]
+            "domain": [("id", "in", generated_moves.ids)],
         }
 
     def check_balance_import_xls(self):
-        """ Triggered on when Checks XLS is imported
-        """
+        """Triggered on when Checks XLS is imported"""
 
         # Set-up environment company
-        self = self.with_context(force_company=self.company_id.id)
+        self = self.with_company(self.company_id.id)
 
         fields = [
             "number",
@@ -496,35 +547,35 @@ class AccountBalanceImport(models.TransientModel):
             "owner_name",
             "owner_vat",
             "currency",
-            "amount_company_currency"
+            "amount_company_currency",
         ]
 
-        generated_move_ids = list()   # For storing generated account move ids
-        pre_data = list()        # For storing data before persisting to db
-        errors = list()         # For storing possible errors
+        generated_move_ids = list()  # For storing generated account move ids
+        pre_data = list()  # For storing data before persisting to db
+        errors = list()  # For storing possible errors
 
         # Parse XLS file
-        decoded = base64.decodestring(self.check_file)
+        decoded = base64.decodebytes(self.check_file)
         workbook = xlrd.open_workbook(file_contents=decoded)
         sheet = workbook.sheet_by_index(0)
 
         # Get Journal
-        if self.check_type == 'issue_check':
+        if self.check_type == "issue_check":
             operation = "handed"
             journal = self.check_journal_bank_id
-            account = self.company_id._get_check_account('deferred')
+            payment_method_line = self.check_journal_bank_id.inbound_payment_method_line_ids.filtered(lambda x: x.code == 'check_printing')
         else:  # Third-party Check
             operation = "holding"
             journal = self.check_journal_third_id
-            account = journal.default_debit_account_id
+            payment_method_line = self.check_journal_third_id.outbound_payment_method_line_ids.filtered(lambda x: x.code in ['in_third_checks', 'out_third_checks'])
 
         # Iterate over each sheet row
         for row_no in range(1, sheet.nrows):
 
             # Create a dict with current row data
             dict_data = {
-                fields[i]: sheet.row(row_no)[i].value
-                for i in range(0, len(fields))}
+                fields[i]: sheet.row(row_no)[i].value for i in range(0, len(fields))
+            }
 
             # Parse name as string to prevent CUIT being read as float
             if isinstance(dict_data["name"], numbers.Number):
@@ -532,10 +583,11 @@ class AccountBalanceImport(models.TransientModel):
 
             # Locate Partner
             domain = [
-                "|", "|",
+                "|",
+                "|",
                 ("name", "=", dict_data["name"]),
                 ("vat", "=", dict_data["name"]),
-                ("ref", "=", dict_data["name"])
+                ("ref", "=", dict_data["name"]),
             ]
 
             partner = self.env["res.partner"].search(domain)
@@ -545,7 +597,10 @@ class AccountBalanceImport(models.TransientModel):
 
             if other_currency and not dict_data["amount_company_currency"]:
                 errors.append(
-                    "Fila {}: Si le establece otra moneda debe indicar el importe en esa otra moneda".format(str(row_no + 1)))
+                    "Fila {}: Si le establece otra moneda debe indicar el importe en esa otra moneda".format(
+                        str(row_no + 1)
+                    )
+                )
                 continue
 
             # Skip if partner not found
@@ -553,139 +608,156 @@ class AccountBalanceImport(models.TransientModel):
                 errors.append(
                     "Fila {}: No se encontró ningún partner "
                     "para el texto ingresado ({})".format(
-                        str(row_no + 1), dict_data['name']))
+                        str(row_no + 1), dict_data["name"]
+                    )
+                )
                 continue
 
             # Skip if we're not able to parse date
             try:
                 issue_date = datetime.datetime(
-                    *xlrd.xldate_as_tuple(
-                        dict_data["issue_date"],
-                        workbook.datemode)).date()
+                    *xlrd.xldate_as_tuple(dict_data["issue_date"], workbook.datemode)
+                ).date()
             except TypeError:
                 errors.append(
                     "Fila {}: Formato de fecha de emisión desconocido. "
                     "Asegúrese de que la columna posee "
-                    "formato de fecha.".format(
-                        str(row_no + 1)))
+                    "formato de fecha.".format(str(row_no + 1))
+                )
                 continue
 
             # Skip if we're not able to parse due_date
             try:
                 payment_date = datetime.datetime(
-                    *xlrd.xldate_as_tuple(
-                        dict_data["payment_date"],
-                        workbook.datemode)).date()
+                    *xlrd.xldate_as_tuple(dict_data["payment_date"], workbook.datemode)
+                ).date()
             except TypeError:
                 errors.append(
                     "Fila {}: Formato de fecha de pago desconocido. "
                     "Asegúrese de que la columna posee "
-                    "formato de fecha.".format(
-                        str(row_no + 1)))
+                    "formato de fecha.".format(str(row_no + 1))
+                )
                 continue
 
             try:
                 number = str(int(dict_data["number"]))
             except ValueError:
                 errors.append(
-                    "Fila {}: Número de cheque inválido. ".format(
-                        str(row_no + 1)))
+                    "Fila {}: Número de cheque inválido. ".format(str(row_no + 1))
+                )
                 continue
 
             amount = self.company_id.currency_id.round(dict_data["amount"])
-            amount_company_currency = other_currency and other_currency.round(dict_data["amount_company_currency"]) or False
+            amount_company_currency = (
+                other_currency
+                and other_currency.round(dict_data["amount_company_currency"])
+                or False
+            )
 
-            account_move_line_1 = {
-                "name": "Cheque N°. {}".format(number),
-                "account_id": account.id,
-                "debit": 0.0 if self.check_type == 'issue_check' else amount,
-                "credit": amount if self.check_type == 'issue_check' else 0.0,
-                "partner_id": partner.id
-            }
+            # account_move_line_1 = {
+            #     "name": "Cheque N°. {}".format(number),
+            #     "account_id": account.id,
+            #     "debit": 0.0 if self.check_type == "issue_check" else amount,
+            #     "credit": amount if self.check_type == "issue_check" else 0.0,
+            #     "partner_id": partner.id,
+            # }
 
-            account_move_line_2 = {
-                "name": "Cheque N°. {}".format(number),
-                "account_id": self.counterpart_account_id.id,
-                "debit": account_move_line_1['credit'],
-                "credit": account_move_line_1['debit'],
-                "partner_id": partner.id
-            }
-            if other_currency:
-                account_move_line_1.update({
-                    'currency_id': other_currency.id,
-                    'amount_currency':  (-1.0 if self.check_type == 'issue_check' else 1.0) * amount_company_currency,
-                })
-                account_move_line_2.update({
-                    'currency_id': other_currency.id,
-                    'amount_currency': (1.0 if self.check_type == 'issue_check' else -1.0) * amount_company_currency,
-                })
+            # account_move_line_2 = {
+            #     "name": "Cheque N°. {}".format(number),
+            #     "account_id": self.counterpart_account_id.id,
+            #     "debit": account_move_line_1["credit"],
+            #     "credit": account_move_line_1["debit"],
+            #     "partner_id": partner.id,
+            # }
+            # if other_currency:
+            #     account_move_line_1.update(
+            #         {
+            #             "currency_id": other_currency.id,
+            #             "amount_currency": (
+            #                 -1.0 if self.check_type == "issue_check" else 1.0
+            #             )
+            #             * amount_company_currency,
+            #         }
+            #     )
+            #     account_move_line_2.update(
+            #         {
+            #             "currency_id": other_currency.id,
+            #             "amount_currency": (
+            #                 1.0 if self.check_type == "issue_check" else -1.0
+            #             )
+            #             * amount_company_currency,
+            #         }
+            #     )
 
-            move_data = {
-                "date": self.accounting_date,
-                "journal_id": journal.id,
-                "ref": "Cheque N°. {}".format(number),
-                "line_ids": [
-                    (0, 0, account_move_line_1),
-                    (0, 0, account_move_line_2)
-                ]
-            }
+            # move_data = {
+            #     "date": self.accounting_date,
+            #     "journal_id": journal.id,
+            #     "ref": "Cheque N°. {}".format(number),
+            #     "line_ids": [(0, 0, account_move_line_1), (0, 0, account_move_line_2)],
+            # }
 
+            # import ipdb; ipdb.set_trace()
             check_data = {
-                "number": number,
+                "partner_id": partner.id,
+                "check_number": number,
                 "amount": dict_data["amount"],
-                "bank_id": journal.bank_id.id,
-                "type": self.check_type,
+                "l10n_latam_check_bank_id": journal.bank_id.id,
                 "name": "Saldo Inicial - Cheque Nº. {}".format(number),
                 "journal_id": journal.id,
-                "checkbook_id": self.check_checkbook_id.id,
-                "issue_date": issue_date,
-                "payment_date": payment_date,
-                "owner_name": dict_data["owner_name"],
-                "owner_vat": str(int(dict_data["owner_vat"])) if dict_data["owner_vat"] else None,
+                "l10n_latam_check_payment_date": payment_date,
+                "payment_method_line_id": payment_method_line.id,
             }
+            if self.check_type == "issue_check":
+                check_data.update({"l10n_latam_checkbook_id": self.check_checkbook_id.id})
             if other_currency and amount_company_currency:
-                check_data.update({
-                    "amount": amount_company_currency,
-                    "amount_company_currency": dict_data["amount"],
-                    "currency_id": other_currency.id,
-                })
+                check_data.update(
+                    {
+                        "amount": amount_company_currency,
+                        "amount_company_currency": dict_data["amount"],
+                        "currency_id": other_currency.id,
+                    }
+                )
 
-            pre_data.append((move_data, check_data, partner.id))
+            pre_data.append((check_data, partner.id))
 
         # Check if there were errors when iterating over XLS rows
         if len(errors) > 0:
             raise ValidationError("\n".join(errors))
 
         if len(pre_data) == 0:
-            raise ValidationError(
-                "El archivo importado no contiene movimientos.")
-
-        for move_data, check_data, partid in pre_data:
+            raise ValidationError("El archivo importado no contiene movimientos.")
+        payments = self.env['account.payment']
+        for check_data, partid in pre_data:
             # Create and Post Account Move
-            account_move = self.env["account.move"].create(move_data)
-            account_move.post()
-            generated_move_ids.append(account_move.id)
+            # account_move = self.env["account.move"].create(move_data)
+            # account_move.post()
+            # generated_move_ids.append(account_move.id)
 
-            # Update check data, add move as operation
-            check_data["operation_ids"] = [
-                (0, 0, {
-                    "date": self.accounting_date,
-                    "operation": operation,
-                    "origin": "{},{}".format("account.move", account_move.id),
-                    "partner_id": partid
-                })
-            ]
+            # # Update check data, add move as operation
+            # check_data["l10n_latam_check_operation_ids"] = [
+            #     (
+            #         0,
+            #         0,
+            #         {
+            #             "date": self.accounting_date,
+            #             "operation": operation,
+            #             "origin": "{},{}".format("account.move", account_move.id),
+            #             "partner_id": partid,
+            #         },
+            #     )
+            # ]
 
             # Create Check
-            self.env['account.check'].create(check_data)
+            payments+= self.env["account.payment"].create(check_data)
+        payments.action_post()
 
         return {
             "name": "Importación de Saldos Iniciales",
             "type": "ir.actions.act_window",
             "view_type": "form",
             "view_mode": "tree,form",
-            "res_model": "account.move",
+            "res_model": "account.payment",
             "views": [(False, "tree"), (False, "form")],
             "target": "current",
-            "domain": [("id", "in", generated_move_ids)]
+            "domain": [("id", "in", payments.ids)],
         }
