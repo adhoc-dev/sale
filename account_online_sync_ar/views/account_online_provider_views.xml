@@ -25,6 +25,9 @@
                     <button name="online_account_delete_credentials" string="Delete Online Credentials" confirm="This action can not be undone. Are you sure? This can affect any other database using the same credential" icon="fa-trash" type="object" class="oe_link"/>
                 </div>
             </notebook>
+            <field name="name" position="after">
+                <field name="paybook_username_hint"/>
+            </field>
         </field>
     </record>
 

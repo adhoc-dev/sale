@@ -1,6 +1,6 @@
 {
     'name': "Account Online Sync Argentina",
-    'version': '13.0.1.3.0',
+    'version': '13.0.1.4.0',
     'category': 'Accounting/Accounting',
     'sequence': 14,
     'author': 'ADHOC SA',

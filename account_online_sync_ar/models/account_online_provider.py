@@ -21,6 +21,7 @@ class PaybookProviderAccount(models.Model):
     # Only rename this field to avoid confusions
     next_refresh = fields.Datetime("Odoo cron next run")
     paybook_next_refresh = fields.Datetime("Next transactions will be available at")
+    paybook_username_hint = fields.Char("Login/User")
 
     def _get_available_providers(self):
         ret = super()._get_available_providers()
@@ -149,6 +150,7 @@ class PaybookProviderAccount(models.Model):
             'provider_account_identifier': id_credential,
             'company_id': company.id,  # TODO review if really needed"
             'provider_identifier': id_site,
+            'paybook_username_hint': cred.get('username'),
 
             # dt_refresh disponible en cred y acc. es la fecha de la ultima transaccion sincronizada
             'last_refresh': datetime.fromtimestamp(cred.get('dt_refresh')) if cred.get('dt_refresh')
