@@ -30,15 +30,18 @@
                     <group attrs="{'invisible': [('mode', 'not in', 'check_balance')] }">
                         <h3 colspan="4">Importación de Cheques</h3>
                         <field name="check_type" attrs="{'required': [('mode', '=', 'check_balance')] }" />
-                        <field name="check_journal_bank_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'issue_check')], 'invisible': [('check_type', 'not in', 'issue_check')] }" domain="[('type', 'in', ['cash', 'bank'])]" />
-                        <!-- <field name="check_checkbook_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'issue_check')], 'invisible': [('check_type', 'not in', 'issue_check')]}" domain="[('journal_id', '=', check_journal_bank_id)]"/> -->
-                        <field name="check_checkbook_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'issue_check')], 'invisible': [('check_type', 'not in', 'issue_check')]}"/>
+                        <field name="check_journal_bank_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'issue_check')], 'invisible': [('check_type', 'not in', 'issue_check')] }" />
+                        <field name="check_checkbook_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'issue_check')], 'invisible': [('check_type', 'not in', 'issue_check')]}" domain="[('journal_id', '=', check_journal_bank_id)]"/>
                         <field name="check_journal_third_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'third_check')],
                         'invisible': [('check_type', 'not in', 'third_check')] }" />
                         <br/>
-                        <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'partner_balance')] }" href="/account_balance_import/static/xls/check_balance.xls" role="button">
+                        <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'partner_balance')], 'invisible':[ ('check_type', '!=', 'issue_check')]}" href="/account_balance_import/static/xls/own_check_balance.xls" role="button">
                             <span class="fa fa-download" title="download"></span>
-                            Descargar Plantilla de Importación de Cheques
+                            Descargar Plantilla de Importación de Cheques Propios
+                        </a>
+                        <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'partner_balance')], 'invisible':[ ('check_type', '=', 'issue_check')]}" href="/account_balance_import/static/xls/third_check_balance.xls" role="button">
+                            <span class="fa fa-download" title="download"></span>
+                            Descargar Plantilla de Importación de Cheques de Terceros
                         </a>
                         <br/>
                         <field name="check_file" attrs="{'required': [('mode', '=', 'check')] }"/>

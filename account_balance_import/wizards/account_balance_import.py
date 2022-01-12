@@ -77,14 +77,16 @@ class AccountBalanceImport(models.TransientModel):
     check_journal_bank_id = fields.Many2one(
         "account.journal",
         string="Diario de Banco",
-        domain="[('company_id', '=', company_id)," "('type', '=', 'cash')]",
+        domain="[('company_id', '=', company_id)," "('type', '=', 'bank'),"
+       "('outbound_payment_method_line_ids.code', '=', 'check_printing')]"
     )
 
     check_journal_third_id = fields.Many2one(
         "account.journal",
         string="Diario de Cheques de Terceros",
         domain="[('company_id', '=', company_id)," "('type', '=', 'cash'),"
-       "('outbound_payment_method_line_ids.code', 'in', ['in_third_checks', 'out_third_checks'])]")
+       "('inbound_payment_method_line_ids.code', '=', 'in_third_checks')]"
+    )
 
     check_checkbook_id = fields.Many2one("l10n_latam.checkbook", string="Chequera")
 
@@ -541,14 +543,13 @@ class AccountBalanceImport(models.TransientModel):
         fields = [
             "number",
             "amount",
-            "issue_date",
             "payment_date",
             "name",
-            "owner_name",
-            "owner_vat",
             "currency",
             "amount_company_currency",
         ]
+        if self.check_type == "third_check":
+            fields.append("owner_vat")
 
         generated_move_ids = list()  # For storing generated account move ids
         pre_data = list()  # For storing data before persisting to db
@@ -563,11 +564,11 @@ class AccountBalanceImport(models.TransientModel):
         if self.check_type == "issue_check":
             operation = "handed"
             journal = self.check_journal_bank_id
-            payment_method_line = self.check_journal_bank_id.inbound_payment_method_line_ids.filtered(lambda x: x.code == 'check_printing')
+            payment_method_line = self.check_journal_bank_id._get_available_payment_method_lines('outbound').filtered(lambda x: x.code == 'check_printing')
         else:  # Third-party Check
             operation = "holding"
             journal = self.check_journal_third_id
-            payment_method_line = self.check_journal_third_id.outbound_payment_method_line_ids.filtered(lambda x: x.code in ['in_third_checks', 'out_third_checks'])
+            payment_method_line = self.check_journal_third_id._get_available_payment_method_lines('inbound').filtered(lambda x: x.code == 'new_third_checks')
 
         # Iterate over each sheet row
         for row_no in range(1, sheet.nrows):
@@ -613,19 +614,6 @@ class AccountBalanceImport(models.TransientModel):
                 )
                 continue
 
-            # Skip if we're not able to parse date
-            try:
-                issue_date = datetime.datetime(
-                    *xlrd.xldate_as_tuple(dict_data["issue_date"], workbook.datemode)
-                ).date()
-            except TypeError:
-                errors.append(
-                    "Fila {}: Formato de fecha de emisión desconocido. "
-                    "Asegúrese de que la columna posee "
-                    "formato de fecha.".format(str(row_no + 1))
-                )
-                continue
-
             # Skip if we're not able to parse due_date
             try:
                 payment_date = datetime.datetime(
@@ -654,49 +642,6 @@ class AccountBalanceImport(models.TransientModel):
                 or False
             )
 
-            # account_move_line_1 = {
-            #     "name": "Cheque N°. {}".format(number),
-            #     "account_id": account.id,
-            #     "debit": 0.0 if self.check_type == "issue_check" else amount,
-            #     "credit": amount if self.check_type == "issue_check" else 0.0,
-            #     "partner_id": partner.id,
-            # }
-
-            # account_move_line_2 = {
-            #     "name": "Cheque N°. {}".format(number),
-            #     "account_id": self.counterpart_account_id.id,
-            #     "debit": account_move_line_1["credit"],
-            #     "credit": account_move_line_1["debit"],
-            #     "partner_id": partner.id,
-            # }
-            # if other_currency:
-            #     account_move_line_1.update(
-            #         {
-            #             "currency_id": other_currency.id,
-            #             "amount_currency": (
-            #                 -1.0 if self.check_type == "issue_check" else 1.0
-            #             )
-            #             * amount_company_currency,
-            #         }
-            #     )
-            #     account_move_line_2.update(
-            #         {
-            #             "currency_id": other_currency.id,
-            #             "amount_currency": (
-            #                 1.0 if self.check_type == "issue_check" else -1.0
-            #             )
-            #             * amount_company_currency,
-            #         }
-            #     )
-
-            # move_data = {
-            #     "date": self.accounting_date,
-            #     "journal_id": journal.id,
-            #     "ref": "Cheque N°. {}".format(number),
-            #     "line_ids": [(0, 0, account_move_line_1), (0, 0, account_move_line_2)],
-            # }
-
-            # import ipdb; ipdb.set_trace()
             check_data = {
                 "partner_id": partner.id,
                 "check_number": number,
@@ -704,11 +649,15 @@ class AccountBalanceImport(models.TransientModel):
                 "l10n_latam_check_bank_id": journal.bank_id.id,
                 "name": "Saldo Inicial - Cheque Nº. {}".format(number),
                 "journal_id": journal.id,
+                "payment_type": 'inbound',
                 "l10n_latam_check_payment_date": payment_date,
                 "payment_method_line_id": payment_method_line.id,
             }
             if self.check_type == "issue_check":
-                check_data.update({"l10n_latam_checkbook_id": self.check_checkbook_id.id})
+                check_data.update({
+                    "l10n_latam_checkbook_id": self.check_checkbook_id.id,
+                    "payment_type": 'outbound',
+                    })
             if other_currency and amount_company_currency:
                 check_data.update(
                     {
@@ -728,27 +677,9 @@ class AccountBalanceImport(models.TransientModel):
             raise ValidationError("El archivo importado no contiene movimientos.")
         payments = self.env['account.payment']
         for check_data, partid in pre_data:
-            # Create and Post Account Move
-            # account_move = self.env["account.move"].create(move_data)
-            # account_move.post()
-            # generated_move_ids.append(account_move.id)
-
-            # # Update check data, add move as operation
-            # check_data["l10n_latam_check_operation_ids"] = [
-            #     (
-            #         0,
-            #         0,
-            #         {
-            #             "date": self.accounting_date,
-            #             "operation": operation,
-            #             "origin": "{},{}".format("account.move", account_move.id),
-            #             "partner_id": partid,
-            #         },
-            #     )
-            # ]
-
-            # Create Check
-            payments+= self.env["account.payment"].create(check_data)
+            payment = self.env["account.payment"].create(check_data)
+            payment.write({'check_number': check_data["check_number"]})
+            payments += payment
         payments.action_post()
 
         return {
