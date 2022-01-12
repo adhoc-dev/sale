@@ -20,13 +20,13 @@ class PurchaseSubscription(models.Model):
 
     name = fields.Char(
         required=True,
-        track_visibility="always",
+        tracking=True,
         default='New',
     )
     code = fields.Char(
         string="Reference",
         required=True,
-        track_visibility="onchange",
+        tracking=True,
         index=True,
         copy=False,
         default=lambda s: s.env['ir.sequence'].next_by_code(
@@ -59,7 +59,7 @@ class PurchaseSubscription(models.Model):
         compute='_compute_recurring_price',
         string="Recurring Price",
         store=True,
-        track_visibility='onchange',
+        tracking=True,
     )
     state = fields.Selection(
         [('draft', 'New'),
@@ -69,7 +69,7 @@ class PurchaseSubscription(models.Model):
          ('cancel', 'Cancelled')],
         'Status',
         required=True,
-        track_visibility='onchange',
+        tracking=True,
         copy=False,
         default='draft',
     )
@@ -83,7 +83,7 @@ class PurchaseSubscription(models.Model):
     )
     date = fields.Date(
         'End Date',
-        track_visibility='onchange',
+        tracking=True,
     )
     currency_id = fields.Many2one(
         'res.currency',
@@ -112,19 +112,19 @@ class PurchaseSubscription(models.Model):
     close_reason_id = fields.Many2one(
         "purchase.subscription.close.reason",
         "Close Reason",
-        track_visibility='onchange',
+        tracking=True,
     )
     description = fields.Text(
     )
     user_id = fields.Many2one(
         'res.users',
         'Responsible',
-        track_visibility='onchange',
+        tracking=True,
     )
     manager_id = fields.Many2one(
         'res.users',
         'Purchase Rep',
-        track_visibility='onchange',
+        tracking=True,
         help="It will be used to send the subcription reminder to expire",
     )
     invoice_count = fields.Integer(
@@ -185,12 +185,10 @@ class PurchaseSubscription(models.Model):
         if 'force_company' in self.env.context:
             company = self.env['res.company'].browse(
                 self.env.context['force_company'])
+            self = self.with_company(company)
         else:
             company = self.company_id
-            self = self.with_context(
-                force_company=company.id,
-                company_id=company.id
-            )
+            self = self.with_company(company.id)
         fpos = partner.property_account_position_id
         journals = self.env['account.journal'].search([
             ('type', '=', 'purchase'),
@@ -204,7 +202,7 @@ class PurchaseSubscription(models.Model):
         currency_id = self.currency_id.id
 
         invoice = {
-            'type': 'in_invoice',
+            'move_type': 'in_invoice',
             'narration': "%s %s" % (self.name, fields.Date.from_string(
                 self.recurring_next_date).strftime('%d-%m-%Y')),
             'partner_id': partner.id,
@@ -220,13 +218,9 @@ class PurchaseSubscription(models.Model):
         return invoice
 
     def _prepare_invoice_line(self, line, fiscal_position):
-        if 'force_company' in self.env.context:
-            company = self.env['res.company'].browse(
-                self.env.context['force_company'])
-        else:
-            company = line.purchase_subscription_id.company_id
-            line = line.with_context(
-                force_company=company.id, company_id=company.id)
+        purchase_subscription_company = line.purchase_subscription_id.company_id
+        if purchase_subscription_company:
+            line = line.with_company(purchase_subscription_company.id)
 
         account = line.product_id.property_account_expense_id
         if not account:
@@ -236,8 +230,7 @@ class PurchaseSubscription(models.Model):
 
         tax = line.product_id.supplier_taxes_id.filtered(
             lambda r: r.company_id == company)
-        tax = fiscal_position.map_tax(
-            tax, product=line.product_id, partner=self.partner_id)
+        tax = fiscal_position.map_tax(tax)
         return {
             'name': line.name,
             'account_id': account_id,
@@ -286,12 +279,7 @@ class PurchaseSubscription(models.Model):
                 sub_ids = [s['id']
                            for s in sub_data
                            if s['company_id'][0] == company_id]
-                subs = self.with_context(
-                    company_id=company_id,
-                    force_company=company_id).browse(sub_ids)
-                context_company = dict(
-                    self.env.context,
-                    company_id=company_id, force_company=company_id)
+                subs = self.with_company(company_id).browse(sub_ids)
                 for subscription in subs:
                     if automatic and auto_commit:
                         cr.commit()  # pylint: disable=invalid-commit
@@ -299,8 +287,7 @@ class PurchaseSubscription(models.Model):
                         invoice_values = subscription.with_context(
                             lang=subscription.partner_id.lang).\
                             _prepare_invoice()
-                        new_invoice = self.env['account.move'].with_context(
-                            context_company).create(invoice_values)
+                        new_invoice = self.env['account.move'].with_company(company_id).create(invoice_values)
                         new_invoice.message_post_with_view(
                             'mail.message_origin_link',
                             values={
