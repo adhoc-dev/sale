@@ -2,6 +2,7 @@
 from odoo import models, api, fields, _
 from odoo.exceptions import UserError
 from odoo.tools import date_utils
+from odoo.tools.safe_eval import safe_eval
 from datetime import datetime
 from datetime import timedelta
 import json
@@ -245,10 +246,22 @@ class PaybookProviderAccount(models.Model):
         provider_account = self.search([('provider_account_identifier', '=', id_credential)])
         values = self.with_context(paybook_company_id=company.id)._paybook_get_credentials(company, id_credential)
 
-        everything_ok = credential_data['state'] == 'success' and values['status_code'] < 400
+        widget_res = safe_eval(credential_data['result'])
+        everything_ok = credential_data['state'] == 'success' and values['status_code'] < 400 and not widget_res['is_new'] and provider_account
+
+        extra_info = ''
+        if not everything_ok and (widget_res['is_new'] or not provider_account):
+            extra_info = (
+                'Creaste una nueva credencial por error o la que intentaste actualizar no existe en esta base de datos.'
+                ' Ve al Menu Mi base / Administrar Credenciales y corrige el problema (id_credential: %s).'
+                ' Si necesitas ayuda o tienes dudas consulta a ADHOC' % (id_credential))
+
+            _logger.error('Updating a credential %s' % widget_res)
+            if provider_account:
+                self.message_post(body=extra_info)
 
         res = {'status': 'SUCCESS' if everything_ok else 'FAILED',
-               'message': 'Se actualizo las credenciales del banco' if everything_ok else values['message'],
+               'message': 'Se actualizo las credenciales del banco' if everything_ok else extra_info or values['message'],
                'method': 'refresh'}
 
         url = '/web#model=account.online.wizard&id=%s&action=account_online_sync.action_account_online_wizard_form'

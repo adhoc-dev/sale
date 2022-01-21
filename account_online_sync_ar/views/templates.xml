@@ -68,6 +68,7 @@
                 <br/><label for="id_credential">Credential ID</label><input type="text" id="id_credential" name="id_credential" t-att-value="id_credential"/>
                 <br/><label for="id_site">ID Site</label><input type="text" id="id_site" name="id_site" t-att-value="id_site"/>
                 <br/><label for="state">State</label><input type="text" id="state" name="state" t-att-value="state"/>
+                <br/><label for="state">Result</label><input type="text" id="result" name="result" t-att-value="result"/>
                 <button type="submit" class="btn btn-primary">Test it</button>
             </form>
 
@@ -89,6 +90,7 @@
                     form = document.getElementById("update_success")
                     document.getElementById("id_credential").value = credential['id_credential'];
                     document.getElementById("state").value = "success";
+                    document.getElementById("result").value = JSON.stringify(credential);
                     form.submit();
                 });
                 syncWidget.$on("error", function(credential){
@@ -96,6 +98,7 @@
                     form = document.getElementById("update_success")
                     document.getElementById("id_credential").value = credential['id_credential'];
                     document.getElementById("state").value = "error";
+                    document.getElementById("result").value = JSON.stringify(credential);
                     form.submit();
                 })
 
