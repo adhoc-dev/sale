@@ -85,9 +85,8 @@ class PaybookProviderAccount(models.Model):
             # paybook_next_refresh
 
     def update_credentials(self):
-        journal_id = self.account_online_journal_ids.sudo().mapped('journal_ids.id')
-        journal_id = journal_id[0] if len(journal_id) >= 1 else False
-        return self.with_context(journal_id=journal_id)._paybook_open_update_credential()
+        self.ensure_one()
+        return self._paybook_open_update_credential()
 
     def online_account_delete_credentials(self):
         """ Let to delete credential form paybook and also remove info from odoo online provider """
@@ -111,12 +110,9 @@ class PaybookProviderAccount(models.Model):
     def _paybook_open_update_credential(self):
         """ Display the widget to let the user update a bank password, it will open directly
         the bank page to be modified """
-        journal_id = self.env.context.get('journal_id') or 0
-        company = self.env['account.journal'].browse(journal_id).company_id if journal_id else self.env.company
-        if not company.paybook_user_id:
-            company._paybook_register_new_user()
+        self.ensure_one()
         return {'type': 'ir.actions.act_url', 'target': 'self',
-                'url': '/account_online_sync_ar/update_bank/%s/%s/%s' % (company.id, journal_id, self.id)}
+                'url': '/account_online_sync_ar/update_bank/%s/%s/%s' % (self.company_id.id, 0, self.id)}
 
     def _paybook_fetch(self, method, url, params={}, data={}, response_status=False, raise_status=True, external_paybook_id_user=False):
         base_url = 'https://sync.paybook.com/v1'
