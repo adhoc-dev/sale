@@ -116,11 +116,15 @@ class PaybookProviderAccount(models.Model):
 
     def _paybook_fetch(self, method, url, params={}, data={}, response_status=False, raise_status=True, external_paybook_id_user=False):
         base_url = 'https://sync.paybook.com/v1'
-        if self:
-            company = self.company_id
+
+        if external_paybook_id_user:
+            company = self.env['res.company'].search([('paybook_user_id', '=', external_paybook_id_user)])
         else:
-            company_id = self.env.context.get('paybook_company_id')
-            company = self.env['res.company'].browse(company_id) if company_id else self.env.company
+            if self:
+                company = self.company_id
+            else:
+                company_id = self.env.context.get('paybook_company_id')
+                company = self.env['res.company'].browse(company_id) if company_id else self.env.company
 
         if not external_paybook_id_user and not company.paybook_user_id:
             company._paybook_register_new_user()
