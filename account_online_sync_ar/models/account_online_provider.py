@@ -39,9 +39,10 @@ class PaybookProviderAccount(models.Model):
         self.ensure_one()
         transactions = []
         for account in self.account_online_journal_ids:
-            if account.journal_ids:
+            journals = account.sudo().journal_ids
+            if journals:
                 trx_count = account.retrieve_transactions()
-                transactions.append({'journal': account.journal_ids[0].name, 'count': trx_count})
+                transactions.append({'journal': journals[0].name, 'count': trx_count})
 
         result = {'status': self.status, 'message': self.message, 'transactions': transactions, 'method': 'refresh',
                   'added': self.env['account.online.journal']}
@@ -79,7 +80,7 @@ class PaybookProviderAccount(models.Model):
             # paybook_next_refresh
 
     def update_credentials(self):
-        journal_id = self.account_online_journal_ids.mapped('journal_ids.id')
+        journal_id = self.account_online_journal_ids.sudo().mapped('journal_ids.id')
         journal_id = journal_id[0] if len(journal_id) >= 1 else False
         return self.with_context(journal_id=journal_id)._paybook_open_update_credential()
 
@@ -212,7 +213,7 @@ class PaybookProviderAccount(models.Model):
             self.sudo().write({'account_online_journal_ids': account_values})
 
         method = 'edit'
-        added = self.account_online_journal_ids - prev_accounts.filtered(lambda x: x.journal_ids)
+        added = self.account_online_journal_ids - prev_accounts.sudo().filtered(lambda x: x.journal_ids)
 
         res = {'status': 'SUCCESS', 'method': method, 'added': added}
 
@@ -272,7 +273,7 @@ class PaybookProviderAccount(models.Model):
             prev_accounts = provider_account.account_online_journal_ids
             provider_account.sudo().write(values)
             method = 'edit'
-            added = provider_account.account_online_journal_ids - prev_accounts.filtered(lambda x: x.journal_ids)
+            added = provider_account.account_online_journal_ids - prev_accounts.sudo().filtered(lambda x: x.journal_ids)
         else:
             provider_account = self.create(values)
             method = 'add' if journal else 'edit'

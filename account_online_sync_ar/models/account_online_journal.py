@@ -19,7 +19,7 @@ class PaybookAccount(models.Model):
         """ Get transsanctions from provider, prepare data, and create bank statements """
         if (self.account_online_provider_id.provider_type != 'paybook'):
             return super().retrieve_transactions()
-        if not self.journal_ids:
+        if not self.sudo().journal_ids:
             return 0
         transactions = self.paybook_get_transactions()
         return self.env['account.bank.statement'].online_sync_bank_statement(transactions, self.journal_ids)
