@@ -23,6 +23,11 @@ class PaybookProviderAccount(models.Model):
     paybook_next_refresh = fields.Datetime("Next transactions will be available at")
     paybook_username_hint = fields.Char("Login/User")
 
+    # Add same logic from account_online_synchronization (saltedge)
+    auto_sync = fields.Boolean(
+        default=True, string="Sincronización Automática",
+        help="If possible, we will try to automatically fetch new transactions for this record")
+
     paybook_refresh_days = fields.Integer("Last Days to be Updated/fixed", compute="_compute_paybook_refresh_days")
 
     def _compute_paybook_refresh_days(self):
@@ -74,7 +79,7 @@ class PaybookProviderAccount(models.Model):
         Error Codes """
         if self.provider_type != 'paybook':
             return super().cron_fetch_online_transactions()
-        if self.status == 'SUCCESS' or self.status_code in ['500', '501', '503', '504', '509']:
+        if self.auto_sync and (self.status == 'SUCCESS' or self.status_code in ['500', '501', '503', '504', '509']):
             self.manual_sync()
             # TODO KZ only do the manual sync if the paybook next date is less than the current one
             # paybook_next_refresh

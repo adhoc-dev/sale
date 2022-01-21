@@ -8,6 +8,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="after">
                 <field name="action_required" attrs="{'invisible': [('provider_type', '!=', 'paybook')]}"/>
+                <field name="auto_sync" attrs="{'invisible': [('provider_type', '!=', 'paybook')]}"/>
             </xpath>
 
             <button name="update_credentials" position="attributes">
