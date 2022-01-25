@@ -1,4 +1,4 @@
-from odoo import models
+from odoo import models, fields
 
 
 class RentalOrderLine(models.Model):
@@ -10,6 +10,8 @@ class RentalOrderLine(models.Model):
             vals = stock_move._get_new_picking_values()
             vals['picking_type_id'] = picking_type_id.id
             picking = self.env['stock.picking'].create(vals)
+            picking.date_done = fields.Datetime.now(self)
+            picking.origin = self.order_id.name
             group = self.env['procurement.group'].create(self._prepare_procurement_group_vals())
             stock_move.write({
                 'picking_id': picking.id,
