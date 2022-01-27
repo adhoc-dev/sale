@@ -30,6 +30,8 @@ This module ensures that:
 
 * When a ticket is created from a project, the default partner will be project's partner.
 
+* The project in tickets not longer be related to team.
+
 Installation
 ============
 

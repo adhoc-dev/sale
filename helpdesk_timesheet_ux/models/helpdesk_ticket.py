@@ -2,13 +2,16 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import models, api, _
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
 
 class HelpdeskTicket(models.Model):
 
     _inherit = 'helpdesk.ticket'
+
+
+    project_id = fields.Many2one("project.project", readonly=False)
 
     @api.model
     def create(self, vals):
