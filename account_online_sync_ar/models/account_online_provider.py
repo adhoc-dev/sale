@@ -24,6 +24,12 @@ class PaybookProviderAccount(models.Model):
     paybook_next_refresh = fields.Datetime("Next transactions will be available at")
     paybook_username_hint = fields.Char("Login/User")
 
+    paybook_max_date = fields.Date(
+        "Fecha tope sincronización", help="Si esta configurada indica la fecha tope hacia atrás en la cual se puede"
+        " hacer sincronización con esta credencial. Esto sirve por:\n * Si se tuvo que reemplazar la credencial debido"
+        " a que cambio el username evitar ids duplicados.\n * Si hicieron carga manual de algun dia y quieren"
+        " sincronizar a partir del dia siguiente", tracking=True)
+
     # Add same logic from account_online_synchronization (saltedge)
     auto_sync = fields.Boolean(
         default=True, string="Sincronización Automática",

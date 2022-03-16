@@ -27,7 +27,18 @@ class PaybookAccount(models.Model):
     def paybook_get_transactions(self, dt_param=False, force_dt=False):
         self.ensure_one()
         dt_param = dt_param or 'dt_transaction_from'
-        last_sync = datetime.combine(force_dt or self.last_sync, datetime.min.time())
+
+        force_dt = force_dt.date() if force_dt else False
+        last_sync = force_dt or self.last_sync
+
+        # Si hay una fecha maximo historica tomar esto como limite para no traer transacciones mas viejas y evitar
+        # traernos transacciones duplicadas. Esto para el tema cuando cambia el usuario pero hacen referencia a la misma
+        # cuenta y transacciones pra evitar duplicados.
+        max_date = self.account_online_provider_id.paybook_max_date
+        if max_date and last_sync < max_date:
+            last_sync = max_date
+
+        last_sync = datetime.combine(last_sync, datetime.min.time())
         params = {'id_credential': self.account_online_provider_id.provider_account_identifier,
                   'id_account': self.online_identifier,
                   dt_param: last_sync.strftime('%s')}

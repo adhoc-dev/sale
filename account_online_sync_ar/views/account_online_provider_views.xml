@@ -18,6 +18,7 @@
 
             <field name="next_refresh" position="after">
                 <field name="paybook_next_refresh"/>
+                <field name="paybook_max_date"/>
             </field>
             <notebook position="before">
                 <div attrs="{'invisible': [('provider_type', '!=', 'paybook')]}" groups="base.group_no_one">
