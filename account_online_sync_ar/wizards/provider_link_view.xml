@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="provider_link_view_form" model="ir.ui.view">
+        <field name="name">provider.link.view.form</field>
+        <field name="model">provider.link</field>
+        <field name="arch" type="xml">
+            <form string="Seleccione Proveedor de Sincronización Bancaria">
+                <group>
+                    <field name="details" readonly="1" nolabel="1"/>
+                    <newline/>
+                    <div>
+                        <field name="ok_terms" nolabel="1"/>
+                        <label for="ok_terms"/>
+                    </div>
+                </group>
+                <footer>
+                    <button name="action_open_saltedge" string="Saltedge" type="object" class="oe_highlight"/>
+                    <button name="action_open_paybook" string="Syncfy" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

@@ -1,6 +1,6 @@
 {
     'name': "Account Online Sync Argentina",
-    'version': '13.0.1.7.0',
+    'version': '13.0.1.8.0',
     'category': 'Accounting/Accounting',
     'sequence': 14,
     'author': 'ADHOC SA',
@@ -8,6 +8,10 @@
     'license': 'AGPL-3',
     'summary': 'This module is used for Online bank synchronization for Argentina',
     "depends": [
+<<<<<<< HEAD
+=======
+        "account_online_sync",
+>>>>>>> 99e2174... temp
         "account_online_synchronization",
     ],
     'data': [
@@ -17,6 +21,7 @@
         'views/account_journal_views.xml',
         "security/ir.model.access.csv",
         "data/ir_cron_data.xml",
+        "wizards/provider_link_view.xml",
     ],
     'auto_install': True,
     'installable': False,

@@ -16,11 +16,14 @@ class AccountJournal(models.Model):
 
     def action_choose_institution(self):
         """ Remove the normal account_online_sync and use the one in paybook """
-        return self.env['account.online.provider'].with_context(journal_id=self.id)._paybook_open_login()
+        default_action = self.action_configure_bank_journal()
+        provider_link = self.env['provider.link'].create({'journal_id': self.id, 'default_action': default_action})
+        return provider_link.action_open_wiz()
 
     def action_configure_bank_journal(self):
         """ Remove the normal account_online_sync and use the one in paybook """
-        return self.env['account.online.provider'].with_context(journal_id=self.id)._paybook_open_login()
+        default_action = super().action_configure_bank_journal()
+        return default_action
 
     def cron_paybook_update_transactions(self):
         """ method called from schedule action that will try to update/fix refreshed paybook transactions in odoo """
