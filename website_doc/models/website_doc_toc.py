@@ -275,6 +275,8 @@ class WebsiteDocToc(models.Model):
         except requests.HTTPError:
             raise UserError(_("The Google Template cannot be found. Maybe it has been deleted."))
 
+        google_web_base_url = google_web_base_url + '/web' if 'web' not in google_web_base_url else google_web_base_url
+
         record_url = "Click on link to open Record in Odoo\n %s/?db=%s#id=%s&model=%s" % (
             google_web_base_url, self._cr.dbname, res_id, res_model)
         data = {
