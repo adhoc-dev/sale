@@ -86,7 +86,7 @@ class PaybookProviderAccount(models.Model):
         Error Codes """
         if self.provider_type != 'paybook':
             return super().cron_fetch_online_transactions()
-        if self.auto_sync and (self.status == 'SUCCESS' or self.status_code in ['500', '501', '503', '504', '509']):
+        if self.auto_sync and (self.status == 'SUCCESS' or self.status_code in ['406', '500', '501', '503', '504', '509']):
             self.manual_sync()
             # TODO KZ only do the manual sync if the paybook next date is less than the current one
             # paybook_next_refresh
@@ -207,9 +207,22 @@ class PaybookProviderAccount(models.Model):
         response = self._paybook_fetch('GET', '/credentials/' + id_credential, response_status=True, raise_status=False)
         cred = response.get('response')[0]
         # The credential has not error byt has not been sync, force to sync
-        if not cred.get('dt_ready') and cred.get('ready_in') == 0:
-            self._paybook_fetch('PUT', '/credentials/' + id_credential + '/sync')
-            self.action_paybook_update_state()
+        if cred.get('can_sync') and cred.get('is_authorized') and (cred.get('code') < 400 or cred.get('code') == 406):
+            response = self._paybook_fetch('PUT', '/credentials/' + id_credential + '/sync')
+            extra_info = _('Se forzó la sincronizacion bancaria')
+            self.message_post(body=extra_info)
+            self.manual_sync()
+        else:
+            message = _('No es posible forzar la sincronización. ')
+            if cred.get('code') >= 400 and cred.get('code') != 406:
+                message += _('Solo se pueden forzar credenciales sin estado de error.')
+            elif not cred.get('is_authorized'):
+                message += _('La credencial no se encuentra autorizada.')
+            elif not cred.get('can_sync'):
+                dt_ready = fields.Datetime.to_string(fields.Datetime.context_timestamp(self.with_context(tz='America/Buenos_Aires'), \
+                            datetime.fromtimestamp(cred.get('dt_ready'))))
+                message += _('Ya se ha forzado la sincronización recientemente. Puede intentar nuevamente a las ') + dt_ready
+            raise UserError(message)
 
     def action_paybook_update_accounts(self):
         """ Check the accounts available on the bank and let us to return the information of new accounts.
