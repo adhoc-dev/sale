@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="view_move_form" model="ir.ui.view">
+        <field name="name">account.move.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <group id="header_left_group">
+                <field name="direct_debit_mandate_id" attrs="{'invisible': [('type', '!=', 'out_invoice')]}" options="{'no_create': True}" domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id), ('company_id', '=', company_id), ('state', '=', 'active')]" groups="account.group_account_invoice"/>
+            </group>
+        </field>
+    </record>
+
+</odoo>

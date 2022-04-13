@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_account_payment_form_inherit_payment" model="ir.ui.view">
+            <field name="name">view.account.payment.form.inherit.payment</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <field name="payment_method_id" position="after">
+                    <field name="payment_method_code" invisible="1"/>
+                    <field name="direct_debit_mandate_id" options="{'no_create': True}"
+                        domain="[('partner_id.commercial_partner_id', '=', partner_id), ('company_id', '=', company_id), ('state', '=', 'active')]"
+                        attrs="{'invisible': [('payment_method_code', '!=', 'dd')], 'readonly': [('state', '!=', 'draft')]}"/>
+                </field>
+            </field>
+    </record>
+</odoo>
