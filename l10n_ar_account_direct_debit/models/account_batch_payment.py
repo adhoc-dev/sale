@@ -40,7 +40,7 @@ class AccountBatchPayment(models.Model):
         content += '00'
 
         # nro de prestación, esto se saca de Ajustes > Configuración
-        content += '%06d' % int(self.env.user.company_id.galicia_creditor_identifier)
+        content += '%06d' % int(self.env.company.galicia_creditor_identifier)
 
         # servicio
         content += 'C'
@@ -122,10 +122,45 @@ class AccountBatchPayment(models.Model):
 
         return [{
             'txt_filename': 'galicia.txt',
-            #'txt_filename': 'SICORE_%s_%s_%s.txt' % (
-            #     re.sub(r'[^\d\w]', '', self.company_id.name),
-            #     self.from_date, self.to_date),
             'txt_content': content}]
 
 
         print(f"-----------CONTENIDO \n{content}")
+
+    def credito_master(self):
+        self.ensure_one()
+        content = ''
+        content += '00'
+
+        for rec in self.payment_ids:
+            # nro de comercio, esto se saca de Ajustes > Configuración
+            content += '%06d' % int(self.env.company.galicia_creditor_identifier)
+
+            # tipo de comercio
+            content += '2'
+
+            # nro tarjeta
+            content += '%016d' % int(self.payment_ids.direct_debit_mandate_id.credit_card_number)
+
+            #nro referencia
+            content += '%012d' % int(re.sub('[^0-9]', '', self.payment_ids.move_name)[:12])
+
+            # nro de cuota
+            content += '001'
+
+            # cuotas plan
+            content += '999'
+
+            #periodo
+            content += '00000'
+            #frecuencia db
+            content += '01'
+
+            print(f"----{content}")
+            content += '\n'
+        return [{
+            'txt_filename': 'credito_master.txt',
+            #'txt_filename': 'SICORE_%s_%s_%s.txt' % (
+            #     re.sub(r'[^\d\w]', '', self.company_id.name),
+            #     self.from_date, self.to_date),
+            'txt_content': content}]

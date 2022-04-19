@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <field name="description" position="after">
                 <field name="credit_card_number" attrs="{'invisible': [('direct_debit_format', 'not in', ['visa_credito', 'master_credito', 'visa_debito'])]}"/>
-                <field name="partner_bank_id" attrs="{'invisible': [('direct_debit_format', 'not in', ['cbu_macro', 'cbu_galicia'])]}"/>
+                <field name="partner_bank_id" attrs="{'invisible': [('direct_debit_format', 'not in', ['cbu_macro', 'cbu_galicia'])]}" domain="[('partner_id', '=', partner_id)]" context="{'default_partner_id':partner_id, 'account.direct_debit.mandate': True}"/>
             </field>
         </field>
     </record>

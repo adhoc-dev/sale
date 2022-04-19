@@ -13,3 +13,6 @@ class AccountJournal(models.Model):
         ('master_credito', 'Master Crédito'),
         ('visa_debito', 'VISA Débito'),
     ])
+
+    galicia_creditor_identifier = fields.Char(string='Número de prestación débito automático Galicia', help='Galicia Automatic Debit identifier of the company, given by the bank.')
+    direct_debit_merchant_number = fields.Char(string='Número de comercio (tarjeta de crédito Master)')
