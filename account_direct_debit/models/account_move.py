@@ -45,6 +45,7 @@ class AccountMove(models.Model):
                     'amount': rec.amount_residual,
                     'currency_id': rec.currency_id.id,
                     'payment_type': 'inbound',
+                    # TODO evaluar si no debería tomar primero payment_ref? que hace odoo en otros lugares
                     'communication': rec.ref or rec.name,
                     'partner_type': 'customer' if rec.type == 'out_invoice' else 'supplier',
                     'partner_id': rec.partner_id.commercial_partner_id.id,

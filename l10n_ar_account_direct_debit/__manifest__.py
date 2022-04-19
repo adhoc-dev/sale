@@ -15,8 +15,6 @@
     'data': [
         'views/account_direct_debit_mandate_views.xml',
         'views/account_batch_payment_view.xml',
-        'views/res_config_settings_views.xml',
-        'wizards/account_batch_payment_view.xml',
     ],
     'installable': True,
     'auto_install': False,
