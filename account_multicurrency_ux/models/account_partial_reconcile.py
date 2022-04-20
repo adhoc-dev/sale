@@ -30,7 +30,7 @@ class AccountPartialReconcile(models.Model):
         partial_vals = {}
         for rec in self.filtered(
                 lambda x: x.amount and x.debit_move_id.currency_id and x.debit_move_id.amount_currency and
-                x.debit_move_id.move_id.type == 'out_invoice' and not x.exchange_diff_ignored and x.exchange_diff_invoice_id.state not in ['posted']):
+                x.debit_move_id.move_id.move_type == 'out_invoice' and not x.exchange_diff_ignored and x.exchange_diff_invoice_id.state not in ['posted']):
             debit_line = rec.debit_move_id
             credit_line = rec.credit_move_id
             # TODO as we only allow invoices perhas we can use invoice rate directly

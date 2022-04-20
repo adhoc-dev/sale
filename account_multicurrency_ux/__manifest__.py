@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Accounting Multicurrency UX',
-    'version': '13.0.1.0.0',
+    'version': "15.0.1.0.0",
     'category': 'Accounting',
     'summary': '',
     'author': 'ADHOC SA',
@@ -32,6 +32,7 @@
         'account_payment_group',
     ],
     'data': [
+        'security/ir.model.access.csv',
         'wizards/account_exchange_diff_invoice_views.xml',
         'wizards/res_config_settings_views.xml',
         'views/account_move_views.xml',
@@ -40,7 +41,7 @@
     ],
     'demo': [
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
     'pre_init_hook': 'pre_init_hook',

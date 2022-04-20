@@ -12,7 +12,7 @@ class AccountMove(models.Model):
         search='_search_exchange_diff_adjustment_required',
     )
     exchange_diff_ignored = fields.Boolean(
-        track_visibility='onchange',
+        tracking=True,
         string='Ajuste por diferencia de cambio ignorado',
         inverse='_inverse_exchange_diff_ignored',
         compute='_compute_exchange_diff',
