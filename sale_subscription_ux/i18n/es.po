@@ -1,0 +1,166 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sale_subscription_ux
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-20 12:25+0000\n"
+"PO-Revision-Date: 2022-04-19 18:57+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/133229/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: sale_subscription_ux
+#: model:ir.model.fields,field_description:sale_subscription_ux.field_sale_subscription_template__add_period_dates_to_description
+msgid "Add Period Dates to Description"
+msgstr ""
+
+#. module: sale_subscription_ux
+#: model_terms:ir.ui.view,arch_db:sale_subscription_ux.view_sale_subscription_line_filter
+msgid "Closed"
+msgstr "Cerrada"
+
+#. module: sale_subscription_ux
+#: model_terms:ir.ui.view,arch_db:sale_subscription_ux.view_sale_subscription_line_filter
+msgid "Closed subscriptions"
+msgstr ""
+
+#. module: sale_subscription_ux
+#: model:ir.model.fields,field_description:sale_subscription_ux.field_sale_subscription__partner_id
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: sale_subscription_ux
+#: model:ir.model.fields,field_description:sale_subscription_ux.field_sale_subscription__dates_required
+#: model:ir.model.fields,field_description:sale_subscription_ux.field_sale_subscription_template__dates_required
+msgid "Dates Required"
+msgstr ""
+
+#. module: sale_subscription_ux
+#: model:ir.model.fields,field_description:sale_subscription_ux.field_sale_subscription_template__do_not_update_price
+msgid "Do Not Update Price"
+msgstr ""
+
+#. module: sale_subscription_ux
+#: model:ir.model.fields,help:sale_subscription_ux.field_sale_subscription_template__do_not_update_price
+msgid "Don't update price when quantity change"
+msgstr ""
+
+#. module: sale_subscription_ux
+#: model:ir.model.fields,help:sale_subscription_ux.field_sale_subscription_template__add_period_dates_to_description
+msgid ""
+"If setted, a description of the invoiced period will be added to the invoice"
+" narration"
+msgstr ""
+
+#. module: sale_subscription_ux
+#: model:ir.model.fields,field_description:sale_subscription_ux.field_sale_subscription__partner_invoice_id
+msgid "Invoice Address"
+msgstr "Dirección de factura"
+
+#. module: sale_subscription_ux
+#: model_terms:ir.ui.view,arch_db:sale_subscription_ux.view_sale_subscription_line_filter
+msgid "Pending subscriptions"
+msgstr ""
+
+#. module: sale_subscription_ux
+#: model_terms:ir.ui.view,arch_db:sale_subscription_ux.view_sale_subscription_line_filter
+msgid "Product"
+msgstr "Producto"
+
+#. module: sale_subscription_ux
+#: model_terms:ir.ui.view,arch_db:sale_subscription_ux.view_sale_subscription_line_filter
+msgid "Running"
+msgstr ""
+
+#. module: sale_subscription_ux
+#: model_terms:ir.ui.view,arch_db:sale_subscription_ux.view_sale_subscription_line_filter
+msgid "Running Subscriptions"
+msgstr ""
+
+#. module: sale_subscription_ux
+#: model_terms:ir.ui.view,arch_db:sale_subscription_ux.view_sale_subscription_line_tree
+msgid "Sale Order Lines"
+msgstr "Línea de Pedido de Venta"
+
+#. module: sale_subscription_ux
+#: model:ir.model,name:sale_subscription_ux.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: sale_subscription_ux
+#: model_terms:ir.ui.view,arch_db:sale_subscription_ux.sale_subscription_view_form
+msgid ""
+"Se van a actualizar los precios las lineas de la suscripcion con los precios"
+" actualizados para la lista seleccionada"
+msgstr ""
+
+#. module: sale_subscription_ux
+#: model:ir.model.fields,field_description:sale_subscription_ux.field_sale_subscription_line__sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: sale_subscription_ux
+#: model:ir.model.fields,help:sale_subscription_ux.field_sale_subscription__use_different_invoice_address
+#: model:ir.model.fields,help:sale_subscription_ux.field_sale_subscription_template__use_different_invoice_address
+msgid ""
+"Set specific billing partner (that could be different from subscription "
+"partner)"
+msgstr ""
+
+#. module: sale_subscription_ux
+#: model:ir.model,name:sale_subscription_ux.model_sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription_ux.view_sale_subscription_line_filter
+msgid "Subscription"
+msgstr "Suscripción"
+
+#. module: sale_subscription_ux
+#: model:ir.model,name:sale_subscription_ux.model_sale_subscription_line
+msgid "Subscription Line"
+msgstr "Línea de suscripción"
+
+#. module: sale_subscription_ux
+#: model:ir.actions.act_window,name:sale_subscription_ux.action_sale_subscription_line_tree
+#: model:ir.ui.menu,name:sale_subscription_ux.menu_sale_subscription_line
+msgid "Subscription Lines"
+msgstr "Líneas de Suscripción"
+
+#. module: sale_subscription_ux
+#: model:ir.model,name:sale_subscription_ux.model_sale_subscription_template
+msgid "Subscription Template"
+msgstr "Plantilla de suscripción"
+
+#. module: sale_subscription_ux
+#: model:ir.model.fields,help:sale_subscription_ux.field_sale_subscription_line__sequence
+msgid "The sequence field is used to order lines"
+msgstr ""
+
+#. module: sale_subscription_ux
+#: model_terms:ir.ui.view,arch_db:sale_subscription_ux.view_sale_subscription_line_filter
+msgid "To Renew"
+msgstr "A Renovar"
+
+#. module: sale_subscription_ux
+#: model:ir.actions.server,name:sale_subscription_ux.action_update_lines_prices
+msgid "Update Lines Data"
+msgstr ""
+
+#. module: sale_subscription_ux
+#: model:ir.model.fields,field_description:sale_subscription_ux.field_sale_subscription__use_different_invoice_address
+#: model:ir.model.fields,field_description:sale_subscription_ux.field_sale_subscription_template__use_different_invoice_address
+msgid "Use different invoice address?"
+msgstr ""
+
+#. module: sale_subscription_ux
+#: model_terms:ir.ui.view,arch_db:sale_subscription_ux.sale_subscription_view_form
+msgid "⇒ Actualizar precios"
+msgstr ""

@@ -1,83 +1,88 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* purchase_subscription
-#
+# 	* purchase_subscription
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server 15.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-26 00:25+0000\n"
-"PO-Revision-Date: 2019-12-26 00:25+0000\n"
-"Last-Translator: <>\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2022-04-20 12:09+0000\n"
+"PO-Revision-Date: 2022-04-19 13:52+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/133229/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: purchase_subscription
 #: model:mail.template,body_html:purchase_subscription.purchase_account_analytic_cron_email_template
-msgid "\n"
-"Hello ${object.name},\n"
+msgid ""
+"<p>Hello <t t-out=\"object.name\"/>,</p>\n"
 "\n"
-"% macro account_table(values):\n"
-"<table cellspacing=\"1\" border=\"1\" cellpadding=\"4\">\n"
-"    <tr>\n"
-"        <th>Supplier</th>\n"
-"        <th>Subscription</th>\n"
-"        <th>Dates</th>\n"
-"        <th>Prepaid Units</th>\n"
-"        <th>Contact</th>\n"
-"    </tr>\n"
-"    % for partner, accounts in values:\n"
-"        % for account in accounts:\n"
-"        <tr>\n"
-"            <td>${partner.name}</td>\n"
-"            <td><a href=\"${ctx.get('base_url')}/web#action=${ctx.get('action_id')}&id=${account.id}&view_type=form\">${account.name}</a></td>\n"
-"            <td>${account.date_start} to ${account.date and account.date or '???'}</td>\n"
-"            <td>\n"
-"            % if account.quantity_max != 0.0:\n"
-"                ${account.remaining_hours}/${account.quantity_max} units\n"
-"            % endif\n"
-"            </td>\n"
-"            <td>${account.partner_id.phone or ''}, ${account.partner_id.email or ''}</td>\n"
-"        </tr>\n"
-"        % endfor\n"
-"    % endfor\n"
-"</table>\n"
-"% endmacro \n"
+"            <table cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                <tr>\n"
+"                    <th>Supplier</th>\n"
+"                    <th>Subscription</th>\n"
+"                    <th>Dates</th>\n"
+"                    <th>Prepaid Units</th>\n"
+"                    <th>Contact</th>\n"
+"                </tr>\n"
+"                <tr t-foreach=\"values\" t-as=\"partner\">\n"
+"                    <tr t-foreach=\"values\" t-as=\"accounts\">\n"
+"                        <td>\n"
+"                            <t t-out=\"partner.name\"/>\n"
+"                        </td>\n"
+"                        <td>\n"
+"                            <a href=\"ctx.get('base_url')/web#action=ctx.get('action_id')}?id=account.id?view_type=form\">account.name</a>\n"
+"                        </td>\n"
+"                        <td>\n"
+"                            <t t-out=\"account.date_start + ' to ' + account.date and account.date or '???'\"/>\n"
+"                        </td>\n"
+"                        <td t-if=\"account.quantity_max != 0.0\">\n"
+"                            <t t-out=\"str(account.remaining_hours/account.quantity_max) + 'units'\"/>\n"
+"                        </td>\n"
+"                        <td>\n"
+"                            <t t-out=\"account.partner_id.phone or '' + account.partner_id.email or ''\"/>\n"
+"                        </td>\n"
+"                    </tr>\n"
+"                </tr>\n"
+"            </table>\n"
 "\n"
-"% if 'new' in ctx.get('data', {}):\n"
-"    <h2>The following subscription just expired: </h2>\n"
-"    ${account_table(ctx.get('data')['new'].items())}\n"
-"% endif\n"
+"            <t t-if=\"'new' in ctx.get('data', {})\">\n"
+"                <h2>The following subscription just expired: </h2>\n"
+"                <t t-out=\"account_table(ctx.get('data')['new'].items())\"/>\n"
+"            </t>\n"
+"            <t t-if=\"'old' in ctx.get('data', {})\">\n"
+"                <h2>The following expired subscription are still not processed: </h2>\n"
+"                <t t-out=\"account_table(ctx.get('data')['old'].items())\"/>\n"
 "\n"
-"% if 'old' in ctx.get('data', {}):\n"
-"    <h2>The following expired subscription are still not processed: </h2>\n"
-"    ${account_table(ctx.get('data')['old'].items())}\n"
-"% endif\n"
+"            </t>\n"
+"            <t t-if=\"'future' in ctx.get('data', {})\">\n"
+"                <h2>The following subscription will expire in less than one month: </h2>\n"
+"                <t t-out=\"account_table(ctx.get('data')['future'].items())\"/>\n"
+"            </t>\n"
 "\n"
-"% if 'future' in ctx.get('data', {}):\n"
-"    <h2>The following subscription will expire in less than one month: </h2>\n"
-"    ${account_table(ctx.get('data')['future'].items())}\n"
-"% endif\n"
-"\n"
-"<p>\n"
+"            <p>\n"
 "    You can check all subscription to be renewed using the menu:\n"
-"</p>\n"
-"<ul>\n"
-"    <li>Purchase / Subscriptions </li>\n"
-"</ul>\n"
-"<p>\n"
+"            </p>\n"
+"            <ul>\n"
+"                <li>Purchase / Subscriptions </li>\n"
+"            </ul>\n"
+"            <p>\n"
 "    Thanks,\n"
-"</p>\n"
+"            </p>\n"
 "\n"
-"<pre>\n"
+"            <p>\n"
 "-- \n"
 "Odoo Automatic Email\n"
-"</pre>\n"
+"            </p>\n"
 "\n"
-"            "
+"        "
 msgstr ""
 
 #. module: purchase_subscription
@@ -96,12 +101,21 @@ msgid "Activities"
 msgstr "Actividades"
 
 #. module: purchase_subscription
+#: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: purchase_subscription
 #: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__activity_state
 msgid "Activity State"
 msgstr "Estado de la actividad"
 
 #. module: purchase_subscription
-#: model:ir.model,name:purchase_subscription.model_account_analytic_account
+#: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__activity_type_icon
+msgid "Activity Type Icon"
+msgstr ""
+
+#. module: purchase_subscription
 #: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__analytic_account_id
 msgid "Analytic Account"
 msgstr "Cuenta Analítica"
@@ -117,8 +131,8 @@ msgid "Cancel Subscription"
 msgstr "Cancelar suscripción"
 
 #. module: purchase_subscription
+#: model:ir.model.fields.selection,name:purchase_subscription.selection__purchase_subscription__state__cancel
 #: model_terms:ir.ui.view,arch_db:purchase_subscription.purchase_subscription_view_search
-#: selection:purchase.subscription,state:0
 msgid "Cancelled"
 msgstr "Cancelado"
 
@@ -138,8 +152,8 @@ msgid "Close Subscription"
 msgstr "Cerrar suscripción"
 
 #. module: purchase_subscription
+#: model:ir.model.fields.selection,name:purchase_subscription.selection__purchase_subscription__state__close
 #: model_terms:ir.ui.view,arch_db:purchase_subscription.purchase_subscription_view_search
-#: selection:purchase.subscription,state:0
 msgid "Closed"
 msgstr "Cerrada"
 
@@ -180,7 +194,7 @@ msgstr "Moneda"
 #. module: purchase_subscription
 #: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__partner_id
 msgid "Customer"
-msgstr ""
+msgstr "Cliente"
 
 #. module: purchase_subscription
 #: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__date_start
@@ -194,7 +208,7 @@ msgid "Date of Next Invoice"
 msgstr "Fecha de próxima factura"
 
 #. module: purchase_subscription
-#: selection:purchase.subscription,recurring_rule_type:0
+#: model:ir.model.fields.selection,name:purchase_subscription.selection__purchase_subscription__recurring_rule_type__daily
 msgid "Day(s)"
 msgstr "Día(s)"
 
@@ -252,14 +266,14 @@ msgid "Followers"
 msgstr "Seguidores"
 
 #. module: purchase_subscription
-#: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__message_channel_ids
-msgid "Followers (Channels)"
-msgstr "Seguidores (Canales)"
-
-#. module: purchase_subscription
 #: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__message_partner_ids
 msgid "Followers (Partners)"
 msgstr "Seguidores (empresas)"
+
+#. module: purchase_subscription
+#: model:ir.model.fields,help:purchase_subscription.field_purchase_subscription__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr ""
 
 #. module: purchase_subscription
 #: model:ir.actions.server,name:purchase_subscription.subscription_cron_for_invoice_supplier_ir_actions_server
@@ -274,6 +288,11 @@ msgid "Group By"
 msgstr "Agrupar por"
 
 #. module: purchase_subscription
+#: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__has_message
+msgid "Has Message"
+msgstr ""
+
+#. module: purchase_subscription
 #: model:ir.module.category,description:purchase_subscription.module_category_purchase_subscription_management
 msgid "Helps you handle recurring purchases invoicing."
 msgstr ""
@@ -283,26 +302,33 @@ msgstr ""
 #: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription_close_reason__id
 #: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription_line__id
 msgid "ID"
+msgstr "ID"
+
+#. module: purchase_subscription
+#: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__activity_exception_icon
+msgid "Icon"
 msgstr ""
 
 #. module: purchase_subscription
-#: model:ir.model.fields,help:purchase_subscription.field_purchase_subscription__message_unread
-msgid "If checked new messages require your attention."
-msgstr "Si nuevos mensajes chequeados requieren su atención."
+#: model:ir.model.fields,help:purchase_subscription.field_purchase_subscription__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
 
 #. module: purchase_subscription
 #: model:ir.model.fields,help:purchase_subscription.field_purchase_subscription__message_needaction
+#: model:ir.model.fields,help:purchase_subscription.field_purchase_subscription__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "Si está marcado, hay nuevos mensajes que requieren su atención."
 
 #. module: purchase_subscription
 #: model:ir.model.fields,help:purchase_subscription.field_purchase_subscription__message_has_error
+#: model:ir.model.fields,help:purchase_subscription.field_purchase_subscription__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Si se encuentra marcado, algunos mensajes tienen error de envío."
 
 #. module: purchase_subscription
+#: model:ir.model.fields.selection,name:purchase_subscription.selection__purchase_subscription__state__open
 #: model_terms:ir.ui.view,arch_db:purchase_subscription.purchase_subscription_view_search
-#: selection:purchase.subscription,state:0
 msgid "In Progress"
 msgstr "En proceso"
 
@@ -310,11 +336,6 @@ msgstr "En proceso"
 #: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__invoice_count
 msgid "Invoice Count"
 msgstr "Recuento de facturas"
-
-#. module: purchase_subscription
-#: model:ir.model,name:purchase_subscription.model_account_invoice_line
-msgid "Invoice Line"
-msgstr "Línea de factura"
 
 #. module: purchase_subscription
 #: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__recurring_invoice_line_ids
@@ -340,6 +361,11 @@ msgstr "Es un seguidor"
 #: model:ir.model.fields,help:purchase_subscription.field_purchase_subscription__manager_id
 msgid "It will be used to send the subcription reminder to expire"
 msgstr ""
+
+#. module: purchase_subscription
+#: model:ir.model,name:purchase_subscription.model_account_move_line
+msgid "Journal Item"
+msgstr "Apunte contable"
 
 #. module: purchase_subscription
 #: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription____last_update
@@ -383,9 +409,14 @@ msgid "Messages"
 msgstr "Mensajes"
 
 #. module: purchase_subscription
-#: selection:purchase.subscription,recurring_rule_type:0
+#: model:ir.model.fields.selection,name:purchase_subscription.selection__purchase_subscription__recurring_rule_type__monthly
 msgid "Month(s)"
 msgstr "Mes(es)"
+
+#. module: purchase_subscription
+#: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr ""
 
 #. module: purchase_subscription
 #: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__name
@@ -394,8 +425,8 @@ msgid "Name"
 msgstr "Nombre"
 
 #. module: purchase_subscription
+#: model:ir.model.fields.selection,name:purchase_subscription.selection__purchase_subscription__state__draft
 #: model_terms:ir.ui.view,arch_db:purchase_subscription.purchase_subscription_view_search
-#: selection:purchase.subscription,state:0
 msgid "New"
 msgstr "Nuevo"
 
@@ -403,6 +434,11 @@ msgstr "Nuevo"
 #: model_terms:ir.ui.view,arch_db:purchase_subscription.purchase_subscription_view_search
 msgid "New Subscriptions"
 msgstr "Nuevas suscripciones"
+
+#. module: purchase_subscription
+#: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr ""
 
 #. module: purchase_subscription
 #: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__activity_date_deadline
@@ -420,9 +456,10 @@ msgid "Next Activity Type"
 msgstr "Siguiente tipo de actividad"
 
 #. module: purchase_subscription
-#: code:addons/purchase_subscription/models/purchase_subscription.py:178
+#: code:addons/purchase_subscription/models/purchase_subscription.py:0
 #, python-format
-msgid "No Supplier Defined!\n"
+msgid ""
+"No Supplier Defined!\n"
 "You must first select a Supplier for Contract %s!"
 msgstr ""
 
@@ -433,7 +470,7 @@ msgstr "Número de acciones"
 
 #. module: purchase_subscription
 #: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__message_has_error_counter
-msgid "Number of error"
+msgid "Number of errors"
 msgstr "Número de error"
 
 #. module: purchase_subscription
@@ -452,11 +489,6 @@ msgid "Number of unread messages"
 msgstr "Número de mensajes sin leer"
 
 #. module: purchase_subscription
-#: selection:purchase.subscription,activity_state:0
-msgid "Overdue"
-msgstr ""
-
-#. module: purchase_subscription
 #: model_terms:ir.ui.view,arch_db:purchase_subscription.purchase_subscription_view_search
 msgid "Partner"
 msgstr "Empresa"
@@ -467,12 +499,7 @@ msgid "Pending Subscriptions"
 msgstr ""
 
 #. module: purchase_subscription
-#: selection:purchase.subscription,activity_state:0
-msgid "Planned"
-msgstr ""
-
-#. module: purchase_subscription
-#: code:addons/purchase_subscription/models/purchase_subscription.py:199
+#: code:addons/purchase_subscription/models/purchase_subscription.py:0
 #, python-format
 msgid "Please define a pruchase journal for the company \"%s\"."
 msgstr ""
@@ -494,7 +521,7 @@ msgstr ""
 
 #. module: purchase_subscription
 #: model:ir.model,name:purchase_subscription.model_purchase_subscription
-#: model:ir.model.fields,field_description:purchase_subscription.field_account_invoice_line__purchase_subscription_id
+#: model:ir.model.fields,field_description:purchase_subscription.field_account_move_line__purchase_subscription_id
 #: model:ir.module.category,name:purchase_subscription.module_category_purchase_subscription_management
 msgid "Purchase Subscription"
 msgstr ""
@@ -513,6 +540,7 @@ msgstr ""
 #: model:ir.actions.server,name:purchase_subscription.purchase_account_analytic_cron_ir_actions_server
 #: model:ir.cron,cron_name:purchase_subscription.purchase_account_analytic_cron
 #: model:ir.cron,name:purchase_subscription.purchase_account_analytic_cron
+#: model:mail.template,name:purchase_subscription.purchase_account_analytic_cron_email_template
 msgid "Purchase Subscription expiration reminder"
 msgstr ""
 
@@ -524,7 +552,7 @@ msgstr ""
 
 #. module: purchase_subscription
 #: model:mail.template,subject:purchase_subscription.purchase_account_analytic_cron_email_template
-msgid "Purchase subscription expiration reminder ${user.company_id.name}"
+msgid "Purchase subscription expiration reminder {{user.company_id.name}}"
 msgstr ""
 
 #. module: purchase_subscription
@@ -569,6 +597,11 @@ msgid "Responsible User"
 msgstr "Usuario responsable"
 
 #. module: purchase_subscription
+#: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "Error de entrega de SMS"
+
+#. module: purchase_subscription
 #: model:res.groups,name:purchase_subscription.group_purchase_subscription_user
 msgid "See Subscription"
 msgstr ""
@@ -582,13 +615,6 @@ msgstr "Secuencia"
 #: model_terms:ir.ui.view,arch_db:purchase_subscription.view_purchase_subscription_form
 msgid "Settings"
 msgstr "Ajustes"
-
-#. module: purchase_subscription
-#: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__smart_search
-#: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription_close_reason__smart_search
-#: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription_line__smart_search
-msgid "Smart Search"
-msgstr ""
 
 #. module: purchase_subscription
 #: model_terms:ir.ui.view,arch_db:purchase_subscription.purchase_subscription_view_search
@@ -608,11 +634,13 @@ msgstr "Estado"
 
 #. module: purchase_subscription
 #: model:ir.model.fields,help:purchase_subscription.field_purchase_subscription__activity_state
-msgid "Status based on activities\n"
+msgid ""
+"Status based on activities\n"
 "Overdue: Due date is already passed\n"
 "Today: Activity date is today\n"
 "Planned: Future activities."
-msgstr "Estado basado en actividades\n"
+msgstr ""
+"Estado basado en actividades\n"
 "Vencida: la fecha tope ya ha pasado\n"
 "Hoy: La fecha tope es hoy\n"
 "Planificada: futuras actividades."
@@ -652,7 +680,8 @@ msgstr "Suscripciones no asignadas"
 #. module: purchase_subscription
 #: model_terms:ir.ui.view,arch_db:purchase_subscription.purchase_subscription_view_search
 msgid "Subscriptions that are not assigned to an account manager."
-msgstr "Suscripciones que no se hallan asignadas a un administrador de cuentas."
+msgstr ""
+"Suscripciones que no se hallan asignadas a un administrador de cuentas."
 
 #. module: purchase_subscription
 #: model_terms:ir.ui.view,arch_db:purchase_subscription.view_purchase_subscription_form
@@ -666,6 +695,11 @@ msgid "Tags"
 msgstr "Etiquetas"
 
 #. module: purchase_subscription
+#: model_terms:ir.ui.view,arch_db:purchase_subscription.view_purchase_subscription_form
+msgid "Terms and Conditions"
+msgstr ""
+
+#. module: purchase_subscription
 #: model:res.groups,comment:purchase_subscription.group_purchase_subscription_user
 msgid "The user will have read access to contracts."
 msgstr "El usuario tendrá acceso de lectura a los contratos."
@@ -676,15 +710,15 @@ msgid "The user will have write access to contracts."
 msgstr "El usuario tendrá acceso de escritura a los contratos."
 
 #. module: purchase_subscription
+#: model:ir.model.fields.selection,name:purchase_subscription.selection__purchase_subscription__state__pending
 #: model_terms:ir.ui.view,arch_db:purchase_subscription.purchase_subscription_view_search
 #: model_terms:ir.ui.view,arch_db:purchase_subscription.view_purchase_subscription_form
-#: selection:purchase.subscription,state:0
 msgid "To Renew"
 msgstr "A Renovar"
 
 #. module: purchase_subscription
-#: selection:purchase.subscription,activity_state:0
-msgid "Today"
+#: model:ir.model.fields,help:purchase_subscription.field_purchase_subscription__activity_exception_decoration
+msgid "Type of the exception activity on record."
 msgstr ""
 
 #. module: purchase_subscription
@@ -715,15 +749,15 @@ msgstr "Mensajes del sitio web"
 #. module: purchase_subscription
 #: model:ir.model.fields,help:purchase_subscription.field_purchase_subscription__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Historial de comunicación del sitio web"
 
 #. module: purchase_subscription
-#: selection:purchase.subscription,recurring_rule_type:0
+#: model:ir.model.fields.selection,name:purchase_subscription.selection__purchase_subscription__recurring_rule_type__weekly
 msgid "Week(s)"
 msgstr "Semana(s)"
 
 #. module: purchase_subscription
-#: selection:purchase.subscription,recurring_rule_type:0
+#: model:ir.model.fields.selection,name:purchase_subscription.selection__purchase_subscription__recurring_rule_type__yearly
 msgid "Year(s)"
 msgstr "Año(s)"
 
@@ -731,4 +765,3 @@ msgstr "Año(s)"
 #: model_terms:ir.ui.view,arch_db:purchase_subscription.view_purchase_subscription_form
 msgid "⇒ Generate Invoice"
 msgstr "⇒ Generar factura"
-

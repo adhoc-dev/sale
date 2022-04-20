@@ -1,0 +1,43 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* whatsapp
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-20 12:27+0000\n"
+"PO-Revision-Date: 2022-04-19 14:01+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/133229/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: whatsapp
+#: model_terms:ir.ui.view,arch_db:whatsapp.res_partner_view_form
+msgid ""
+"<i class=\"fa fa-whatsapp\"/>\n"
+"                    <small class=\"font-weight-bold ml-1\">Whatsapp</small>"
+msgstr ""
+
+#. module: whatsapp
+#: model:ir.model,name:whatsapp.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: whatsapp
+#: model_terms:ir.ui.view,arch_db:whatsapp.res_partner_view_form
+msgid "Redirect to Whatsapp Web"
+msgstr ""
+
+#. module: whatsapp
+#: model:ir.model.fields,field_description:whatsapp.field_res_partner__whatsapp_number
+#: model:ir.model.fields,field_description:whatsapp.field_res_users__whatsapp_number
+msgid "Whatsapp Number"
+msgstr ""

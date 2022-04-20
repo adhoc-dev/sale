@@ -1,0 +1,73 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* helpdesk_subticket
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-20 12:15+0000\n"
+"PO-Revision-Date: 2022-04-19 13:55+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/133229/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: helpdesk_subticket
+#: code:addons/helpdesk_subticket/models/helpdesk_ticket.py:0
+#, python-format
+msgid ""
+"Error: Before closing a parent ticket you should close the subticket(s)."
+msgstr ""
+
+#. module: helpdesk_subticket
+#: code:addons/helpdesk_subticket/models/helpdesk_ticket.py:0
+#, python-format
+msgid "Error: You cannot create recursive hierarchy of ticket(s)."
+msgstr ""
+
+#. module: helpdesk_subticket
+#: model:ir.model,name:helpdesk_subticket.model_helpdesk_ticket
+msgid "Helpdesk Ticket"
+msgstr "Ticket de servicio de asistencia"
+
+#. module: helpdesk_subticket
+#: model_terms:ir.ui.view,arch_db:helpdesk_subticket.view_helpdesk_ticket_search
+msgid "Is Sub-Ticket"
+msgstr ""
+
+#. module: helpdesk_subticket
+#: model_terms:ir.ui.view,arch_db:helpdesk_subticket.view_helpdesk_ticket_search
+msgid "Is Ticket"
+msgstr ""
+
+#. module: helpdesk_subticket
+#: code:addons/helpdesk_subticket/models/helpdesk_ticket.py:0
+#: model:ir.model.fields,field_description:helpdesk_subticket.field_helpdesk_ticket__parent_id
+#: model_terms:ir.ui.view,arch_db:helpdesk_subticket.helpdesk_ticket_form
+#: model_terms:ir.ui.view,arch_db:helpdesk_subticket.view_helpdesk_ticket_search
+#, python-format
+msgid "Parent Ticket"
+msgstr ""
+
+#. module: helpdesk_subticket
+#: model_terms:ir.ui.view,arch_db:helpdesk_subticket.helpdesk_ticket_form
+msgid "Subticket"
+msgstr ""
+
+#. module: helpdesk_subticket
+#: model:ir.model.fields,field_description:helpdesk_subticket.field_helpdesk_ticket__subticket_count
+msgid "Subticket count"
+msgstr ""
+
+#. module: helpdesk_subticket
+#: model:ir.actions.act_window,name:helpdesk_subticket.helpdesk_ticket_action_subticket
+#: model:ir.model.fields,field_description:helpdesk_subticket.field_helpdesk_ticket__child_ids
+msgid "Subtickets"
+msgstr ""

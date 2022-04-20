@@ -1,0 +1,323 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_balance_import
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-20 12:11+0000\n"
+"PO-Revision-Date: 2022-04-19 18:42+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/133229/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.account_balance_import_wizard
+msgid ""
+"<span class=\"fa fa-download\" title=\"download\"/>\n"
+"                            Descargar Plantilla de Importación de Cheques Propios"
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.account_balance_import_wizard
+msgid ""
+"<span class=\"fa fa-download\" title=\"download\"/>\n"
+"                            Descargar Plantilla de Importación de Cheques de Terceros"
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.account_balance_import_wizard
+msgid ""
+"<span class=\"fa fa-download\" title=\"download\"/>\n"
+"                            Descargar Plantilla de Importación de Saldos de Partners"
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.account_balance_import_wizard
+msgid "<span class=\"fa fa-info\" aria-label=\"info\"/>"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields.selection,name:account_balance_import.selection__account_balance_import__partner_balance_type__payable
+msgid "A Pagar"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.actions.act_window,name:account_balance_import.account_balance_import_action
+msgid "Account Balance Import Wizard"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model,name:account_balance_import.model_account_balance_import
+msgid "Account Initial Balance Wizard"
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.onboarding_initial_balance_step
+msgid "Alta Inicial Generada."
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.onboarding_initial_balance_step
+msgid "Alta Inicial de Saldos"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__check_file
+msgid "Archivo de Importación de Cheques"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__account_balance_file
+msgid "Archivo de Importación de Saldos Contables"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__partner_balance_file
+msgid "Archivo de Importación de Saldos de Partners"
+msgstr ""
+
+#. module: account_balance_import
+#: code:addons/account_balance_import/wizards/account_balance_import.py:0
+#, python-format
+msgid "Automatic Balancing Line"
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.account_balance_import_wizard
+msgid "Cancelar"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__check_checkbook_id
+msgid "Chequera"
+msgstr ""
+
+#. module: account_balance_import
+#: code:addons/account_balance_import/wizards/account_balance_import.py:0
+#: model:ir.model.fields.selection,name:account_balance_import.selection__account_balance_import__mode__check_balance
+#, python-format
+msgid "Cheques"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model,name:account_balance_import.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__company_id
+msgid "Compañía"
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.onboarding_chart_of_account_step
+msgid "Configura tu catálogo de cuentas"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__counterpart_account_id
+msgid "Cuenta de Contrapartida"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields.selection,name:account_balance_import.selection__account_balance_import__check_type__third_check
+msgid "De Terceros"
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.account_balance_import_wizard
+msgid ""
+"Descargue la plantilla de importación siguiendo el link\n"
+"                                y edítelo manteniendo la estructura del archivo.<br/>\n"
+"                                Una vez finalizada la edición, suba el archivo modificado\n"
+"                                y haga click en el botón \"Importar\" ubicado más abajo."
+msgstr ""
+
+#. module: account_balance_import
+#: code:addons/account_balance_import/wizards/account_balance_import.py:0
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__partner_balance_journal_id
+#, python-format
+msgid "Diario"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__account_opening_entries_journal_id
+msgid "Diario de Asientos de Apertura"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__check_journal_bank_id
+msgid "Diario de Banco"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__check_journal_third_id
+msgid "Diario de Cheques de Terceros"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: account_balance_import
+#: model:ir.model.fields.selection,name:account_balance_import.selection__res_company__account_setup_ib_state__done
+msgid "Done"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__accounting_date
+msgid "Fecha Contable"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__id
+msgid "ID"
+msgstr "ID (identificación)"
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.account_balance_import_wizard
+msgid "Importación de Cheques"
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.account_balance_import_wizard
+msgid "Importación de Saldos Contables"
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.account_balance_import_wizard
+msgid "Importación de Saldos de Partners"
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.account_balance_import_wizard
+msgid "Importar Cheques"
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.account_balance_import_wizard
+msgid "Importar Saldos Contables"
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.account_balance_import_wizard
+msgid "Importar Saldos de Partners"
+msgstr ""
+
+#. module: account_balance_import
+#: code:addons/account_balance_import/models/res_company.py:0
+#, python-format
+msgid "Initial Balances"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__mode
+msgid "Modo de Importación"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields.selection,name:account_balance_import.selection__res_company__account_setup_ib_state__not_done
+msgid "Not done"
+msgstr ""
+
+#. module: account_balance_import
+#: code:addons/account_balance_import/wizards/account_balance_import.py:0
+#, python-format
+msgid "Opening balance"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields.selection,name:account_balance_import.selection__account_balance_import__partner_balance_type__receivable
+msgid "Por Cobrar"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields.selection,name:account_balance_import.selection__account_balance_import__check_type__issue_check
+msgid "Propios"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,help:account_balance_import.field_account_balance_import__counterpart_account_id
+msgid ""
+"Recomendamos utilizar la misma cuenta de contrapartida para todos los "
+"asientos iniciales"
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.onboarding_initial_balance_step
+msgid "Registrar"
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.onboarding_initial_balance_step
+msgid "Registre sus saldos iniciales."
+msgstr ""
+
+#. module: account_balance_import
+#: code:addons/account_balance_import/wizards/account_balance_import.py:0
+#: model:ir.model.fields.selection,name:account_balance_import.selection__account_balance_import__mode__account_balance
+#, python-format
+msgid "Saldos Contables"
+msgstr ""
+
+#. module: account_balance_import
+#: code:addons/account_balance_import/wizards/account_balance_import.py:0
+#: model:ir.model.fields.selection,name:account_balance_import.selection__account_balance_import__mode__partner_balance
+#, python-format
+msgid "Saldos de Partners"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_res_company__account_setup_ib_state
+msgid "State of the onboarding Initial balance step"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__check_type
+msgid "Tipo de Cheques"
+msgstr ""
+
+#. module: account_balance_import
+#: model:ir.model.fields,field_description:account_balance_import.field_account_balance_import__partner_balance_type
+msgid "Tipo de Saldo"
+msgstr ""
+
+#. module: account_balance_import
+#: model_terms:ir.ui.view,arch_db:account_balance_import.account_balance_import_wizard
+msgid "⇒ Descargar Plantilla de Importación de Saldos Contables"
+msgstr ""
