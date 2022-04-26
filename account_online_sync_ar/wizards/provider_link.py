@@ -32,12 +32,13 @@ class ProviderLink(models.TransientModel):
         return safe_eval(self.default_action)
 
     def action_open_wiz(self):
+        view_id = self.env.ref('account_online_sync_ar.provider_link_view_form').id
         return {
             'name': _('Seleccione Proveedor de Sincronización Bancaria'),
             'target': 'new',
             'res_id': self.id,
-            'view_type': 'form',
             'view_mode': 'form',
+            'views': [[view_id, 'form']],
             'res_model': self._name,
             'type': 'ir.actions.act_window',
         }
