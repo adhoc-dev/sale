@@ -17,7 +17,7 @@
         'views/account_direct_debit_mandate_views.xml',
         'views/account_payment_views.xml',
         'views/account_journal_views.xml',
-        'views/account_direct_debit_mandate_views.xml',
+        'views/account_batch_payment_view.xml',
         'data/account_payment_method_data.xml',
         'security/ir.model.access.csv',
     ],

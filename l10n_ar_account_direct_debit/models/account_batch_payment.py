@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import base64
 import re
 
-from datetime import date, datetime
+from datetime import datetime
 
-from odoo import models, fields, api, _
+from odoo import models, fields, _
 
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import UserError
 
 
 class AccountBatchPayment(models.Model):
@@ -16,23 +15,9 @@ class AccountBatchPayment(models.Model):
 
     periodo = fields.Char()
 
-    def _get_methods_generating_files(self):
-        rslt = super(AccountBatchPayment, self)._get_methods_generating_files()
-        rslt.append('bank')
-        return rslt
-
-    def validate_batch(self):
-        if self.payment_method_code == 'bank':
-            company = self.env.company
-
-            if not company.galicia_creditor_identifier:
-                raise UserError(_("Your company must have a creditor identifier in order to issue Galicia Automatic Debit payments requests. It can be defined in accounting module's settings."))
-
-        return super(AccountBatchPayment, self).validate_batch()
-
-    def _galicia_txt_content(self):
+    def galicia_debito_txt(self):
         if not self.journal_id.direct_debit_merchant_number or not self.direct_debit_collection_date:
-            raise UserError(_('Debe completar los campos bla bla y bla bla'))
+            raise UserError(_('Debe tener indicado el numero de prestación en el diario con nombre "{self.journal_id.name}", id: {self.journal_id.id} y también el campo Collection date en el pago por lotes'))
         self.ensure_one()
 
         # build txt file
@@ -43,7 +28,7 @@ class AccountBatchPayment(models.Model):
         # tipo de registro
         content += '00'
 
-        # nro de prestación, esto se saca de Ajustes > Configuración
+        # nro de prestación, ver con jjs de cambiar el string a "Nro de prestación"
         content += '%06d' % int(self.journal_id.direct_debit_merchant_number)
 
         # servicio
@@ -69,7 +54,7 @@ class AccountBatchPayment(models.Model):
 
         content += '\r\n'
 
-        for rec in self.payment_ids:  # seguramente tenga que poner algún filtro al self'
+        for rec in self.payment_ids:
 
             # Tipo de registro
             # TODO ver si implementamos otros, por ahora solo 0370
@@ -85,20 +70,17 @@ class AccountBatchPayment(models.Model):
             content += rec.partner_id.vat.ljust(22)
 
             # CBU
-            if len(rec.partner_id.commercial_partner_id.bank_ids) == 0:
-                raise ValidationError(f"El partner {rec.partner_id.commercial_partner_id.name} no tiene cuentas bancarias asociadas")
-            # TODO: cambiar a usar en mandate
-            cbu = rec.partner_id.commercial_partner_id.bank_ids[0].acc_number
+            cbu = rec.direct_debit_mandate_id.partner_bank_id.acc_number
             content += '0' + cbu[0:8] + '000' + cbu[8::]
-
             # CONCEPTO DE LA COBRANZA: es la referencia que identifica univocamente a la factura
             # cuando creamos pagos desde una factura automáticamente ya les estamos poniendo como "communication"
             # el nro de factura. Si algun cliente quiere que vaya numero de suscripcion con mes o algo por el estilo
             # deberia personalizarse para que se setee dicho dato en "communication"
             # TODO en v15 cambiar a "rec.ref or rec.name"
-            content += (rec.communication or rec.name).ljust(15)
 
-            # FECHA PRIMER VENCIMIENTO ---> CREO QUE HABRÍA QUE TOMAR EL DATO DEL WIZARD
+            content += (rec.communication[:4] + rec.communication[8:]).ljust(15) or rec.name[5:].ljust(15)
+
+            # FECHA PRIMER VENCIMIENTO
             content += self.direct_debit_collection_date.strftime("%Y%m%d")
 
             # IMPORTE
@@ -110,7 +92,6 @@ class AccountBatchPayment(models.Model):
             content += '\r\n'
 
         # REGISTRO TRAILER
-
         # tipo de registro
         content += '99'
 
@@ -139,30 +120,56 @@ class AccountBatchPayment(models.Model):
             'txt_filename': 'galicia.txt',
             'txt_content': content}]
 
-
-        print(f"-----------CONTENIDO \n{content}")
-
-    def _credito_master(self):
+    def master_credito_txt(self):
         self.ensure_one()
 
-        if not self.journal_id.direct_debit_merchant_number or not self.direct_debit_collection_date:
-            raise UserError(_('Debe completar los campos bla bla y bla bla'))
+        #ver con jjs, creo que no haría falta en credito_master la validación para self.direct_debit_collection_date
+        if not self.journal_id.direct_debit_merchant_number:
+            raise UserError(_(f'Debe completar el numero de comercio en el diario con nombre "{self.journal_id.name}", id: {self.journal_id.id}'))
+
+        if not self.periodo:
+            raise UserError(_(f'Debe indicar el periodo con formato MM/AA'))
 
         content = ''
-        content += '00'
+
+        # ENCABEZADO
+        # nro de comercio
+        content += self.journal_id.direct_debit_merchant_number.ljust(8)
+
+        # Tipo de registro
+        content += '1'
+
+        # Fecha presentación
+        content += self.date.strftime("%d%m")
+        content += self.date.strftime("%Y")[-2:]
+        # cantidad de registros
+        content += '%07d' % len(self.payment_ids)
+
+        # signo
+        if self.amount > 0:
+            content += '0'
+        else:
+            content += '-'
+
+        #importe, es importante hacerlo así porque si termina con ".00" le deja un solo decimal
+        importe_total = '%015.2f' % abs(self.amount)
+        content += re.sub('[.]', '', importe_total)
+        #filler
+        content += ' '*91
+
+        content += '\n'
 
         for rec in self.payment_ids:
-            # nro de comercio, esto se saca de Ajustes > Configuración
-            content += '%06d' % int(self.journal_id.direct_debit_merchant_number)
-
+            # nro de comercio
+            content += self.journal_id.direct_debit_merchant_number.ljust(8)
             # tipo de comercio
             content += '2'
 
             # nro tarjeta
-            content += '%016d' % int(self.payment_ids.direct_debit_mandate_id.credit_card_number)
+            content += '%016d' % int(rec.direct_debit_mandate_id.credit_card_number)
 
-            # nro referencia
-            content += '%012d' % int(re.sub('[^0-9]', '', self.payment_ids.move_name)[:12])
+            # nro referencia, ver con jjs
+            content += (rec.name[-12:] or '%012d' % int(re.sub('[^0-9]', '', rec.move_name)[:12])).ljust(12)
 
             # nro de cuota
             content += '001'
@@ -170,32 +177,94 @@ class AccountBatchPayment(models.Model):
             # cuotas plan
             content += '999'
 
-            # periodo
-            content += self.periodo
             # frecuencia db
             content += '01'
 
-            print(f"----{content}")
+            #importe, es importante hacerlo así porque si termina con ".00" le deja un solo decimal
+            monto = '%012.2f' % rec.amount
+            content += re.sub('[.]', '', monto)
+
+            # periodo, ver con jjs si tengo que validar que sea xx/xx (donde xx son numéros)
+            content += self.periodo
+
+            #filler
+            content += ' '*67
+
             content += '\n'
+
         return [{
-            'txt_filename': 'credito_master.txt',
-            #'txt_filename': 'SICORE_%s_%s_%s.txt' % (
-            #     re.sub(r'[^\d\w]', '', self.company_id.name),
-            #     self.from_date, self.to_date),
+            'txt_filename': 'master_credito.txt',
             'txt_content': content}]
 
-    def _generate_export_file(self):
-        if self.direct_debit_format == 'galicia':
-            return self._galicia_txt_content()
-        elif self.direct_debit_format == 'master':
-            return self._credito_master()
-        # TODO adaptar ambos metodos para que devuelvan un diccionario similar a esto
-            # payments = self.payment_ids.sorted(key=lambda r: r.id)
-            # payment_dicts = self._generate_payment_template(payments)
-            # xml_doc = self.journal_id.create_iso20022_credit_transfer(payment_dicts, self.sct_batch_booking, self.sct_generic)
-            # return {
-            #     'file': base64.encodebytes(xml_doc),
-            #     'filename': "SCT-" + self.journal_id.code + "-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".xml",
-            # }
+    def visa_credito_txt(self):
+        self.ensure_one()
+        if not self.journal_id.direct_debit_merchant_number:
+            raise UserError(_(f'Debe completar el numero de establecimiento (10 dígitos) en el diario con nombre "{self.journal_id.name}", id: {self.journal_id.id}'))
+        content = ''
 
-        return super()._generate_export_file()
+        # ENCABEZADO
+        # tipo de registro
+        content += '0'
+        content += 'DEBLIQC '
+
+        # nro de establecimiento
+        content += self.journal_id.direct_debit_merchant_number
+        content += '900000    '
+
+        # fecha de generación del archivo
+        content += self.date.strftime("%Y%m%d")
+
+        # hora generación archivo
+        content += datetime.now().strftime("%H%M")
+
+        # tipo de archivo. Débitos a liquidar
+        content += '0'
+
+        # estado archivo
+        content += '  '
+
+        # reservado
+        content += ' '*55
+
+        # marca fin de registro
+        content += '*'
+
+        content += '\n'
+
+        ref = 1
+
+        for rec in self.payment_ids:
+            # tipo de registro
+            content+='1'
+
+            # numero de tarjeta
+            content += '%016d' % int(rec.direct_debit_mandate_id.credit_card_number)
+
+            # Reservado
+            content += '   '
+
+            # Referencia
+            content += '%08d' % ref++
+
+            # fecha de origen o vencimiento del débito
+            content += self.date.strftime("%Y%m%d")
+
+            # código de transacción
+            content += '0005'
+
+            #importe
+            content += '%015.2f' % rec.amount
+
+        return [{
+            'txt_filename': 'visa_credito.txt',
+            'txt_content': content}]
+
+    def generate_debit_txt(self):
+        if self.journal_id.direct_debit_format == 'cbu_galicia':
+            contenido = self.galicia_debito_txt()
+        if self.journal_id.direct_debit_format == 'master_credito':
+            contenido = self.master_credito_txt()
+        if self.journal_id.direct_debit_format == 'visa_credito':
+            contenido = self.visa_credito_txt()
+        res = self.env['download_files_wizard'].action_get_files(contenido)
+        return res
