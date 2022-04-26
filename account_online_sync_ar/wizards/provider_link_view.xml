@@ -17,7 +17,7 @@
                 <footer>
                     <button name="action_open_saltedge" string="Saltedge" type="object" class="oe_highlight"/>
                     <button name="action_open_paybook" string="Syncfy" type="object" class="oe_highlight"/>
-                    or
+                    <button name="action_open_manual" string="Crear banco (sin sincronización)" type="object" class="oe_link"/>
                     <button string="Cancel" class="oe_link" special="cancel"/>
                 </footer>
             </form>

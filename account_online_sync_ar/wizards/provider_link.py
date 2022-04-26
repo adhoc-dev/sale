@@ -42,3 +42,21 @@ class ProviderLink(models.TransientModel):
             'res_model': self._name,
             'type': 'ir.actions.act_window',
         }
+
+    def action_open_manual(self):
+        """ let the user to create the bank without any sincronization"""
+        view_id = self.env.ref('account.setup_bank_account_wizard').id
+        ctx = self.env.context.copy()
+        if self.env.context.get('active_model') == 'account.journal':
+            ctx.update({
+                'default_linked_journal_id': ctx.get('journal_id', False)
+            })
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Create a Bank Account'),
+            'res_model': 'account.setup.bank.manual.config',
+            'target': 'new',
+            'view_mode': 'form',
+            'views': [[view_id, 'form']],
+            'context': ctx,
+        }
