@@ -24,6 +24,29 @@ class PaybookAccount(models.Model):
         transactions = self.paybook_get_transactions()
         return self.env['account.bank.statement'].online_sync_bank_statement(transactions, self.journal_ids)
 
+    def write(self, values):
+        """ Hacemos track en el chatter del provider de cuando un usuario modifica la fecha de ultima sincronizacion
+        de las cuentas bancarias asociadas. Esto seria necesario cuando lo hace el usuario de manera particular y no
+        a traves del cron """
+        # Estamos guardado el valor previo que tenia el campo last_refresh
+        last_value = {}
+        for rec in self:
+            if 'last_sync' in values:
+                last_value.update({rec.id: self.last_sync})
+
+        # Ejecutamos el write normal
+        res = super().write(values)
+
+        # Si tenemos cambios en last_refresh entonces colocamos mensaje en el chatter del
+        # account.provider indicando el cambio
+        # colocar que sea un usuario que no sea el que corre el ir.cron.
+        if last_value and not self.env.user.has_group("saas_client.group_saas_support"):
+            for rec in self:
+                rec.account_online_provider_id.message_post(body=_("Modificada Fecha Última Sincronización") +
+                " %s: %s a %s" % (rec.name, last_value.get(rec.id), rec.last_sync))
+
+        return res
+
     def paybook_get_transactions(self, dt_param=False, force_dt=False):
         self.ensure_one()
         dt_param = dt_param or 'dt_transaction_from'
