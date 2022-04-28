@@ -118,6 +118,105 @@ class AccountBatchPayment(models.Model):
 
         return content
 
+
+
+    def _macro_cbu(self):
+        self.ensure_one()
+        content = ''
+        if not self.journal_id.direct_debit_merchant_number or not self.direct_debit_collection_date:
+            raise UserError(_('Debe tener indicado el numero de convenio en el diario con nombre "{self.journal_id.name}", id: {self.journal_id.id} y también el campo Collection date que representa la fecha de vencimiento'))
+
+        # ENCABEZADO
+        # Filler
+        content += '1'
+
+        # Nro de convenio (longitud 5)
+        content += self.journal_id.direct_debit_merchant_number[:5].ljust(5)
+
+        # Nro de servicio
+        content += ' '*10
+
+        # Nro de empresa de sueldos
+        content += '0'*5
+
+        # Fecha de generación de archivo
+        content += self.date.strftime("%Y%m%d")
+
+        # importe total de movimientos
+        content += ('%019.2f' % self.amount).replace('.','')
+
+        # moneda de la empresa
+        if self.env.company.currency_id.name == 'ARS':
+            content += '080'
+        elif self.env.company.currency_id.name == 'USD':
+            content += '002'
+
+        # tipo de movimientos del archivo
+        content += '01'
+
+        # información monetaria
+        content += '0'*98
+
+        # sin uso
+        content += ' '*69
+
+        # filler
+        content += '0'
+
+        content += '\n'
+
+        for rec in self.payment_ids:
+            # filler
+            content += '0'
+
+            # nro convenio, longitud 5
+            content += self.journal_id.direct_debit_merchant_number[:5].ljust(5)
+
+            # nro de servicio
+            content += ' '*10
+
+            # nro de empresa de sueldos
+            content += '0'*5
+
+            # código de banco del adherente y código de sucursal de la cuenta
+            content += rec.direct_debit_mandate_id.partner_bank_id.acc_number[:7]
+
+            # tipo de cuenta, ver con jjs
+            # (3 - Cta. Cte. ,  4 - Caja de Ahorros para cuentas de Banco Macro - Bansud. Para cuentas de otros bancos no informar)
+            content += ' '
+
+            # cuenta bancaria del adherente
+            content += '%015d' % int(rec.direct_debit_mandate_id.partner_bank_id.acc_number[9:])
+
+            # identificación del adherente
+            if not rec.partner_id.vat:
+                raise UserError(_(f'El partner {rec.partner_id.name} con id {rec.partner_id.id} debe tener número de identificación'))
+            content += (rec.partner_id.vat or '').ljust(22)
+
+            # identificación del débito, ver con jjs si le parece bien el rec.name
+            content += (rec.communication or rec.name or '')[-15:]
+
+            # blancos
+            content += ' '*6
+
+            # fecha de vencimiento
+            content += self.direct_debit_collection_date.strftime("%Y%m%d")
+
+            # moneda del débito, ver con jjs
+            if rec.currency_id.name == 'ARS':
+                content += '080'
+            elif rec.currency_id.name == 'USD':
+                content += '002'
+
+            # importe a debitar
+            content += ('%014.2f' % rec.amount).replace('.','')
+
+            # ceros y espacios
+            content += '0'*41 + ' '*67 + '0'
+            content += '\n'
+
+        return content
+
     def _master_credito_txt(self):
         self.ensure_one()
 
@@ -149,9 +248,9 @@ class AccountBatchPayment(models.Model):
         else:
             content += '-'
 
-        #importe, es importante hacerlo así porque si termina con ".00" le deja un solo decimal
-        importe_total = '%015.2f' % abs(self.amount)
-        content += re.sub('[.]', '', importe_total)
+        #importe
+        content += ('%015.2f' % abs(self.amount)).replace('.','')
+
         #filler
         content += ' '*91
 
@@ -179,8 +278,9 @@ class AccountBatchPayment(models.Model):
             content += '01'
 
             #importe, es importante hacerlo así porque si termina con ".00" le deja un solo decimal
-            monto = '%012.2f' % rec.amount
-            content += re.sub('[.]', '', monto)
+            # monto = '%012.2f' % rec.amount
+            # content += re.sub('[.]', '', monto)
+            content += ('%012.2f' % abs(self.amount)).replace('.','')
 
             # periodo, ver con jjs si tengo que validar que sea xx/xx (donde xx son numéros)
             content += self.periodo
@@ -192,7 +292,7 @@ class AccountBatchPayment(models.Model):
 
         return content
 
-    def _visa_credito_txt(self):
+    def _visa_txt(self):
         self.ensure_one()
         if not self.journal_id.direct_debit_merchant_number:
             raise UserError(_(f'Debe completar el numero de establecimiento (10 dígitos) en el diario con nombre "{self.journal_id.name}", id: {self.journal_id.id}'))
@@ -201,33 +301,34 @@ class AccountBatchPayment(models.Model):
         # ENCABEZADO
         # tipo de registro
         content += '0'
-        content += 'DEBLIQC '
+        if self.direct_debit_format == 'visa_debito':
+            content += 'DEBLIQD '
+        elif self.direct_debit_format == 'visa_credito':
+            content += 'DEBLIQC '
 
         # nro de establecimiento
-        content += self.journal_id.direct_debit_merchant_number
+        nro_establecimiento =  self.journal_id.direct_debit_merchant_number[:10].ljust(10)
+        content += nro_establecimiento
         content += '900000    '
 
         # fecha de generación del archivo
-        content += self.date.strftime("%Y%m%d")
+        fecha_generacion = self.date.strftime("%Y%m%d")
+        content += fecha_generacion
 
-        # hora generación archivo
-        content += datetime.now().strftime("%H%M")
+        # hora generación archivo, ver con jjs si se puede hacer más eficiente
+        hora = str(int(datetime.now().strftime("%H"))-3) +  datetime.now().strftime("%M")
+        content += hora
 
         # tipo de archivo. Débitos a liquidar
         content += '0'
 
-        # estado archivo
-        content += '  '
-
-        # reservado
-        content += ' '*55
+        # estado archivo + reservado
+        content += ' '*57
 
         # marca fin de registro
         content += '*'
 
         content += '\n'
-
-        ref = 1
 
         for rec in self.payment_ids:
             # tipo de registro
@@ -236,20 +337,66 @@ class AccountBatchPayment(models.Model):
             # numero de tarjeta
             content += '%016d' % int(rec.direct_debit_mandate_id.credit_card_number)
 
-            # Reservado
+            # reservado
             content += '   '
 
-            # Referencia
-            content += '%08d' % ref
+            # referencia, ver con jjs si está ok
+            content += (rec.communication or rec.name or '')[-8:]
 
-            # fecha de origen o vencimiento del débito
-            content += self.date.strftime("%Y%m%d")
+            # fecha de origen o vencimiento del débito, ver con jjs (dejo date o pongo direct_debit_collection_date)
+            content += fecha_generacion
 
             # código de transacción
             content += '0005'
 
-            #importe
-            content += '%015.2f' % rec.amount
+            # importe a debitar, ver si lleva o no separador de decimales, sigo la misma lógica de los otros txt
+            content += ('%016.2f' % rec.amount).replace('.','')
+
+            # identificador del débito, ver con jjs, no se a qué se refiere
+            content += ' '*15
+
+            # ver con jjs la lógica, se podría dejar una marca en el mandate
+            content += " "
+
+            # espacios
+            content += ' '*28
+
+            # marca de fin *
+            content += '*'
+            content += '\n'
+
+        # PIE
+        # constante
+        content += '9'
+        if self.direct_debit_format == 'visa_debito':
+            content += 'DEBLIQD '
+        elif self.direct_debit_format == 'visa_credito':
+            content += 'DEBLIQC '
+
+        # nro de establecimiento
+        content += nro_establecimiento
+        content += '900000    '
+
+        # fecha de generación del archivo
+        content += fecha_generacion
+
+        # hora generación archivo, ver con jjs si se puede hacer más eficiente
+        content += hora
+
+        # cantidad de registros
+        content += '%07d' % len(self.payment_ids)
+
+        # sumatoria importes
+        content += ('%016.2f' % self.amount).replace('.','')
+
+        # estado archivo + reservado
+        content += ' '*36
+
+        # marca fin de registro
+        content += '*'
+
+        # caracter de control (1 enter)
+        content += '\n'
 
         return content
 
@@ -258,10 +405,12 @@ class AccountBatchPayment(models.Model):
             return super()._generate_export_file()
         if self.direct_debit_format == 'cbu_galicia':
             content = self._galicia_debito_txt()
+        elif self.direct_debit_format == 'cbu_macro':
+            content = self._macro_cbu()
         elif self.direct_debit_format == 'master_credito':
             content = self._master_credito_txt()
-        elif self.direct_debit_format == 'visa_credito':
-            content = self._visa_credito_txt()
+        elif self.direct_debit_format == 'visa_credito' or self.direct_debit_format == 'visa_debito':
+            content = self._visa_txt()
         return {
             'file': base64.encodebytes(content.encode('UTF-8')),
             'filename': "Archivo Débito Automático-" + self.journal_id.code + "-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".txt",
@@ -273,10 +422,4 @@ class AccountBatchPayment(models.Model):
         return rslt
 
     def validate_batch(self):
-        if self.payment_method_code == 'dd':
-            company = self.env.company
-
-            if not company.galicia_creditor_identifier:
-                raise UserError(_("Your company must have a creditor identifier in order to issue Galicia Automatic Debit payments requests. It can be defined in accounting module's settings."))
-
         return super().validate_batch()
