@@ -26,10 +26,11 @@ class ResPartner(models.Model):
         if self.mobile:
             match = re.match(r'(\+54)[ ]{0,1}(9){0,1}(.*)', self.mobile)
             if match:
-                self.whatsapp_number = '+54 9' + match.group(3)
-                if not len(self.whatsapp_number.replace(' ', '').replace('-', '')) == 14:
+                self.whatsapp_number = '54 9' + match.group(3)
+                self.whatsapp_number = self.whatsapp_number.replace(' ', '').replace('-', '')
+                if not len(self.whatsapp_number) == 13:
                     self.whatsapp_number = None
             else:
-                self.whatsapp_number = self.mobile
+                self.whatsapp_number = self.mobile.replace(' ', '').replace('-', '').replace('(', '').replace(')', '')
         else:
             self.whatsapp_number = None
