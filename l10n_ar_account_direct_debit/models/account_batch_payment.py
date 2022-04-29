@@ -28,7 +28,7 @@ class AccountBatchPayment(models.Model):
         # tipo de registro
         content += '00'
 
-        # nro de prestación, ver con jjs de cambiar el string a "Nro de prestación"
+        # nro de prestación, queda así (verificado por Juan)
         content += '%06d' % int(self.journal_id.direct_debit_merchant_number)
 
         # servicio
@@ -50,7 +50,7 @@ class AccountBatchPayment(models.Model):
         content += '%07d' % len(self.payment_ids)
 
         # libre
-        # content.rjust(304, " ") #VERIFICAR SI ES NECESARIO
+        content += ' '*304
 
         content += '\r\n'
 
@@ -78,7 +78,7 @@ class AccountBatchPayment(models.Model):
             # deberia personalizarse para que se setee dicho dato en "communication"
             # TODO en v15 cambiar a "rec.ref or rec.name"
 
-            content += (rec.communication or rec.name or '')[:15].ljust(15)
+            content += (rec.communication or rec.name or '')[-15:].ljust(15)
 
             # FECHA PRIMER VENCIMIENTO
             content += self.direct_debit_collection_date.strftime("%Y%m%d")
@@ -88,6 +88,9 @@ class AccountBatchPayment(models.Model):
 
             # EL RESTO
             content += '000000000000000000000000000000000000000000000   000000000000000                      0000000000000000000000000000000000000000'
+
+            #libre
+            content += ' '*136
 
             content += '\r\n'
 
@@ -115,6 +118,9 @@ class AccountBatchPayment(models.Model):
 
         # cantidad de registros
         content += '%07d' % len(self.payment_ids)
+
+        # libre
+        content += ' '*304
 
         return content
 
@@ -181,7 +187,7 @@ class AccountBatchPayment(models.Model):
             # código de banco del adherente y código de sucursal de la cuenta
             content += rec.direct_debit_mandate_id.partner_bank_id.acc_number[:7]
 
-            # tipo de cuenta, ver con jjs
+            # tipo de cuenta, por ahora queda así (verificado por Juan)
             # (3 - Cta. Cte. ,  4 - Caja de Ahorros para cuentas de Banco Macro - Bansud. Para cuentas de otros bancos no informar)
             content += ' '
 
@@ -193,7 +199,7 @@ class AccountBatchPayment(models.Model):
                 raise UserError(_(f'El partner {rec.partner_id.name} con id {rec.partner_id.id} debe tener número de identificación'))
             content += (rec.partner_id.vat or '').ljust(22)
 
-            # identificación del débito, ver con jjs si le parece bien el rec.name
+            # identificación del débito, queda así (verificado por Juan)
             content += (rec.communication or rec.name or '')[-15:]
 
             # blancos
@@ -202,7 +208,7 @@ class AccountBatchPayment(models.Model):
             # fecha de vencimiento
             content += self.direct_debit_collection_date.strftime("%Y%m%d")
 
-            # moneda del débito, ver con jjs
+            # moneda del débito, queda así (verificado por Juan)
             if rec.currency_id.name == 'ARS':
                 content += '080'
             elif rec.currency_id.name == 'USD':
@@ -220,7 +226,6 @@ class AccountBatchPayment(models.Model):
     def _master_credito_txt(self):
         self.ensure_one()
 
-        #ver con jjs, creo que no haría falta en credito_master la validación para self.direct_debit_collection_date
         if not self.journal_id.direct_debit_merchant_number:
             raise UserError(_(f'Debe completar el numero de comercio en el diario con nombre "{self.journal_id.name}", id: {self.journal_id.id}'))
 
@@ -265,7 +270,8 @@ class AccountBatchPayment(models.Model):
             # nro tarjeta
             content += '%016d' % int(rec.direct_debit_mandate_id.credit_card_number)
 
-            # nro referencia, ver con jjs
+            # nro referencia, ver con jjs, ya lo vimos pero no me quedó claro, ver denuevo
+            # https://docs.google.com/document/d/1W0pFeopIqzfkufF9PrBoUgFFC8sGcjMTm1Am0HSWgBk/edit#bookmark=id.36ck4fhgrhg
             content += (rec.name[-12:] or '%012d' % int(re.sub('[^0-9]', '', rec.move_name)[:12])).ljust(12)
 
             # nro de cuota
@@ -277,12 +283,10 @@ class AccountBatchPayment(models.Model):
             # frecuencia db
             content += '01'
 
-            #importe, es importante hacerlo así porque si termina con ".00" le deja un solo decimal
-            # monto = '%012.2f' % rec.amount
-            # content += re.sub('[.]', '', monto)
+            # importe
             content += ('%012.2f' % abs(self.amount)).replace('.','')
 
-            # periodo, ver con jjs si tengo que validar que sea xx/xx (donde xx son numéros)
+            # periodo, (verificado por Juan)
             content += self.periodo
 
             #filler
@@ -294,8 +298,9 @@ class AccountBatchPayment(models.Model):
 
     def _visa_txt(self):
         self.ensure_one()
-        if not self.journal_id.direct_debit_merchant_number:
-            raise UserError(_(f'Debe completar el numero de establecimiento (10 dígitos) en el diario con nombre "{self.journal_id.name}", id: {self.journal_id.id}'))
+        if not self.journal_id.direct_debit_merchant_number or not self.direct_debit_collection_date:
+            raise UserError(_(f'Debe completar el numero de establecimiento (10 dígitos) en el diario con nombre "{self.journal_id.name}", id: {self.journal_id.id} y también el campo Collection date que representa la fecha de vencimiento'))
+
         content = ''
 
         # ENCABEZADO
@@ -315,10 +320,10 @@ class AccountBatchPayment(models.Model):
         fecha_generacion = self.date.strftime("%Y%m%d")
         content += fecha_generacion
 
-        # hora generación archivo, ver con jjs si se puede hacer más eficiente
-        hora = str(int(datetime.now().strftime("%H"))-3) +  datetime.now().strftime("%M")
+        # hora generación archivo, (verificado por Juan)
+        current_datetime = fields.Datetime.context_timestamp(self, fields.Datetime.now())
+        hora = current_datetime.strftime("%H") +  datetime.now().strftime("%M")
         content += hora
-
         # tipo de archivo. Débitos a liquidar
         content += '0'
 
@@ -330,6 +335,12 @@ class AccountBatchPayment(models.Model):
 
         content += '\n'
 
+        mandates_already_used = self.env['account.payment'].search([
+            ('batch_payment_id.id', '!=', self.id),
+            ('batch_payment_id.state', 'in', ['sent', 'reconciled']),
+            ('direct_debit_mandate_id', 'in', self.mapped('payment_ids.direct_debit_mandate_id').ids),
+            ]).mapped('direct_debit_mandate_id')
+
         for rec in self.payment_ids:
             # tipo de registro
             content+='1'
@@ -340,11 +351,11 @@ class AccountBatchPayment(models.Model):
             # reservado
             content += '   '
 
-            # referencia, ver con jjs si está ok
-            content += (rec.communication or rec.name or '')[-8:]
+            # referencia, (verificado por Juan)
+            content += ''.join(i for i in (rec.communication or rec.name or '') if i.isdigit())[-8:]
 
-            # fecha de origen o vencimiento del débito, ver con jjs (dejo date o pongo direct_debit_collection_date)
-            content += fecha_generacion
+            # fecha de origen o vencimiento del débito (verificado por Juan)
+            content += self.direct_debit_collection_date.strftime("%Y%m%d")
 
             # código de transacción
             content += '0005'
@@ -352,11 +363,11 @@ class AccountBatchPayment(models.Model):
             # importe a debitar, ver si lleva o no separador de decimales, sigo la misma lógica de los otros txt
             content += ('%016.2f' % rec.amount).replace('.','')
 
-            # identificador del débito, ver con jjs, no se a qué se refiere
+            # identificador del débito (lo tiene que consultar jjs con el cliente)
             content += ' '*15
 
-            # ver con jjs la lógica, se podría dejar una marca en el mandate
-            content += " "
+            # verificado por Juan
+            content += ' ' if rec.direct_debit_mandate_id in mandates_already_used else 'E'
 
             # espacios
             content += ' '*28
@@ -380,7 +391,7 @@ class AccountBatchPayment(models.Model):
         # fecha de generación del archivo
         content += fecha_generacion
 
-        # hora generación archivo, ver con jjs si se puede hacer más eficiente
+        # hora generación archivo
         content += hora
 
         # cantidad de registros
