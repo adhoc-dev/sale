@@ -21,7 +21,6 @@ class PaybookProviderAccount(models.Model):
     provider_type = fields.Selection(selection_add=[('paybook', 'Paybook')])
     # Only rename this field to avoid confusions
     next_refresh = fields.Datetime("Odoo cron next run")
-    paybook_next_refresh = fields.Datetime("Next transactions will be available at")
     paybook_username_hint = fields.Char("Login/User")
 
     paybook_max_date = fields.Date(
@@ -189,10 +188,6 @@ class PaybookProviderAccount(models.Model):
 
             # dt_refresh disponible en cred y acc. es la fecha de la ultima transaccion sincronizada
             'last_refresh': datetime.fromtimestamp(cred.get('dt_refresh')) if cred.get('dt_refresh')
-            else False,
-
-            # dt_ready indica la fecha en la cuál se puede volver a ejecutar una credencial sin obtener error 429
-            'paybook_next_refresh': datetime.fromtimestamp(cred.get('dt_ready')) if cred.get('dt_ready')
             else False,
         }
         values.update(self._paybook_check_credentials_response(response))

@@ -17,7 +17,6 @@
             </button>
 
             <field name="next_refresh" position="after">
-                <field name="paybook_next_refresh"/>
                 <field name="paybook_max_date"/>
             </field>
             <notebook position="before">
@@ -32,17 +31,6 @@
             </notebook>
             <field name="name" position="after">
                 <field name="paybook_username_hint"/>
-            </field>
-        </field>
-    </record>
-
-    <record id="online_provider_account_list_view" model="ir.ui.view">
-        <field name="name">maccount.online.provider.tree.view</field>
-        <field name="model">account.online.provider</field>
-        <field name="inherit_id" ref="account_online_sync.online_provider_account_list_view"/>
-        <field name="arch" type="xml">
-            <field name="next_refresh" position="before">
-                <field name="paybook_next_refresh"/>
             </field>
         </field>
     </record>

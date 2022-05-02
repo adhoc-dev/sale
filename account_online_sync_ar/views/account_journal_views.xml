@@ -9,7 +9,6 @@
 
             <field name="next_synchronization" position="after">
               <field name="paybook_last_transaction"/>
-              <field name="paybook_next_available"/>
               <field name="account_online_provider_type"/>
             </field>
 
@@ -19,10 +18,6 @@
                   Last: <t t-esc="record.paybook_last_transaction.value"/>
                   <br/>
                 </span>
-                <span class="text-muted" t-if="(record.account_online_journal_id.value != '')" t-att-title="record.paybook_next_available.value">
-                  Next: <t t-esc="record.paybook_next_available.value"/>
-                </span>
-                  <br/>
             </t>
 
             <span class="text-muted" t-if="(record.account_online_journal_id.value != '')" t-att-title="record.next_synchronization.value" position="attributes">

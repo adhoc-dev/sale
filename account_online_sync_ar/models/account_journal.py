@@ -8,9 +8,6 @@ class AccountJournal(models.Model):
 
     paybook_last_transaction = fields.Datetime(
         'Last synced transaction', related='account_online_provider_id.last_refresh', readonly=False)
-    paybook_next_available = fields.Datetime(
-        related='account_online_provider_id.paybook_next_refresh', readonly=False)
-
     account_online_provider_type = fields.Selection(
         related='account_online_journal_id.account_online_provider_id.provider_type', readonly=False)
 
