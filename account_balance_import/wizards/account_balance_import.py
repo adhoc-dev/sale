@@ -614,6 +614,15 @@ class AccountBalanceImport(models.TransientModel):
                 )
                 continue
 
+            partner = partner.mapped("commercial_partner_id")
+            # Skip if more than one parter was found
+            if len(partner) > 1:
+                errors.append(
+                    "Fila {}: Se encontraron varios partners "
+                    "para el texto ingresado ({}). ¡Revise los datos Cargados!".format(
+                        str(row_no + 1), dict_data['name']))
+                continue
+
             # Skip if we're not able to parse due_date
             try:
                 payment_date = datetime.datetime(
