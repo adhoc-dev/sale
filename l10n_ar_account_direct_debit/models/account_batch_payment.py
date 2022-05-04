@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 import re
 import base64
 from datetime import datetime
 
-from odoo import models, fields, _
+from odoo import models, fields, api, _
 
 from odoo.exceptions import UserError
 
@@ -14,6 +11,18 @@ class AccountBatchPayment(models.Model):
     _inherit = 'account.batch.payment'
 
     periodo = fields.Char()
+
+    @api.model
+    def _get_reference(self, payment, lenght, onlydigits=False):
+        """ Metodo utilizado para obtener la referencia de un pago. Intentamos buscar el valor en el campo
+        communication (en v15 ref), si no esta seteado se usa el name (numero/nombre del pago).
+        Si un cliente quiere un valor particular (nro de suscripcion, nro de factura, nro de recibo), entonces se
+        debe implementar que al campo communication vaya dicho numero"""
+        # TODO en v15 cambiar a "rec.ref or rec.name"
+        ref = payment.communication or payment.name or ''
+        if onlydigits:
+            ref = ''.join(i for i in ref if i.isdigit())
+        return ref[-lenght:].ljust(lenght)
 
     def _galicia_debito_txt(self):
         if not self.journal_id.direct_debit_merchant_number or not self.direct_debit_collection_date:
@@ -28,7 +37,7 @@ class AccountBatchPayment(models.Model):
         # tipo de registro
         content += '00'
 
-        # nro de prestación, queda así (verificado por Juan)
+        # nro de prestación
         content += '%06d' % int(self.journal_id.direct_debit_merchant_number)
 
         # servicio
@@ -72,13 +81,9 @@ class AccountBatchPayment(models.Model):
             # CBU
             cbu = rec.direct_debit_mandate_id.partner_bank_id.acc_number
             content += '0' + cbu[0:8] + '000' + cbu[8:]
-            # CONCEPTO DE LA COBRANZA: es la referencia que identifica univocamente a la factura
-            # cuando creamos pagos desde una factura automáticamente ya les estamos poniendo como "communication"
-            # el nro de factura. Si algun cliente quiere que vaya numero de suscripcion con mes o algo por el estilo
-            # deberia personalizarse para que se setee dicho dato en "communication"
-            # TODO en v15 cambiar a "rec.ref or rec.name"
 
-            content += (rec.communication or rec.name or '')[-15:].ljust(15)
+            # CONCEPTO DE LA COBRANZA: es la referencia que identifica univocamente a la factura
+            content += self._get_reference(rec, 15, onlydigits=False)
 
             # FECHA PRIMER VENCIMIENTO
             content += self.direct_debit_collection_date.strftime("%Y%m%d")
@@ -89,7 +94,7 @@ class AccountBatchPayment(models.Model):
             # EL RESTO
             content += '000000000000000000000000000000000000000000000   000000000000000                      0000000000000000000000000000000000000000'
 
-            #libre
+            # libre
             content += ' '*136
 
             content += '\r\n'
@@ -123,8 +128,6 @@ class AccountBatchPayment(models.Model):
         content += ' '*304
 
         return content
-
-
 
     def _macro_cbu(self):
         self.ensure_one()
@@ -187,7 +190,7 @@ class AccountBatchPayment(models.Model):
             # código de banco del adherente y código de sucursal de la cuenta
             content += rec.direct_debit_mandate_id.partner_bank_id.acc_number[:7]
 
-            # tipo de cuenta, por ahora queda así (verificado por Juan)
+            # tipo de cuenta (por ahora consideramos que todos son CBU sin importar el banco)
             # (3 - Cta. Cte. ,  4 - Caja de Ahorros para cuentas de Banco Macro - Bansud. Para cuentas de otros bancos no informar)
             content += ' '
 
@@ -199,8 +202,8 @@ class AccountBatchPayment(models.Model):
                 raise UserError(_(f'El partner {rec.partner_id.name} con id {rec.partner_id.id} debe tener número de identificación'))
             content += (rec.partner_id.vat or '').ljust(22)
 
-            # identificación del débito, queda así (verificado por Juan)
-            content += (rec.communication or rec.name or '')[-15:]
+            # identificación del débito
+            content += self._get_reference(rec, 15, onlydigits=False)
 
             # blancos
             content += ' '*6
@@ -208,7 +211,7 @@ class AccountBatchPayment(models.Model):
             # fecha de vencimiento
             content += self.direct_debit_collection_date.strftime("%Y%m%d")
 
-            # moneda del débito, queda así (verificado por Juan)
+            # moneda del débito
             if rec.currency_id.name == 'ARS':
                 content += '080'
             elif rec.currency_id.name == 'USD':
@@ -253,10 +256,10 @@ class AccountBatchPayment(models.Model):
         else:
             content += '-'
 
-        #importe
+        # importe
         content += ('%015.2f' % abs(self.amount)).replace('.','')
 
-        #filler
+        # filler
         content += ' '*91
 
         content += '\n'
@@ -270,9 +273,7 @@ class AccountBatchPayment(models.Model):
             # nro tarjeta
             content += '%016d' % int(rec.direct_debit_mandate_id.credit_card_number)
 
-            # nro referencia, ver con jjs, ya lo vimos pero no me quedó claro, ver denuevo
-            # https://docs.google.com/document/d/1W0pFeopIqzfkufF9PrBoUgFFC8sGcjMTm1Am0HSWgBk/edit#bookmark=id.36ck4fhgrhg
-            content += (rec.name[-12:] or '%012d' % int(re.sub('[^0-9]', '', rec.move_name)[:12])).ljust(12)
+            content += self._get_reference(rec, 12, onlydigits=True)
 
             # nro de cuota
             content += '001'
@@ -286,10 +287,10 @@ class AccountBatchPayment(models.Model):
             # importe
             content += ('%012.2f' % abs(self.amount)).replace('.','')
 
-            # periodo, (verificado por Juan)
+            # periodo
             content += self.periodo
 
-            #filler
+            # filler
             content += ' '*67
 
             content += '\n'
@@ -312,7 +313,7 @@ class AccountBatchPayment(models.Model):
             content += 'DEBLIQC '
 
         # nro de establecimiento
-        nro_establecimiento =  self.journal_id.direct_debit_merchant_number[:10].ljust(10)
+        nro_establecimiento = self.journal_id.direct_debit_merchant_number[:10].ljust(10)
         content += nro_establecimiento
         content += '900000    '
 
@@ -320,9 +321,9 @@ class AccountBatchPayment(models.Model):
         fecha_generacion = self.date.strftime("%Y%m%d")
         content += fecha_generacion
 
-        # hora generación archivo, (verificado por Juan)
+        # hora generación archivo
         current_datetime = fields.Datetime.context_timestamp(self, fields.Datetime.now())
-        hora = current_datetime.strftime("%H") +  datetime.now().strftime("%M")
+        hora = current_datetime.strftime("%H") + datetime.now().strftime("%M")
         content += hora
         # tipo de archivo. Débitos a liquidar
         content += '0'
@@ -343,7 +344,7 @@ class AccountBatchPayment(models.Model):
 
         for rec in self.payment_ids:
             # tipo de registro
-            content+='1'
+            content += '1'
 
             # numero de tarjeta
             content += '%016d' % int(rec.direct_debit_mandate_id.credit_card_number)
@@ -351,22 +352,22 @@ class AccountBatchPayment(models.Model):
             # reservado
             content += '   '
 
-            # referencia, (verificado por Juan)
-            content += ''.join(i for i in (rec.communication or rec.name or '') if i.isdigit())[-8:]
+            # referencia
+            content += self._get_reference(rec, 8, onlydigits=True)
 
-            # fecha de origen o vencimiento del débito (verificado por Juan)
+            # fecha de origen o vencimiento del débito
             content += self.direct_debit_collection_date.strftime("%Y%m%d")
 
             # código de transacción
             content += '0005'
 
             # importe a debitar, ver si lleva o no separador de decimales, sigo la misma lógica de los otros txt
-            content += ('%016.2f' % rec.amount).replace('.','')
+            content += ('%016.2f' % rec.amount).replace('.', '')
 
             # identificador del débito (lo tiene que consultar jjs con el cliente)
             content += ' '*15
 
-            # verificado por Juan
+            # si es la primera vez que se debita con la tarjeta pasar "E", si no " "
             content += ' ' if rec.direct_debit_mandate_id in mandates_already_used else 'E'
 
             # espacios
