@@ -7,9 +7,14 @@
             <field name="arch" type="xml">
                 <field name="payment_method_id" position="after">
                     <field name="payment_method_code" invisible="1"/>
+                    <field name="commercial_partner_id" invisible="1"/>
+                    <field name="direct_debit_format" invisible="1"/>
                     <field name="direct_debit_mandate_id" options="{'no_create': True}"
-                        domain="[('partner_id.commercial_partner_id', '=', partner_id), ('company_id', '=', company_id), ('state', '=', 'active')]"
-                        attrs="{'invisible': [('payment_method_code', '!=', 'dd')], 'readonly': [('state', '!=', 'draft')]}"/>
+                        domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id), ('company_id', '=', company_id), ('state', '=', 'active'), ('direct_debit_format', '=', direct_debit_format)]"
+                        attrs="{
+                            'invisible': [('payment_method_code', '!=', 'dd')],
+                            'readonly': [('state', '!=', 'draft')],
+                            'required': [('payment_method_code', '=', 'dd')]}"/>
                 </field>
             </field>
     </record>

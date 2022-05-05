@@ -45,6 +45,7 @@
             <tree decoration-info="state == 'draft'" decoration-muted="state == 'closed'">
                 <field name="partner_id"/>
                 <field name="description"/>
+                <field name="journal_id"/>
                 <field name="state"/>
                 <field name="company_id" groups="base.group_multi_company"/>
             </tree>
