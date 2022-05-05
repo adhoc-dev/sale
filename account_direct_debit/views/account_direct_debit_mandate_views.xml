@@ -57,7 +57,7 @@
         <field name="model">account.direct_debit.mandate</field>
         <field name="arch" type="xml">
             <search>
-                <field name="partner_id"/>
+                <field name="partner_id" operator="child_of"/>
                 <field name="description"/>
                 <filter string="Draft" name="account_direct_debit_mandate_draft_filter" domain="[('state', '=', 'draft')]"/>
                 <filter string="Active" name="account_direct_debit_mandate_active_filter" domain="[('state', '=', 'active')]"/>

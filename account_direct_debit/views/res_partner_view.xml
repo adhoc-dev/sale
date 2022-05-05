@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="account_sdd_res_partner_view" model="ir.ui.view">
+        <field name="name">res.partner.view.account.sdd.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
+        <field name="priority" eval="16"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" groups="account.group_account_invoice" name="%(account_direct_debit.account_direct_debit_mandate_tree_act)d" type="action" context="{'search_default_partner_id': id, 'default_partner_id': id}" attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}"
+                    icon="fa-pencil-square-o" help="Open this partner's mandates" title="Direct Debit Mandates">
+                    <field string='Direct Debit Mandates' name="dd_count" widget="statinfo"/>
+                </button>
+            </div>
+        </field>
+    </record>
+
+</odoo>

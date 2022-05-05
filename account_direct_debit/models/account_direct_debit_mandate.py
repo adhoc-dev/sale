@@ -27,6 +27,7 @@ class SDDMandate(models.Model):
     partner_id = fields.Many2one(
         'res.partner', string='Customer', required=True, readonly=True, states={'draft': [('readonly', False)]},
         help="Customer whose payments are to be managed by this mandate.")
+    commercial_partner_id = fields.Many2one(related='partner_id.commercial_partner_id', store=True)
     company_id = fields.Many2one(
         'res.company', default=lambda self: self.env.company,
         help="Company for whose invoices the mandate can be used.")

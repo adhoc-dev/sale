@@ -1,6 +1,6 @@
 {
     'name': 'Direct Debits Management',
-    'version': "13.0.1.0.0",
+    'version': "13.0.1.1.0",
     'category': 'Accounting/Accounting',
     'sequence': 14,
     'summary': '',
@@ -18,6 +18,7 @@
         'views/account_payment_views.xml',
         'views/account_journal_views.xml',
         'views/account_batch_payment_view.xml',
+        'views/res_partner_view.xml',
         'data/account_payment_method_data.xml',
         'security/ir.model.access.csv',
     ],
