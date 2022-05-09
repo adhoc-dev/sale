@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
-from odoo import _, api, models
+from odoo import _, api, fields, models
 from datetime import datetime
-
+from odoo.tools.safe_eval import safe_eval
+import logging
+_logger = logging.getLogger(__name__)
+from dateutil.relativedelta import relativedelta
 
 class PaybookAccount(models.Model):
 
     _inherit = 'account.online.account'
 
     """ The paybook account that is saved in Odoo. It knows how to fetch Paybook to get the new bank statements """
+
+    transactions_blacklist = fields.Text(default="{}")
 
     @api.model
     def _update_with_value(self, trx_data, field_to_set, value):
@@ -67,11 +72,21 @@ class PaybookAccount(models.Model):
 
         response = self.account_online_link_id._paybook_fetch('GET', '/transactions', params=params)
         transactions = []
+
+        # Creamos un arreglo con solo los ids de las transacciones que han sido eliminadas por el usuario
+        tx_to_skip = []
+        for (_tx_date, tx_data_list) in safe_eval(self.transactions_blacklist).items():
+            for tx_data in tx_data_list:
+                tx_to_skip.append(tx_data[0])
+
         for trx in response:
 
             if dt_param == 'dt_transaction_from':
                 if trx.get('is_pending') or trx.get('is_disable') or trx.get('is_deleted'):
                     continue
+
+            if trx.get('id_transaction') in tx_to_skip:
+                continue
 
             # save information if the tx has been deleted/disabled or refreshed
             transaction_type = tx_update_dt = ''
@@ -98,6 +113,7 @@ class PaybookAccount(models.Model):
                 'transaction_type': transaction_type,
                 'narration': '' if not tx_update_dt else
                 transaction_type + ' ' + datetime.fromtimestamp(tx_update_dt).date().strftime('%Y/%m/%d'),
+                'account_online_journal_id': self.id,
             }
 
             extra_data = trx.get('extra')
@@ -125,6 +141,22 @@ class PaybookAccount(models.Model):
 
             transactions.append(trx_data)
         return transactions
+
+    def cron_clean_transactions_blacklist(self):
+        """ method called from schedule action that will delete transactions from the blacklist olders than the last 3 months"""
+
+        three_months_ago = fields.date.today() - relativedelta(months=3)
+        for account in self.search([]):
+            dicc = safe_eval(account.transactions_blacklist)
+            new_dicc = {}
+            for (transaction_date, transactions_info) in dicc.items():
+                if datetime.strptime(transaction_date, '%d/%m/%Y').date() > three_months_ago:
+                    if transaction_date in new_dicc:
+                        new_dicc[transaction_date] += transactions_info
+                    else:
+                        new_dicc[transaction_date] = transactions_info
+            account.transactions_blacklist = new_dicc
+        _logger.info(f"Se eliminaron transacciones anteriores al {three_months_ago.strftime('%d/%m/%Y')} del registro de transacciones eliminadas")
 
     def retrieve_refreshed_transactions(self, force_dt):
         """ Try to update Odoo statement line that has been refreshed, disable or deleted on the provider side
