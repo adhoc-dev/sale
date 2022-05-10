@@ -32,7 +32,7 @@ class PaybookAccount(models.Model):
         last_value = {}
         for rec in self:
             if 'last_sync' in values:
-                last_value.update({rec.id: self.last_sync})
+                last_value.update({rec.id: rec.last_sync})
 
         # Ejecutamos el write normal
         res = super().write(values)
