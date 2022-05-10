@@ -323,8 +323,9 @@ class AccountBatchPayment(models.Model):
 
         # hora generación archivo
         current_datetime = fields.Datetime.context_timestamp(self, fields.Datetime.now())
-        hora = current_datetime.strftime("%H") + datetime.now().strftime("%M")
+        hora = current_datetime.strftime("%H%M")
         content += hora
+
         # tipo de archivo. Débitos a liquidar
         content += '0'
 
