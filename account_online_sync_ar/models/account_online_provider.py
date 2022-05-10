@@ -22,6 +22,7 @@ class PaybookProviderAccount(models.Model):
     # Only rename this field to avoid confusions
     next_refresh = fields.Datetime("Odoo cron next run")
     paybook_username_hint = fields.Char("Login/User")
+    provider_account_identifier = fields.Char(tracking=True)
 
     paybook_max_date = fields.Date(
         "Fecha tope sincronización", help="Si esta configurada indica la fecha tope hacia atrás en la cual se puede"
