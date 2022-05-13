@@ -25,14 +25,14 @@ class AccountMove(models.Model):
 
     def action_post(self):
         res = super().action_post()
-        self.direct_debit_payment()
+        to_pay_moves = self.filtered(
+                lambda x: x.direct_debit_mandate_id and x.state == 'posted' and
+                x.invoice_payment_state == 'not_paid' and x.type == 'out_invoice')
+        to_pay_moves.direct_debit_payment()
         return res
 
     def direct_debit_payment(self):
-        # validate_payment = not self._context.get('validate_payment')
-        for rec in self.filtered(
-                lambda x: x.direct_debit_mandate_id and x.state == 'posted' and
-                x.invoice_payment_state == 'not_paid' and x.type == 'out_invoice'):
+        for rec in self:
             # TODO remove on v15 key create_from_expense, needed on v13 for payment group to be created
             # This code is only executed if the mandate may be used (thanks to the previous UserError)
             payment = self.env['account.payment'].with_context(
