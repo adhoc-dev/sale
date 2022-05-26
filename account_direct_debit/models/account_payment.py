@@ -16,8 +16,8 @@ class AccountMove(models.Model):
         self.filtered(
             lambda x: x.direct_debit_mandate_id and (
                 x.payment_method_id.code != 'dd' or
-                x.dixt_debit_mandate_id.dixt_debit_format != x.dixt_debit_format or
-                x.dixt_debit_mandate_id.journal_id != x.journal_id)).direct_debit_mandate_id = False
+                x.direct_debit_mandate_id.direct_debit_format != x.direct_debit_format or
+                x.direct_debit_mandate_id.journal_id != x.journal_id)).direct_debit_mandate_id = False
 
     def cancel_and_remove_from_batch(self):
         """ Metodo para ser utilizado en los batches para los pagos que son rechazados.
@@ -30,12 +30,12 @@ class AccountMove(models.Model):
         se va a usar en ese batch. Salvo que uses este botón para cancelarlo y desvincular del batch."""
         payment_group = self._fields.get('payment_group_id')
         for rec in self:
-            if payment_group and self.payment_group_id:
-                self.payment_group_id.action_draft()
-                self.payment_group_id.cancel()
-                self.payment_group_id.message_post(body=_('Payment cancelled from batch %s') % (self.batch_payment_id.display_name))
+            if payment_group and rec.payment_group_id:
+                rec.payment_group_id.action_draft()
+                rec.payment_group_id.cancel()
+                rec.payment_group_id.message_post(body=_('Payment cancelled from batch %s') % (rec.batch_payment_id.display_name))
             else:
-                self.action_draft()
-                self.cancel()
-                self.message_post(body=_('Payment cancelled from batch %s') % (self.batch_payment_id.display_name))
+                rec.action_draft()
+                rec.cancel()
+                rec.message_post(body=_('Payment cancelled from batch %s') % (rec.batch_payment_id.display_name))
         self.write({'batch_payment_id': False})
