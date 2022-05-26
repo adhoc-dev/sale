@@ -366,7 +366,8 @@ class AccountBatchPayment(models.Model):
             content += ('%016.2f' % rec.amount).replace('.', '')
 
             # identificador del débito (lo tiene que consultar jjs con el cliente)
-            content += ' '*15
+            content +=  '%05d' % int(rec.partner_id.ref)
+            content += ' '*10
 
             # si es la primera vez que se debita con la tarjeta pasar "E", si no " "
             content += ' ' if rec.direct_debit_mandate_id in mandates_already_used else 'E'
