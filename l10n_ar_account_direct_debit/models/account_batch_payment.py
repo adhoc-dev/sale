@@ -273,7 +273,9 @@ class AccountBatchPayment(models.Model):
             # nro tarjeta
             content += '%016d' % int(rec.direct_debit_mandate_id.credit_card_number)
 
-            content += self._get_reference(rec, 12, onlydigits=True)
+            #nro de referencia
+            # content += self._get_reference(rec, 12, onlydigits=True) lo dejo por si hay que volver a usarlo
+            content += '%012d' % int(rec.partner_id.ref)
 
             # nro de cuota
             content += '001'
