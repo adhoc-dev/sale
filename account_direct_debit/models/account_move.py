@@ -23,8 +23,8 @@ class AccountMove(models.Model):
                     ('state', '=', 'active')], limit=1)
             rec.direct_debit_mandate_id = mandate
 
-    def action_post(self):
-        res = super().action_post()
+    def post(self):
+        res = super().post()
         to_pay_moves = self.filtered(
                 lambda x: x.direct_debit_mandate_id and x.state == 'posted' and
                 x.invoice_payment_state == 'not_paid' and x.type == 'out_invoice')
