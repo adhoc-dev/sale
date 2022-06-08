@@ -1,0 +1,410 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* base_algolia_search
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-08 20:12+0000\n"
+"PO-Revision-Date: 2022-06-08 20:12+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/133229/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#. module: base_algolia_search
+#: model_terms:ir.ui.view,arch_db:base_algolia_search.view_model_form
+msgid ""
+"<span class=\"fa fa-info\"/>  Despues de crear el indice en algolia, "
+"recomendamos visitar el mismo en la web de algolia y afinar los ajustes de "
+"typo, idiomas y demaś"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model__add_algolia_search
+msgid "Add Algolia Search"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,help:base_algolia_search.field_ir_model__add_algolia_search
+msgid "Add Algolia Search on search views"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model,name:base_algolia_search.model_algolia_field
+msgid "Algolia Attribute"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model__algolia_field_ids
+msgid "Algolia Attributes"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model__algolia_disable_cron_sync
+msgid "Algolia Disable Cron Sync"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model__algolia_given_index_id_field
+msgid "Algolia Given Index Id Field"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model__algolia_index_name
+msgid "Algolia Index Name"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.actions.server,name:base_algolia_search.cron_algolia_index_sync_ir_actions_server
+#: model:ir.cron,cron_name:base_algolia_search.cron_algolia_index_sync
+#: model:ir.cron,name:base_algolia_search.cron_algolia_index_sync
+msgid "Algolia Index Sync"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model__algolia_last_sync
+msgid "Algolia Last Sync"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model__algolia_model
+msgid "Algolia Model"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field__unknown__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_algolia_field__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_avatar_mixin__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_base__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_base_enable_profiling_wizard__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_base_language_export__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_base_language_import__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_base_language_install__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_base_module_uninstall__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_base_module_update__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_base_module_upgrade__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_base_partner_merge_automatic_wizard__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_base_partner_merge_line__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_base_update_translations__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_change_password_user__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_change_password_wizard__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_decimal_precision__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_format_address_mixin__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_image_mixin__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_actions_act_url__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_actions_act_window__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_actions_act_window_close__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_actions_act_window_view__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_actions_actions__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_actions_client__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_actions_report__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_actions_server__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_actions_todo__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_asset__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_attachment__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_autovacuum__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_config_parameter__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_cron__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_cron_trigger__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_default__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_demo__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_demo_failure__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_demo_failure_wizard__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_exports__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_exports_line__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_fields_converter__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_filters__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_http__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_logging__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_mail_server__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model_access__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model_constraint__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model_data__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model_fields__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model_fields_selection__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model_relation__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_module_category__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_module_module__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_module_module_dependency__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_module_module_exclusion__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_profile__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_property__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_barcode__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_contact__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_date__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_datetime__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_duration__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_float__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_float_time__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_html__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_image__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_image_url__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_integer__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_many2many__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_many2one__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_monetary__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_qweb__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_relative__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_selection__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_text__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_rule__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_sequence__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_sequence_date_range__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_server_object_lines__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_translation__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_ui_menu__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_ui_view__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_ui_view_custom__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_report_base_report_irmodulereference__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_report_layout__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_report_paperformat__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_bank__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_company__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_config__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_config_installer__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_config_settings__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_country__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_country_group__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_country_state__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_currency__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_currency_rate__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_groups__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_lang__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_partner__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_partner_bank__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_partner_category__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_partner_industry__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_partner_title__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_users__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_users_apikeys__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_users_apikeys_description__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_users_apikeys_show__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_users_identitycheck__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_users_log__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_reset_view_arch_wizard__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_wizard_ir_model_menu_create__algolia_search
+#: model_terms:ir.ui.view,arch_db:base_algolia_search.view_model_form
+msgid "Algolia Search"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model__algolia_use_given_index
+msgid "Algolia Use Given Index"
+msgstr ""
+
+#. module: base_algolia_search
+#: model_terms:ir.ui.view,arch_db:base_algolia_search.view_model_form
+msgid "Algolia attrbitue that stores ID"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.constraint,message:base_algolia_search.constraint_algolia_field_algolia_field_uniqe
+msgid "Algolia field must be unique per model!"
+msgstr ""
+
+#. module: base_algolia_search
+#: code:addons/base_algolia_search/models/ir_model.py:0
+#, python-format
+msgid "Algolia key or appId notconfigured"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model,name:base_algolia_search.model_base
+msgid "Base"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,help:base_algolia_search.field_algolia_field__unordered
+msgid ""
+"By default, all searchable attributes are ordered. This means that matches "
+"at the beginning of an attribute are considered more important than in the "
+"middle or the end. If you specifically set them as unordered, the position "
+"of the match within the attribute doesn’t count."
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_algolia_field__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_algolia_field__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_algolia_field__display_name
+msgid "Display Name"
+msgstr "Mostrar Nombre"
+
+#. module: base_algolia_search
+#: model_terms:ir.ui.view,arch_db:base_algolia_search.view_model_form
+msgid "Domain"
+msgstr "Dominio"
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_algolia_field__field_id
+msgid "Field"
+msgstr "Campo"
+
+#. module: base_algolia_search
+#: model:ir.model.fields,help:base_algolia_search.field_ir_model__algolia_given_index_id_field
+msgid "Field that store the ID on this index"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,help:base_algolia_search.field_algolia_field__relation_model
+msgid "For relationship fields, the technical name of the target model"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_algolia_field__id
+msgid "ID"
+msgstr "ID (identificación)"
+
+#. module: base_algolia_search
+#: model:ir.model.fields,help:base_algolia_search.field_ir_model__algolia_disable_cron_sync
+msgid "If you disable cron you should sync data by an automation or manually"
+msgstr ""
+
+#. module: base_algolia_search
+#: code:addons/base_algolia_search/models/ir_model.py:0
+#, python-format
+msgid ""
+"If you use an existing index you must provide the algolia attribute that "
+"stores de rec IDs"
+msgstr ""
+
+#. module: base_algolia_search
+#: model_terms:ir.ui.view,arch_db:base_algolia_search.view_model_form
+msgid "Index Name"
+msgstr ""
+
+#. module: base_algolia_search
+#: model_terms:ir.ui.view,arch_db:base_algolia_search.view_model_form
+msgid "Index Sync (all recs)"
+msgstr ""
+
+#. module: base_algolia_search
+#: model_terms:ir.ui.view,arch_db:base_algolia_search.view_model_form
+msgid "Index Sync (updated recs)"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_algolia_field____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_algolia_field__write_uid
+msgid "Last Updated by"
+msgstr "Actualizado por"
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_algolia_field__write_date
+msgid "Last Updated on"
+msgstr "Actualizado el"
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_algolia_field__model_id
+msgid "Model"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model,name:base_algolia_search.model_ir_model
+msgid "Models"
+msgstr "Modelos"
+
+#. module: base_algolia_search
+#: code:addons/base_algolia_search/models/ir_model.py:0
+#, python-format
+msgid "No pudimos conectarnos a Algolia. Esto es lo que recibimos: %s"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model__algolia_domain
+msgid "Odoo Domain"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,help:base_algolia_search.field_ir_model__algolia_last_sync
+msgid ""
+"Only records that has been modified (write date) after this date are going "
+"to be syncked"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_algolia_field__priority
+msgid "Priority"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,help:base_algolia_search.field_algolia_field__priority
+msgid ""
+"Priority used for search relevance (lower priority is higher relevance.\n"
+"Only relevant if attribute is set as searchable"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_algolia_field__relation_model
+msgid "Related Model"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_algolia_field__searchable
+msgid "Searchable"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_algolia_field__sub_field_id
+msgid "Sub Campo"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_algolia_field__unordered
+msgid "Unordered"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_model__use_algolia_name_search
+msgid "Use Algolia Name Search"
+msgstr ""
+
+#. module: base_algolia_search
+#: model:ir.model.fields,help:base_algolia_search.field_ir_model__use_algolia_name_search
+msgid "Use Algolia as search engine on m2o fields"
+msgstr ""
+
+#. module: base_algolia_search
+#: model_terms:ir.ui.view,arch_db:base_algolia_search.view_model_form
+msgid "Use Existing Index"
+msgstr ""
+
+#. module: base_algolia_search
+#: model_terms:ir.ui.view,arch_db:base_algolia_search.view_model_form
+msgid "Use on model search view"
+msgstr ""
+
+#. module: base_algolia_search
+#: model_terms:ir.ui.view,arch_db:base_algolia_search.view_model_form
+msgid "Use on name search"
+msgstr ""
+
+#. module: base_algolia_search
+#: code:addons/base_algolia_search/models/ir_model.py:0
+#, python-format
+msgid ""
+"You can't use an 'Algolia Existing Index' togheter with 'Algolia attributes "
+"list', please remove one of them"
+msgstr ""
