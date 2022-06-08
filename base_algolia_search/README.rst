@@ -17,19 +17,15 @@ Search using Algolia engine
 Check this doc: https://docs.google.com/document/d/1Ve2Ei-QiDO3fQnN2K2_a-p5HGf2hFu8MRtigKbYrYJs/edit
 About algolia autocomplete: https://github.com/algolia/autocomplete.js/blob/master/README.md
 
-Installation
-============
 
-To install this module, you need to:
+ROADMAP
+=======
 
-#. Only install this module
+a. ver de meter hook similar a base_automation y entonces ver si podemos hacer actualización online, tal vez podemos dejar opción en "batch" o inline? Tal vez campo nuevo que almacene ultima modificación de un campo monitoreado?
 
-Configuration
-=============
+b. ver si en vez de crear campo smart_search podemos heredar el ".search" haciendo un dummy search o algo así ( esto tal vez emprolije monkey patch)
 
-To configure this module, you need to:
 
-#. Noting to configure
 
 Usage
 =====

@@ -13,7 +13,7 @@ class AlgoliaField(models.Model):
     relation_model = fields.Char(related='field_id.relation', readonly=True)
     sub_field_id = fields.Many2one('ir.model.fields', string='Sub Campo')
     searchable = fields.Boolean(default=True)
-    model_id = fields.Many2one('ir.model', required=True, ondelte='cascade')
+    model_id = fields.Many2one('ir.model', required=True, ondelete='cascade')
     unordered = fields.Boolean(
         help="By default, all searchable attributes are ordered. This means that matches at the beginning of an "
         "attribute are considered more important than in the middle or the end. If you specifically set them as "

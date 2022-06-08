@@ -208,7 +208,7 @@ class IrModel(models.Model):
                             name, limit=limit)
                         # TODO mejorar, no es lo mejor a nivel performance pero de esta manera aplicamos
                         # permisos de usuario y filter de active
-                        res = self.search([('id', 'in', rec_ids)]).name_get()
+                        res = self._search([('id', 'in', rec_ids)], limit=limit, access_rights_uid=name_get_uid)
                         # res = self.browse(rec_ids).name_get()
                 else:
                     # Perform standard name search
@@ -245,4 +245,4 @@ class IrModel(models.Model):
             if Model is not None:
                 Model._patch_method('_name_search', patch_algolia_name_search())
 
-        return super(IrModel, self)._register_hook()
+        return super()._register_hook()
