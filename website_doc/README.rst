@@ -15,7 +15,7 @@ Website Documentation
 =====================
 
 Documentation Using Website, pages and google docs
-To create a page you can type: http://localhost:9069/page/asda
+For algolia search check this documentation: https://docs.google.com/document/d/1Ve2Ei-QiDO3fQnN2K2_a-p5HGf2hFu8MRtigKbYrYJs/edit
 
 Installation
 ============
