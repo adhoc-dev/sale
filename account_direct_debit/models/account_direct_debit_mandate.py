@@ -35,7 +35,7 @@ class SDDMandate(models.Model):
         'account.move', 'direct_debit_mandate_id', string='Invoices Paid', readonly=True,
         help="Invoices paid using this mandate.")
     journal_id = fields.Many2one(
-        'account.journal', string='Journal', check_company=True, required=True,
+        'account.journal', string='Journal', check_company=True,
         readonly=True, states={'draft': [('readonly', False)]},
         help='Journal to use to receive Direct Debit payments from this mandate.')
     direct_debit_format = fields.Selection(related='journal_id.direct_debit_format')
