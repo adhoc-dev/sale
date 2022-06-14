@@ -55,14 +55,13 @@ class HelpdeskTeam(models.Model):
             res.project_id.allow_tickets = True
         return res
 
-
     def _determine_user_to_assign(self):
         """ We add for 2 cases of assination of user from the team.
         """
         result = super()._determine_user_to_assign()
         for team in self:
             if team.assign_method == 'unassigned':
-                result[team.id] = False
+                result[team.id] = self.env['res.users']
             elif team.assign_method == 'specific_user':
                 result[team.id] = team.user_id
         return result
