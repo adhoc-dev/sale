@@ -18,8 +18,8 @@ class AccountBatchPayment(models.Model):
         communication (en v15 ref), si no esta seteado se usa el name (numero/nombre del pago).
         Si un cliente quiere un valor particular (nro de suscripcion, nro de factura, nro de recibo), entonces se
         debe implementar que al campo communication vaya dicho numero"""
-        # TODO en v15 cambiar a "rec.ref or rec.name"
-        ref = payment.communication or payment.name or ''
+        # usamos el move_name que si se usa account_payment_group va a ser el nro de recibo. Eventualmente podríamos hacerlo opcional en algun lugar y que tome move_name o payment.communication
+        ref = payment.move_name
         if onlydigits:
             ref = ''.join(i for i in ref if i.isdigit())
         return ref[-lenght:].ljust(lenght)
@@ -315,7 +315,7 @@ class AccountBatchPayment(models.Model):
             content += 'DEBLIQC '
 
         # nro de establecimiento
-        nro_establecimiento = self.journal_id.direct_debit_merchant_number[:10].ljust(10)
+        nro_establecimiento = '%010d' % int(self.journal_id.direct_debit_merchant_number[:10])
         content += nro_establecimiento
         content += '900000    '
 
