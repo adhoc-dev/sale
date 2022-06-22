@@ -11,7 +11,7 @@ class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
 
-    project_id = fields.Many2one("project.project", readonly=False)
+    project_id = fields.Many2one("project.project", related=False, readonly=False)
 
     @api.model
     def create(self, vals):
