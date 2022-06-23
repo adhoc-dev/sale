@@ -30,6 +30,11 @@ class HelpdeskTicket(models.Model):
         for ticket in self.filtered(lambda ticket: ticket.team_id):
             if not ticket.user_id and ticket.team_id.assign_method == 'project_responsable':
                 ticket.user_id = ticket.project_id.user_id
+            elif ticket.user_id and ticket.team_id.assign_method == 'specific_user' and ticket.user_id != ticket.team_id.user_id:
+                ticket.user_id = ticket.team_id.user_id
+            elif ticket.user_id and ticket.team_id.assign_method == 'unassigned':
+                ticket.user_id = self.env['res.users']
+
 
     @api.onchange('project_id')
     def _onchange_project(self):
