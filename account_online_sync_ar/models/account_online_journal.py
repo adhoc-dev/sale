@@ -5,7 +5,7 @@ from datetime import datetime
 
 class PaybookAccount(models.Model):
 
-    _inherit = 'account.online.journal'
+    _inherit = 'account.online.account'
 
     """ The paybook account that is saved in Odoo. It knows how to fetch Paybook to get the new bank statements """
 
@@ -15,14 +15,13 @@ class PaybookAccount(models.Model):
             old_value = trx_data.get(field_to_set)
             trx_data[field_to_set] = old_value + ' - ' + str(value) if old_value else str(value)
 
-    def retrieve_transactions(self):
+    def _retrieve_transactions(self):
         """ Get transsanctions from provider, prepare data, and create bank statements """
-        if (self.account_online_provider_id.provider_type != 'paybook'):
-            return super().retrieve_transactions()
-        if not self.sudo().journal_ids:
-            return 0
+        if (self.account_online_link_id.provider_type != 'paybook'):
+            return super()._retrieve_transactions()
+
         transactions = self.paybook_get_transactions()
-        return self.env['account.bank.statement'].online_sync_bank_statement(transactions, self.journal_ids)
+        return self.env['account.bank.statement']._online_sync_bank_statement(transactions, self)
 
     def write(self, values):
         """ Hacemos track en el chatter del provider de cuando un usuario modifica la fecha de ultima sincronizacion
@@ -42,7 +41,7 @@ class PaybookAccount(models.Model):
         # colocar que sea un usuario que no sea el que corre el ir.cron.
         if last_value and not self.env.user.has_group("saas_client.group_saas_support"):
             for rec in self:
-                rec.account_online_provider_id.message_post(body=_("Modificada Fecha Última Sincronización") +
+                rec.account_online_link_id.message_post(body=_("Modificada Fecha Última Sincronización") +
                 " %s: %s a %s" % (rec.name, last_value.get(rec.id), rec.last_sync))
 
         return res
@@ -57,16 +56,16 @@ class PaybookAccount(models.Model):
         # Si hay una fecha maximo historica tomar esto como limite para no traer transacciones mas viejas y evitar
         # traernos transacciones duplicadas. Esto para el tema cuando cambia el usuario pero hacen referencia a la misma
         # cuenta y transacciones pra evitar duplicados.
-        max_date = self.account_online_provider_id.paybook_max_date
+        max_date = self.account_online_link_id.paybook_max_date
         if max_date and last_sync < max_date:
             last_sync = max_date
 
         last_sync = datetime.combine(last_sync, datetime.min.time())
-        params = {'id_credential': self.account_online_provider_id.provider_account_identifier,
+        params = {'id_credential': self.account_online_link_id.client_id,
                   'id_account': self.online_identifier,
                   dt_param: last_sync.strftime('%s')}
 
-        response = self.account_online_provider_id._paybook_fetch('GET', '/transactions', params=params)
+        response = self.account_online_link_id._paybook_fetch('GET', '/transactions', params=params)
         transactions = []
         for trx in response:
 
@@ -91,7 +90,7 @@ class PaybookAccount(models.Model):
 
             trx_data = {
                 'date': datetime.fromtimestamp(trx.get('dt_transaction')).date(),
-                'online_identifier': trx.get('id_transaction'),
+                'online_transaction_identifier': trx.get('id_transaction'),
                 'name': trx.get('description'),
                 'amount': trx.get('amount'),
                 'end_amount': self.balance,
@@ -146,7 +145,7 @@ class PaybookAccount(models.Model):
         txs_to_update = self.env['account.bank.statement.line']
         tx_count = 0
         for tx_raw in transactions:
-            tx = all_lines.search([('online_identifier', '=', tx_raw['online_identifier'])])
+            tx = all_lines.search([('online_transaction_identifier', '=', tx_raw['online_transaction_identifier'])])
             # Si la tx esta en Odoo
             if tx:
                 # Si ha sido marcada como deshabilitada o ha sido eliminada en paybook

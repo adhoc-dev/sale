@@ -1,3 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_account_online_provider_id_manage,access_account_online_provider_id manage,model_account_online_provider,account.group_account_manager,1,1,1,0
-access_account_online_journal_id_manage,access_account_online_journal_id manage,model_account_online_journal,account.group_account_manager,1,1,1,0
+account_online_sync_ar.access_provider_link,access_provider_link,account_online_sync_ar.model_provider_link,base.group_user,1,1,1,1

@@ -14,13 +14,16 @@ import time
 _logger = logging.getLogger(__name__)
 
 
-class PaybookProviderAccount(models.Model):
+class AccountOnlineLink(models.Model):
 
-    _inherit = ['account.online.provider']
+    _inherit = ['account.online.link']
+    # TODO kz OLD account.online.provider, script migración
 
-    provider_type = fields.Selection(selection_add=[('paybook', 'Paybook')])
+    provider_type = fields.Selection([('paybook', 'Synfcy'), ('saltedge', 'Odoo')], 'Proveedor')
+
     # Only rename this field to avoid confusions
-    next_refresh = fields.Datetime("Odoo cron next run")
+    next_refresh = fields.Datetime("Oodo Cron Next Run")
+
     paybook_username_hint = fields.Char("Login/User")
     provider_account_identifier = fields.Char(tracking=True)
 
@@ -30,44 +33,23 @@ class PaybookProviderAccount(models.Model):
         " a que cambio el username evitar ids duplicados.\n * Si hicieron carga manual de algun dia y quieren"
         " sincronizar a partir del dia siguiente", tracking=True)
 
-    # Add same logic from account_online_synchronization (saltedge)
-    auto_sync = fields.Boolean(
-        default=True, string="Sincronización Automática",
-        help="If possible, we will try to automatically fetch new transactions for this record")
-
     paybook_refresh_days = fields.Integer("Last Days to be Updated/fixed", compute="_compute_paybook_refresh_days")
+
+    # Este estaba en el viejo sync y lo necesitamos para almacenar el error recibido por paybook
+    status_code = fields.Char(readonly=True, help='Code to identify problem')
+    message = fields.Char(readonly=True, help='Techhnical message from third party provider that can help debugging')
+    action_required = fields.Boolean(readonly=True, help='True if user needs to take action by updating account', default=False)
+    provider_identifier = fields.Char(readonly=True, help='ID of the banking institution in third party server used for debugging purpose')
 
     def _compute_paybook_refresh_days(self):
         self.paybook_refresh_days = int(self.env['ir.config_parameter'].sudo().get_param('account_online_sync_ar.update_last_days', "7"))
 
-    def _get_available_providers(self):
-        ret = super()._get_available_providers()
-        ret.append('paybook')
-        return ret
-
-    def manual_sync(self):
-        if self.provider_type != 'paybook':
-            return super().manual_sync()
-        self.ensure_one()
-        transactions = []
-        for account in self.account_online_journal_ids:
-            journals = account.sudo().journal_ids
-            if journals:
-                trx_count = account.retrieve_transactions()
-                transactions.append({'journal': journals[0].name, 'count': trx_count})
-
-        result = {'status': self.status, 'message': self.message, 'transactions': transactions, 'method': 'refresh',
-                  'added': self.env['account.online.journal']}
-        return self.show_result(result)
-
     def action_paybook_update_transactions(self):
         """ This method will review if there is refreshed transactions and will update its values on Odoo """
-        if self.provider_type != 'paybook':
-            return super().update_transactions()
         self.ensure_one()
         transactions = []
         fix_days = int(self.env['ir.config_parameter'].sudo().get_param('account_online_sync_ar.update_last_days', "7"))
-        for account in self.account_online_journal_ids:
+        for account in self.account_online_account_ids:
             if account.journal_ids:
                 force_dt = fields.Datetime.today() - timedelta(days=fix_days)
                 trx_count = account.retrieve_refreshed_transactions(force_dt=force_dt)
@@ -76,22 +58,19 @@ class PaybookProviderAccount(models.Model):
         values = self._paybook_get_credentials(self.company_id, self.provider_account_identifier)
         self.sudo().write(values)
 
-        result = {'status': self.status, 'message': self.message, 'transactions': transactions, 'method': 'refresh',
-                  'added': self.env['account.online.journal']}
+        result = {'status': self.state, 'message': _("Actualizar transacciones existentes: ") + self.message,
+                  'transactions': transactions, 'method': 'refresh', 'added': self.env['account.online.account']}
         return self.show_result(result)
 
-    @api.model
-    def cron_fetch_online_transactions(self):
-        """ Only run cron for paybook provider synchronization record status is OK or if we receive any 5xx Connection
-        Error Codes """
-        if self.provider_type != 'paybook':
-            return super().cron_fetch_online_transactions()
-        if self.auto_sync and (self.status == 'SUCCESS' or self.status_code in ['406', '500', '501', '503', '504', '509']):
-            self.manual_sync()
-            # TODO KZ only do the manual sync if the paybook next date is less than the current one
-            # paybook_next_refresh
+    def show_result(self, result):
+        # TODO KZ Ya no existe ver como implementarlo. un pop up?
+        self.ensure_one()
+        self.message_post(body=str(result))
 
-    def update_credentials(self):
+    def action_update_credentials(self):
+        """ Extender para abrir widget de paybook asi actualizar la contraseña dedse alli """
+        if self.provider_type != 'paybook':
+            return super().action_update_credentials()
         self.ensure_one()
         return self._paybook_open_update_credential()
 
@@ -207,7 +186,7 @@ class PaybookProviderAccount(models.Model):
             response = self._paybook_fetch('PUT', '/credentials/' + id_credential + '/sync')
             extra_info = _('Se forzó la sincronizacion bancaria')
             self.message_post(body=extra_info)
-            self.manual_sync()
+            self._fetch_transactions()
         else:
             message = _('No es posible forzar la sincronización. ')
             if cred.get('code') >= 400 and cred.get('code') != 406:
@@ -220,35 +199,32 @@ class PaybookProviderAccount(models.Model):
                 message += _('Ya se ha forzado la sincronización recientemente. Puede intentar nuevamente a las ') + dt_ready
             raise UserError(message)
 
-    def action_paybook_update_accounts(self):
+    def action_initialize_update_accounts(self):
         """ Check the accounts available on the bank and let us to return the information of new accounts.
 
         This is helpfull also when create a new credential for a new bank that is been integrated and we add the
         accounts in a post process"""
+        # TODO KZ test it
+        if self.provider_type != 'paybook':
+            return super().action_initialize_update_accounts()
+
+        # Get Account Data and create accounts in Odoo
         self.ensure_one()
-
-        # Get Account Data
         account_values = self._get_account_values()
-        prev_accounts = self.account_online_journal_ids
         if account_values:
-            self.sudo().write({'account_online_journal_ids': account_values})
+            self.sudo().write({'account_online_account_ids': account_values})
 
-        method = 'edit'
-        added = self.account_online_journal_ids - prev_accounts.sudo().filtered(lambda x: x.journal_ids)
-
-        res = {'status': 'SUCCESS', 'method': method, 'added': added}
-
-        if not added:
-            res['status'] = 'FAILED'
-            res['message'] = _("We don't find any new account to add / configure")
-
-        return self.show_result(res)
+        # TODO KZ add a message in the post telling a a new account was created?
+        # prev_accounts = self.account_online_account_ids
+        # added = self.account_online_account_ids - prev_accounts.sudo().filtered(lambda x: x.journal_ids)
+        return self._link_accounts_to_journals_action(self.account_online_account_ids)
 
     def action_paybook_update_state(self):
         self.ensure_one()
         values = self._paybook_get_credentials(self.company_id, self.provider_account_identifier)
         self.write(values)
-        res = {'status': self.status, 'message': self.message, 'method': 'refresh', 'added': []}
+
+        res = {'status': self.state, 'message': _("Actualizar estado credencial: ") + self.message, 'method': 'refresh', 'added': []}
         return self.show_result(res)
 
     @api.model
@@ -275,13 +251,15 @@ class PaybookProviderAccount(models.Model):
             if provider_account:
                 self.message_post(body=extra_info)
 
-        res = {'status': 'SUCCESS' if everything_ok else 'FAILED',
-               'message': 'Se actualizo las credenciales del banco' if everything_ok else extra_info or values['message'],
+        res = {'state': 'connected' if everything_ok else 'error',
+               'message': _("Actualizar contraseña banco: ")  + ('Se actualizo las credenciales del banco' if everything_ok else extra_info or values['message']),
                'method': 'refresh'}
 
-        url = '/web#model=account.online.wizard&id=%s&action=account_online_sync.action_account_online_wizard_form'
+
+        # TODO KZ critico ver como mostramos los datos aca porque ya no existe la acción
         action = provider_account.show_result(res)
-        return werkzeug.utils.redirect(url % action.get('res_id'))
+        # url = '/web#model=account.online.wizard&id=%s&action=account_online_sync.action_account_online_wizard_form'
+        # return werkzeug.utils.redirect(url % action.get('res_id'))
 
     @api.model
     def _paybook_success(self, credential_data):
@@ -300,19 +278,19 @@ class PaybookProviderAccount(models.Model):
         # Get Account Data
         account_values = provider_account._get_account_values(credential_data)
         if account_values:
-            values.update({'account_online_journal_ids': account_values})
+            values.update({'account_online_account_ids': account_values})
 
         if provider_account:
-            prev_accounts = provider_account.account_online_journal_ids
+            prev_accounts = provider_account.account_online_account_ids
             provider_account.sudo().write(values)
             method = 'edit'
-            added = provider_account.account_online_journal_ids - prev_accounts.sudo().filtered(lambda x: x.journal_ids)
+            added = provider_account.account_online_account_ids - prev_accounts.sudo().filtered(lambda x: x.journal_ids)
         else:
             provider_account = self.create(values)
             method = 'add' if journal else 'edit'
-            added = provider_account.account_online_journal_ids
+            added = provider_account.account_online_account_ids
 
-        res = {'status': provider_account.status, 'message': provider_account.message, 'method': method,
+        res = {'status': provider_account.state, 'message': provider_account.message, 'method': method,
                'added': added}
 
         if journal:
@@ -323,9 +301,10 @@ class PaybookProviderAccount(models.Model):
                    'message': provider_account.message + '\nNo se pudieron sincronizar las cuentas intentar nuevamente',
                    'method': method, 'added': added}
 
-        url = '/web#model=account.online.wizard&id=%s&action=account_online_sync.action_account_online_wizard_form'
+        # TODO KZ Ya no existe ver como implementarlo
         action = provider_account.show_result(res)
-        return werkzeug.utils.redirect(url % action.get('res_id'))
+        # url = '/web#model=account.online.wizard&id=%s&action=account_online_sync.action_account_online_wizard_form'
+        # return werkzeug.utils.redirect(url % action.get('res_id'))
 
     @api.model
     def _paybook_check_credentials_response(self, response):
@@ -340,7 +319,7 @@ class PaybookProviderAccount(models.Model):
             timedelta(seconds=ready_in)) if ready_in else ''
 
         return {
-            'status': 'FAILED' if response_code >= 400 else 'SUCCESS',
+            'state': 'connected' if response_code >= 400 else 'error',
             'status_code': response_code,
             'message': (response.get('message') or '') + hint_message + ready_in_msg,
             'action_required': response_code >= 400,
@@ -401,6 +380,7 @@ class PaybookProviderAccount(models.Model):
         }.get(str(code), _('An error has occurred (code %s)' % code))
 
     def _get_account_values(self, credential_data={}):
+        """ devuelve diccionario con los datos para cargar la info de las cuentas en Odoo """
         if credential_data:
             company = self.env['res.company'].browse(int(credential_data.get('company_id')))
             id_credential = credential_data.get('id_credential')
@@ -426,7 +406,7 @@ class PaybookProviderAccount(models.Model):
         # Prepare info of accounts for Odoo
         account_values = []
         for acc in account_info:
-            online_account = self.account_online_journal_ids.filtered(
+            online_account = self.account_online_account_ids.filtered(
                 lambda x: x.online_identifier == acc.get('id_account'))
             if online_account:
                 account_values.append((1, online_account.id, {

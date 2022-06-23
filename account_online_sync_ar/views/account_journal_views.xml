@@ -4,24 +4,26 @@
     <record id="account_journal_dashboard_inherit_online_sync" model="ir.ui.view">
         <field name="name">account.journal.dashboard.inherit.online.sync</field>
         <field name="model">account.journal</field>
-        <field name="inherit_id" ref="account_online_sync.account_journal_dashboard_inherit_online_sync"/>
+        <field name="inherit_id" ref="account_online_synchronization.account_journal_dashboard_inherit_online_sync"/>
         <field name="arch" type="xml">
 
-            <field name="next_synchronization" position="after">
+            <field name="account_online_account_id" position="after">
               <field name="paybook_last_transaction"/>
               <field name="account_online_provider_type"/>
             </field>
 
-            <t t-if="record.synchronization_status.value == 'SUCCESS'" position="inside">
+            <!-- Mostrar fecha ultima sincronizacion con paybook -->
+            <span t-if="(record.account_online_account_id.value != '')" position="after">
                 <br/>
-                <span class="text-muted" t-if="(record.account_online_journal_id.value != '')" t-att-title="record.paybook_last_transaction.value">
+                <span groups="account.group_account_user" class="text-muted" t-if="(record.account_online_account_id.value != '')" t-att-title="record.paybook_last_transaction.value">
                   Last: <t t-esc="record.paybook_last_transaction.value"/>
                   <br/>
                 </span>
-            </t>
+            </span>
 
-            <span class="text-muted" t-if="(record.account_online_journal_id.value != '')" t-att-title="record.next_synchronization.value" position="attributes">
-              <attribute name="invisible">1</attribute>
+            <!-- Esconder Proxima sincronizacion si soy paybook, esta valor no importa y confunde, solo tiene sentido con saltedge -->
+            <span t-if="(record.account_online_account_id.value != '')" position="attributes">
+              <attribute name="t-if">account_online_provider_type != 'paybook' and (record.account_online_account_id.value != '')</attribute>
             </span>
 
       </field>

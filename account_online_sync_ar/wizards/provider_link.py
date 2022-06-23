@@ -25,7 +25,7 @@ class ProviderLink(models.TransientModel):
 
     def action_open_paybook(self):
         self.check_terms_and_conditions()
-        return self.env['account.online.provider'].with_context(journal_id=self.journal_id.id)._paybook_open_login()
+        return self.env['account.online.link'].with_context(journal_id=self.journal_id.id)._paybook_open_login()
 
     def action_open_saltedge(self):
         self.check_terms_and_conditions()
