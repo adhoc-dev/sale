@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="account.direct_debit.mandate" id="demo_mandate_visa_credito">
+        <field name="journal_id" ref="journal_da_visa_credito"/>
+        <field name="partner_id" ref="base.res_partner_address_15"/>
+        <field name="credit_card_number">1234123412341234</field>
+        <field name="state">active</field>
+    </record>
+
+    <record model="account.direct_debit.mandate" id="demo_mandate_visa_debito">
+        <field name="journal_id" ref="journal_da_visa_debito"/>
+        <field name="partner_id" ref="base.res_partner_address_15"/>
+        <field name="credit_card_number">1234123412341234</field>
+        <field name="state">active</field>
+    </record>
+
+    <record model="account.direct_debit.mandate" id="demo_mandate_master">
+        <field name="journal_id" ref="journal_da_master"/>
+        <field name="partner_id" ref="base.res_partner_address_15"/>
+        <field name="credit_card_number">1234123412341234</field>
+        <field name="state">active</field>
+    </record>
+
+    <record model="res.partner.bank" id="res_partner_bank_cbu_macro">
+        <field name="partner_id" ref="base.res_partner_address_15"/>
+        <field name="acc_number">2850590940090418135201</field>
+    </record>
+    <record model="account.direct_debit.mandate" id="demo_mandate_cbu_macro">
+        <field name="journal_id" ref="journal_da_galicia"/>
+        <field name="partner_bank_id" ref="res_partner_bank_cbu_macro"/>
+        <field name="partner_id" ref="base.res_partner_address_15"/>
+        <field name="credit_card_number">1234123412341234</field>
+        <field name="state">active</field>
+    </record>
+
+    <record model="res.partner.bank" id="res_partner_bank_cbu_galicia">
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="acc_number">0290000100000000058382</field>
+    </record>
+    <record model="account.direct_debit.mandate" id="demo_mandate_cbu_galicia">
+        <field name="journal_id" ref="journal_da_macro"/>
+        <field name="partner_bank_id" ref="res_partner_bank_cbu_galicia"/>
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="credit_card_number">1234123412341234</field>
+        <field name="state">active</field>
+    </record>
+
+</odoo>

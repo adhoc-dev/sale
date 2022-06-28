@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_batch_payment_form_inherit" model="ir.ui.view">
+        <field name="name">account.batch.payment.form.inherit</field>
+        <field name="model">account.batch.payment</field>
+        <field name="inherit_id" ref="account_direct_debit.view_batch_payment_form_inherit"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="periodo" attrs="{'invisible': [('direct_debit_format', '=', False)]}"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

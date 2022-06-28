@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="account_direct_debit_mandate_form">
+        <field name="name">account.direct_debit.mandate.form</field>
+        <field name="model">account.direct_debit.mandate</field>
+        <field name="inherit_id" ref="account_direct_debit.account_direct_debit_mandate_form"/>
+        <field name="arch" type="xml">
+            <field name="description" position="after">
+                <field name="credit_card_number" attrs="{'invisible': [('direct_debit_format', 'not in', ['visa_credito', 'master_credito', 'visa_debito'])]}"/>
+                <field name="commercial_partner_id" invisible="1"/>
+                <field name="partner_bank_id" attrs="{'invisible': [('direct_debit_format', 'not in', ['cbu_macro', 'cbu_galicia'])]}" domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id)]" context="{'default_partner_id':partner_id, 'account.direct_debit.mandate': True}"/>
+            </field>
+        </field>
+    </record>
+</odoo>
