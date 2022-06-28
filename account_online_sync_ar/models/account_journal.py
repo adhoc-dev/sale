@@ -24,27 +24,27 @@ class AccountJournal(models.Model):
     #     default_action = super().action_configure_bank_journal()
     #     return default_action
 
-    @api.model
-    def _cron_fetch_online_transactions(self):
-        """ Only run cron for paybook provider synchronization record status is OK or if we receive any 5xx Connection
-        Error Codes """
-        if self.provider_type != 'paybook':
-            return super()._cron_fetch_online_transactions()
+    # @api.model
+    # def _cron_fetch_online_transactions(self):
+    #     """ Only run cron for paybook provider synchronization record status is OK or if we receive any 5xx Connection
+    #     Error Codes """
+    #     if self.provider_type != 'paybook':
+    #         return super()._cron_fetch_online_transactions()
 
-        for journal in self.search([('account_online_account_id', '!=', False)]):
-            online_link = journal.account_online_link_id
-            if journal.account_online_link_id.auto_sync:
-                try:
-                    journal.with_context(cron=True).manual_sync()
-                    # for cron jobs it is usually recommended to commit after each iteration, so that a later error or job timeout doesn't discard previous work
-                    self.env.cr.commit()
-                except UserError:
-                    pass
+    #     for journal in self.search([('account_online_account_id', '!=', False)]):
+    #         online_link = journal.account_online_link_id
+    #         if journal.account_online_link_id.auto_sync:
+    #             try:
+    #                 journal.with_context(cron=True).manual_sync()
+    #                 # for cron jobs it is usually recommended to commit after each iteration, so that a later error or job timeout doesn't discard previous work
+    #                 self.env.cr.commit()
+    #             except UserError:
+    #                 pass
 
-            if online_link.auto_sync and (online_link.state == 'connected' or online_link.status_code in ['406', '500', '501', '503', '504', '509']):
-                online_link._fetch_transactions()
-                # TODO KZ only do the manual sync if the paybook next date is less than the current one
-                # paybook_next_refresh
+    #         if online_link.auto_sync and (online_link.state == 'connected' or online_link.status_code in ['406', '500', '501', '503', '504', '509']):
+    #             online_link._fetch_transactions()
+    #             # TODO KZ only do the manual sync if the paybook next date is less than the current one
+    #             # paybook_next_refresh
 
     def cron_paybook_update_transactions(self):
         """ method called from schedule action that will try to update/fix refreshed paybook transactions in odoo """
