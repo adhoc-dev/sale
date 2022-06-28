@@ -42,10 +42,10 @@ class SDDMandate(models.Model):
     paid_invoices_nber = fields.Integer(
         string='# Paid Invoices', compute='_compute_paid_invoices_nber', help="Number of invoices paid with thid mandate.")
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=True)
+    def unlink_direct_debit_mandate(self):
         if self.filtered(lambda x: x.state != 'draft'):
             raise UserError(_("Only mandates in draft state can be deleted from database when cancelled."))
-        return super().unlink()
 
     @api.depends('paid_invoice_ids')
     def _compute_paid_invoices_nber(self):

@@ -6,7 +6,7 @@
         <field name="type">bank</field>
         <field name="direct_debit_format">visa_credito</field>
         <field name="direct_debit_merchant_number">1234567890</field>
-        <field name="inbound_payment_method_ids" eval="[(6, 0, [ref('account_direct_debit.payment_method_direct_debit')])]"/>
+        <field name="inbound_payment_method_line_ids" eval="[(5, 0, 0), (0, 0, {'name': 'bla', 'payment_method_id': ref('account_direct_debit.payment_method_direct_debit')})]"/>
     </record>
     <record id="journal_da_visa_debito" model="account.journal">
         <field name="name">Debito automático VISA Débito</field>
@@ -14,7 +14,7 @@
         <field name="type">bank</field>
         <field name="direct_debit_format">visa_debito</field>
         <field name="direct_debit_merchant_number">12345678</field>
-        <field name="inbound_payment_method_ids" eval="[(6, 0, [ref('account_direct_debit.payment_method_direct_debit')])]"/>
+        <field name="inbound_payment_method_line_ids" eval="[(5, 0, 0), (0, 0, {'name': 'bla', 'payment_method_id': ref('account_direct_debit.payment_method_direct_debit')})]"/>
     </record>
     <record id="journal_da_master" model="account.journal">
         <field name="name">Debito automático Master</field>
@@ -22,7 +22,7 @@
         <field name="type">bank</field>
         <field name="direct_debit_format">master_credito</field>
         <field name="direct_debit_merchant_number">12345678</field>
-        <field name="inbound_payment_method_ids" eval="[(6, 0, [ref('account_direct_debit.payment_method_direct_debit')])]"/>
+        <field name="inbound_payment_method_line_ids" eval="[(5, 0, 0), (0, 0, {'name': 'bla', 'payment_method_id': ref('account_direct_debit.payment_method_direct_debit')})]"/>
     </record>
     <record id="journal_da_galicia" model="account.journal">
         <field name="name">Debito automático GALICIA</field>
@@ -30,7 +30,7 @@
         <field name="type">bank</field>
         <field name="direct_debit_format">cbu_galicia</field>
         <field name="direct_debit_merchant_number">12345678</field>
-        <field name="inbound_payment_method_ids" eval="[(6, 0, [ref('account_direct_debit.payment_method_direct_debit')])]"/>
+        <field name="inbound_payment_method_line_ids" eval="[(5, 0, 0), (0, 0, {'name': 'bla', 'payment_method_id': ref('account_direct_debit.payment_method_direct_debit')})]"/>
     </record>
     <record id="journal_da_macro" model="account.journal">
         <field name="name">Debito automático MACRO</field>
@@ -38,6 +38,6 @@
         <field name="type">bank</field>
         <field name="direct_debit_format">cbu_macro</field>
         <field name="direct_debit_merchant_number">12345678</field>
-        <field name="inbound_payment_method_ids" eval="[(6, 0, [ref('account_direct_debit.payment_method_direct_debit')])]"/>
+        <field name="inbound_payment_method_line_ids" eval="[(5, 0, 0), (0, 0, {'name': 'bla', 'payment_method_id': ref('account_direct_debit.payment_method_direct_debit')})]"/>
     </record>
 </odoo>

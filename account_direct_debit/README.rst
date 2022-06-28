@@ -14,7 +14,10 @@
 Direct Debits Management
 ========================
 
-#. TODO
+TODO: si odoo permite que se agregue varias veces mismo metodo de pago ademas de manual, podriamos hacer que dd se utilice varias veces e implementar los parametros que pedimos en cada payment line. Deberiamos ver si odoo hace extensible esto de acá https://github.com/odoo/odoo/blob/0991993cad8cf11a1caea0426f88b1367ec7a32f/addons/account/models/account_journal.py#L258
+
+La otra alternativa sería generar un payment method distinto para cada tipo de debito
+
 
 Installation
 ============
