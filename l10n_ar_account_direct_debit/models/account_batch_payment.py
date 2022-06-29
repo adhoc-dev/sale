@@ -2,7 +2,7 @@ import re
 import base64
 from datetime import datetime
 
-from odoo import models, fields, api, _
+from odoo import models, fields, api
 
 from odoo.exceptions import UserError
 
@@ -26,7 +26,9 @@ class AccountBatchPayment(models.Model):
 
     def _galicia_debito_txt(self):
         if not self.journal_id.direct_debit_merchant_number or not self.direct_debit_collection_date:
-            raise UserError(_('Debe tener indicado el numero de prestación en el diario con nombre "{self.journal_id.name}", id: {self.journal_id.id} y también el campo Collection date en el pago por lotes'))
+            raise UserError(
+                'Debe tener indicado el numero de prestación en el diario con nombre %s, id: %s y también el campo '
+                'Collection date en el pago por lotes' % (self.journal_id.name, self.journal_id.id))
         self.ensure_one()
 
         # build txt file
@@ -133,7 +135,9 @@ class AccountBatchPayment(models.Model):
         self.ensure_one()
         content = ''
         if not self.journal_id.direct_debit_merchant_number or not self.direct_debit_collection_date:
-            raise UserError(_('Debe tener indicado el numero de convenio en el diario con nombre "{self.journal_id.name}", id: {self.journal_id.id} y también el campo Collection date que representa la fecha de vencimiento'))
+            raise UserError(
+                'Debe tener indicado el numero de convenio en el diario con nombre %s, id: %s y también el campo '
+                'Collection date que representa la fecha de vencimiento' % (self.journal_id.name, self.journal_id.id))
 
         # ENCABEZADO
         # Filler
@@ -199,7 +203,9 @@ class AccountBatchPayment(models.Model):
 
             # identificación del adherente
             if not rec.partner_id.vat:
-                raise UserError(_(f'El partner {rec.partner_id.name} con id {rec.partner_id.id} debe tener número de identificación'))
+                raise UserError(
+                    'El partner %s con id %s debe tener número de identificación' % (
+                        self.partner_id.name, self.partner_id.id))
             content += (rec.partner_id.vat or '').ljust(22)
 
             # identificación del débito
@@ -230,10 +236,12 @@ class AccountBatchPayment(models.Model):
         self.ensure_one()
 
         if not self.journal_id.direct_debit_merchant_number:
-            raise UserError(_(f'Debe completar el numero de comercio en el diario con nombre "{self.journal_id.name}", id: {self.journal_id.id}'))
+            raise UserError(
+                'Debe completar el numero de comercio en el diario con nombre %s, id: %s' % (
+                    self.journal_id.name, self.journal_id.id))
 
         if not self.periodo:
-            raise UserError(_(f'Debe indicar el periodo con formato MM/AA'))
+            raise UserError('Debe indicar el periodo con formato MM/AA')
 
         content = ''
 
@@ -300,7 +308,10 @@ class AccountBatchPayment(models.Model):
     def _visa_txt(self):
         self.ensure_one()
         if not self.journal_id.direct_debit_merchant_number or not self.direct_debit_collection_date:
-            raise UserError(_(f'Debe completar el numero de establecimiento (10 dígitos) en el diario con nombre "{self.journal_id.name}", id: {self.journal_id.id} y también el campo Collection date que representa la fecha de vencimiento'))
+            raise UserError(
+                'Debe completar el numero de establecimiento (10 dígitos) en el diario con nombre %s, id: %s y '
+                'también el campo Collection date que representa la fecha de vencimiento' % (
+                    self.journal_id.name, self.journal_id.id))
 
         content = ''
 
@@ -366,7 +377,7 @@ class AccountBatchPayment(models.Model):
             content += ('%016.2f' % rec.amount).replace('.', '')
 
             # identificador del débito (lo tiene que consultar jjs con el cliente)
-            content +=  '%05d' % int(rec.partner_id.ref)
+            content += '%05d' % int(rec.partner_id.ref)
             content += ' '*10
 
             # si es la primera vez que se debita con la tarjeta pasar "E", si no " "
