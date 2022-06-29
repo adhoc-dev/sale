@@ -17,7 +17,7 @@ class PaybookAccount(models.Model):
 
     def _retrieve_transactions(self):
         """ Get transsanctions from provider, prepare data, and create bank statements """
-        if (self.account_online_link_id.provider_type != 'paybook'):
+        if self.account_online_link_id.provider_type != 'paybook':
             return super()._retrieve_transactions()
 
         transactions = self.paybook_get_transactions()
@@ -91,12 +91,13 @@ class PaybookAccount(models.Model):
             trx_data = {
                 'date': datetime.fromtimestamp(trx.get('dt_transaction')).date(),
                 'online_transaction_identifier': trx.get('id_transaction'),
-                'name': trx.get('description'),
+                'payment_ref': trx.get('description'),
+                'name': 'transaction_' + trx.get('id_transaction'),
                 'amount': trx.get('amount'),
-                'end_amount': self.balance,
+                # 'end_amount': self.balance,
                 'ref': trx.get('reference') or '',
                 'transaction_type': transaction_type,
-                'note': '' if not tx_update_dt else
+                'narration': '' if not tx_update_dt else
                 transaction_type + ' ' + datetime.fromtimestamp(tx_update_dt).date().strftime('%Y/%m/%d'),
             }
 
@@ -161,7 +162,7 @@ class PaybookAccount(models.Model):
                     # amount/end_amount
                     if tx.journal_entry_ids:
                         tx_raw.pop('amount')
-                tx_raw.pop('end_amount')
+                # tx_raw.pop('end_amount')
                 if tx.exists():
                     tx.write(tx_raw)
                 tx_count += 1

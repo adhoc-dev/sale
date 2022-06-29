@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="account_online_link_view_form" model="ir.ui.view">
+        <field name="name">account.online.link.form.view</field>
+        <field name="model">account.online.link</field>
+        <field name="inherit_id" ref="account_online_synchronization.account_online_link_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='last_refresh']" position="after">
+                <field name="provider_type"/>
+                <field name="action_required" attrs="{'invisible': [('provider_type', '!=', 'paybook')]}"/>
+                <field name="status_code" invisible="1"/>
+                <field name="message" attrs="{'invisible': [('provider_type', '!=', 'paybook')]}"/>
+                <field name="paybook_max_date" attrs="{'invisible': [('provider_type', '!=', 'paybook')]}"/>
+            </xpath>
+
+            <button name="action_update_credentials" position="attributes">
+                <attribute name="string">Actualizar Contraseña</attribute>
+                <attribute name="confirm">Esta funcionalidad es solo para cambiar contraseña. Si necesita cambiar algun otro dato de login/usuario debe eliminar esta credencial y crear una nueva. Para ello vaya al menu Mi base / Administrar Credenciales</attribute>
+            </button>
+
+            <xpath expr="//field[@name='account_online_account_ids']/.." position="before">
+                <div attrs="{'invisible': [('provider_type', '!=', 'paybook')]}" divs="base.group_no_one">
+                    <button name="action_paybook_update_state" string="Check Status" icon="fa-plus" type="object" class="oe_link"/>
+                    <button name="action_paybook_force_sync" string="Force Sync" icon="fa-refresh" type="object" class="oe_link"/>
+                    <button name="action_paybook_update_transactions" string="Update/Fix" icon="fa-wrench" type="object" class="oe_link" help="Update refreshed transactions, delete and disabled ones"/>
+                    (Last <field name="paybook_refresh_days"/> days)
+                    <button name="online_account_delete_credentials" string="Delete Online Credentials" confirm="Esta acción no se puede deshacer. Estas seguro que quieres aplicarla? Esto afectara a cualquier otra base de datos usando la misma credencial" icon="fa-trash" type="object" class="oe_link"/>
+                </div>
+            </xpath>
+            <field name="client_id" position="after">
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="paybook_username_hint" attrs="{'invisible': [('provider_type', '!=', 'paybook')]}"/>
+            </field>
+
+            <field name="auto_sync" position="attributes">
+                <attribute name="attrs">{'invisible': [('provider_data', '=', False), ('provider_type', '!=', 'paybook')]}</attribute>
+            </field>
+            <field name="last_refresh" position="attributes">
+                <attribute name="attrs">{'invisible': [('provider_data', '=', False), ('provider_type', '!=', 'paybook')]}</attribute>
+            </field>
+            <field name="next_refresh" position="attributes">
+                <attribute name="attrs">{'invisible': [('provider_data', '=', False), ('provider_type', '!=', 'paybook')]}</attribute>
+            </field>
+            <field name="account_online_account_ids" position="attributes">
+                <attribute name="attrs">{'invisible': [('provider_data', '=', False), ('provider_type', '!=', 'paybook')]}</attribute>
+            </field>
+            <button name="action_fetch_transactions" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('state', '=', 'disconnected'), '&amp;', ('provider_data', '=', False), ('provider_type', '!=', 'paybook')]}</attribute>
+            </button>
+            <button name="action_update_credentials" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('state', '=', 'disconnected'), '&amp;', ('provider_data', '=', False), ('provider_type', '!=', 'paybook')]}</attribute>
+            </button>
+            <button name="action_initialize_update_accounts" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('state', '=', 'disconnected'), '&amp;', ('provider_data', '=', False), ('provider_type', '!=', 'paybook')]}</attribute>
+            </button>
+
+        </field>
+    </record>
+
+
+    <record id="account_online_link_view_tree" model="ir.ui.view">
+        <field name="name">account.online.link.tree.view</field>
+        <field name="model">account.online.link</field>
+        <field name="inherit_id" ref="account_online_synchronization.account_online_link_view_tree"/>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

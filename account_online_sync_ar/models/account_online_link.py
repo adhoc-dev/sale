@@ -17,7 +17,6 @@ _logger = logging.getLogger(__name__)
 class AccountOnlineLink(models.Model):
 
     _inherit = ['account.online.link']
-    # TODO kz OLD account.online.provider, script migración
 
     provider_type = fields.Selection([('paybook', 'Synfcy'), ('saltedge', 'Odoo')], 'Proveedor')
 
@@ -25,7 +24,7 @@ class AccountOnlineLink(models.Model):
     next_refresh = fields.Datetime("Oodo Cron Next Run")
 
     paybook_username_hint = fields.Char("Login/User")
-    provider_account_identifier = fields.Char(tracking=True)
+    client_id = fields.Char(tracking=True)
 
     paybook_max_date = fields.Date(
         "Fecha tope sincronización", help="Si esta configurada indica la fecha tope hacia atrás en la cual se puede"
@@ -55,7 +54,7 @@ class AccountOnlineLink(models.Model):
                 trx_count = account.retrieve_refreshed_transactions(force_dt=force_dt)
                 transactions.append({'journal': account.journal_ids[0].name, 'count': trx_count})
 
-        values = self._paybook_get_credentials(self.company_id, self.provider_account_identifier)
+        values = self._paybook_get_credentials(self.company_id, self.client_id)
         self.sudo().write(values)
 
         result = {'status': self.state, 'message': _("Actualizar transacciones existentes: ") + self.message,
@@ -63,9 +62,14 @@ class AccountOnlineLink(models.Model):
         return self.show_result(result)
 
     def show_result(self, result):
-        # TODO KZ Ya no existe ver como implementarlo. un pop up?
+        """ Mensaje escribiendo resultado de conexión a paybook dice que se hizo y el mensaje y codigo de respuesta
+        asociado """
         self.ensure_one()
-        self.message_post(body=str(result))
+        msg = _("<b>%s</b> - <i>%s</i>") % (result.get('status').upper(), result.get('message'))
+        added = result.get('added')
+        if added:
+            msg += _("<i>. Fueron agregados %s registros</i>") % (added)
+        self.message_post(body=msg)
 
     def action_update_credentials(self):
         """ Extender para abrir widget de paybook asi actualizar la contraseña dedse alli """
@@ -78,10 +82,10 @@ class AccountOnlineLink(models.Model):
         """ Let to delete credential form paybook and also remove info from odoo online provider """
         paybook_providers = self.filtered(lambda x: x.provider_type == 'paybook')
         for provider in paybook_providers:
-            if not provider.provider_account_identifier:
+            if not provider.client_id:
                 raise UserError(_('There is not account credential to be deleted'))
-            provider._paybook_fetch('DELETE', '/credentials/' + provider.provider_account_identifier)
-            provider.provider_account_identifier = False
+            provider._paybook_fetch('DELETE', '/credentials/' + provider.client_id)
+            provider.client_id = False
 
     @api.model
     def _paybook_open_login(self):
@@ -161,8 +165,8 @@ class AccountOnlineLink(models.Model):
         values = {
             'name': self.get_bank_name(id_site),
             'provider_type': 'paybook',
-            'provider_account_identifier': id_credential,
-            'company_id': company.id,  # TODO review if really needed"
+            'client_id': id_credential,
+            'company_id': company.id,
             'provider_identifier': id_site,
             'paybook_username_hint': cred.get('username'),
 
@@ -177,7 +181,7 @@ class AccountOnlineLink(models.Model):
         """ This method will try to make a request to syncfy to force the update of the available transactions in order
         to try to sync new transactions from the bank """
         self.ensure_one()
-        id_credential = self.provider_account_identifier
+        id_credential = self.client_id
         _logger.info('Syncfy Try force credential sync')
         response = self._paybook_fetch('GET', '/credentials/' + id_credential, response_status=True, raise_status=False)
         cred = response.get('response')[0]
@@ -204,7 +208,6 @@ class AccountOnlineLink(models.Model):
 
         This is helpfull also when create a new credential for a new bank that is been integrated and we add the
         accounts in a post process"""
-        # TODO KZ test it
         if self.provider_type != 'paybook':
             return super().action_initialize_update_accounts()
 
@@ -221,11 +224,9 @@ class AccountOnlineLink(models.Model):
 
     def action_paybook_update_state(self):
         self.ensure_one()
-        values = self._paybook_get_credentials(self.company_id, self.provider_account_identifier)
+        values = self._paybook_get_credentials(self.company_id, self.client_id)
         self.write(values)
-
-        res = {'status': self.state, 'message': _("Actualizar estado credencial: ") + self.message, 'method': 'refresh', 'added': []}
-        return self.show_result(res)
+        self.show_result({'status': self.state, 'message': _("Actualizado estado de credencial: ") + self.message})
 
     @api.model
     def _update_cred_response(self, credential_data):
@@ -234,7 +235,7 @@ class AccountOnlineLink(models.Model):
         company = self.env['res.company'].browse(int(credential_data.get('company_id')))
         id_credential = credential_data.get('id_credential')
 
-        provider_account = self.search([('provider_account_identifier', '=', id_credential)])
+        provider_account = self.search([('client_id', '=', id_credential)])
         values = self.with_context(paybook_company_id=company.id)._paybook_get_credentials(company, id_credential)
 
         widget_res = safe_eval(credential_data['result'])
@@ -251,15 +252,14 @@ class AccountOnlineLink(models.Model):
             if provider_account:
                 self.message_post(body=extra_info)
 
-        res = {'state': 'connected' if everything_ok else 'error',
-               'message': _("Actualizar contraseña banco: ")  + ('Se actualizo las credenciales del banco' if everything_ok else extra_info or values['message']),
+        res = {'status': 'connected' if everything_ok else 'error',
+               'message': _("Actualizar contraseña del banco: ") + ('Exitoso' if everything_ok else extra_info or values['message']),
                'method': 'refresh'}
 
 
-        # TODO KZ critico ver como mostramos los datos aca porque ya no existe la acción
-        action = provider_account.show_result(res)
-        # url = '/web#model=account.online.wizard&id=%s&action=account_online_sync.action_account_online_wizard_form'
-        # return werkzeug.utils.redirect(url % action.get('res_id'))
+        provider_account.show_result(res)
+        url = '/web#model=account.online.link&id=%s&view_type=form&action=account_online_synchronization.action_account_online_link_form'
+        return werkzeug.utils.redirect(url % provider_account.id)
 
     @api.model
     def _paybook_success(self, credential_data):
@@ -270,7 +270,7 @@ class AccountOnlineLink(models.Model):
         id_credential = credential_data.get('id_credential')
 
         # Check if provider already exist
-        provider_account = self.search([('provider_account_identifier', '=', id_credential)])
+        provider_account = self.search([('client_id', '=', id_credential)])
 
         # Extract online provider info
         values = self.with_context(paybook_company_id=company.id)._paybook_get_credentials(company, id_credential)
@@ -301,10 +301,10 @@ class AccountOnlineLink(models.Model):
                    'message': provider_account.message + '\nNo se pudieron sincronizar las cuentas intentar nuevamente',
                    'method': method, 'added': added}
 
-        # TODO KZ Ya no existe ver como implementarlo
-        action = provider_account.show_result(res)
-        # url = '/web#model=account.online.wizard&id=%s&action=account_online_sync.action_account_online_wizard_form'
-        # return werkzeug.utils.redirect(url % action.get('res_id'))
+        provider_account.show_result(res)
+        action = provider_account._link_accounts_to_journals_action(added)
+        url = '/web#model=account.link.journal&id=%s&action=account_online_sync_ar.action_account_link_journal'
+        return werkzeug.utils.redirect(url % action.get('res_id'))
 
     @api.model
     def _paybook_check_credentials_response(self, response):
@@ -319,7 +319,7 @@ class AccountOnlineLink(models.Model):
             timedelta(seconds=ready_in)) if ready_in else ''
 
         return {
-            'state': 'connected' if response_code >= 400 else 'error',
+            'status': 'error' if response_code >= 400 else 'connected',
             'status_code': response_code,
             'message': (response.get('message') or '') + hint_message + ready_in_msg,
             'action_required': response_code >= 400,
@@ -386,7 +386,7 @@ class AccountOnlineLink(models.Model):
             id_credential = credential_data.get('id_credential')
         else:
             company = self.company_id
-            id_credential = self.provider_account_identifier
+            id_credential = self.client_id
 
         journal_id = int(credential_data.get('journal_id') or False)
         journal = self.env['account.journal'].browse(int(journal_id)) if journal_id else False
@@ -504,3 +504,23 @@ class AccountOnlineLink(models.Model):
             # Uruguay
         }
         return data.get(id_site, 'Banco/Monedero no encontrado')
+
+    def _fetch_transactions(self, refresh=True, accounts=False):
+        self.ensure_one()
+        if self.provider_type != 'paybook':
+            return super()._fetch_transactions(refresh=refresh, accounts=accounts)
+
+        bank_statement_line_ids = self.env['account.bank.statement.line']
+        acc = accounts or self.account_online_account_ids
+        for online_account in acc:
+            # Only get transactions on account linked to a journal
+            if online_account.journal_ids:
+                bank_statement_line_ids += online_account._retrieve_transactions()
+
+        # Actualizamos la info de la credencial, ya que si esta estaba con error tiene que marcarse como resuelta.
+        self.action_paybook_update_state()
+
+        self.show_result({
+            'status': 'success',
+            'message': _('Sincronizar transacciones'), 'added': len(bank_statement_line_ids)})
+        return self._show_fetched_transactions_action(bank_statement_line_ids)

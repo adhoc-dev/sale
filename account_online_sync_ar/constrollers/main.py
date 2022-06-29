@@ -1,4 +1,7 @@
 from odoo.http import Controller, request, route
+import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
 class PaybookPortal(Controller):
@@ -26,7 +29,6 @@ class PaybookPortal(Controller):
             'id_credential': online_link.client_id,
             'id_site': online_link.provider_identifier,
         }
-        # TODO KZ scripts provider_account_identifier (account.online.provider)  ahora es client_id (account_online_link)
         response = request.render("account_online_sync_ar.update_credential", values)
         return response
 
