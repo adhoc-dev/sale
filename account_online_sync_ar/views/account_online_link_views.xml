@@ -28,6 +28,9 @@
                     <button name="online_account_delete_credentials" string="Delete Online Credentials" confirm="Esta acción no se puede deshacer. Estas seguro que quieres aplicarla? Esto afectara a cualquier otra base de datos usando la misma credencial" icon="fa-trash" type="object" class="oe_link"/>
                 </div>
             </xpath>
+            <xpath expr="//field[@name='account_number']" position="after">
+                <field name="online_identifier"/>
+            </xpath>
             <field name="client_id" position="after">
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="paybook_username_hint" attrs="{'invisible': [('provider_type', '!=', 'paybook')]}"/>

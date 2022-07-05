@@ -319,7 +319,7 @@ class AccountOnlineLink(models.Model):
             timedelta(seconds=ready_in)) if ready_in else ''
 
         return {
-            'status': 'error' if response_code >= 400 else 'connected',
+            'state': 'error' if response_code >= 400 else 'connected',
             'status_code': response_code,
             'message': (response.get('message') or '') + hint_message + ready_in_msg,
             'action_required': response_code >= 400,
