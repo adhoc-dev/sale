@@ -92,7 +92,6 @@ class PaybookAccount(models.Model):
                 'date': datetime.fromtimestamp(trx.get('dt_transaction')).date(),
                 'online_transaction_identifier': trx.get('id_transaction'),
                 'payment_ref': trx.get('description'),
-                'name': 'transaction_' + trx.get('id_transaction'),
                 'amount': trx.get('amount'),
                 # 'end_amount': self.balance,
                 'ref': trx.get('reference') or '',
@@ -104,25 +103,25 @@ class PaybookAccount(models.Model):
             extra_data = trx.get('extra')
             if extra_data:
                 self._update_with_value(trx_data, 'sequence', extra_data.get('order'))
-                self._update_with_value(trx_data, 'name', extra_data.get('caption'))
-                self._update_with_value(trx_data, 'name', extra_data.get('caption2'))
-                self._update_with_value(trx_data, 'name', extra_data.get('caption3'))
-                self._update_with_value(trx_data, 'name', extra_data.get('caption4'))
-                self._update_with_value(trx_data, 'name', extra_data.get('voucher_number'))
-                self._update_with_value(trx_data, 'name', extra_data.get('group_of_concept'))
-                self._update_with_value(trx_data, 'name', extra_data.get('terminal_number'))
+                self._update_with_value(trx_data, 'payment_ref', extra_data.get('caption'))
+                self._update_with_value(trx_data, 'payment_ref', extra_data.get('caption2'))
+                self._update_with_value(trx_data, 'payment_ref', extra_data.get('caption3'))
+                self._update_with_value(trx_data, 'payment_ref', extra_data.get('caption4'))
+                self._update_with_value(trx_data, 'payment_ref', extra_data.get('voucher_number'))
+                self._update_with_value(trx_data, 'payment_ref', extra_data.get('group_of_concept'))
+                self._update_with_value(trx_data, 'payment_ref', extra_data.get('terminal_number'))
 
                 # Used to improve name for Banco BIND (AR)
-                self._update_with_value(trx_data, 'name', extra_data.get('spei_beneficiary_tax_id'))
-                self._update_with_value(trx_data, 'name', extra_data.get('spei_beneficiary_name'))
-                self._update_with_value(trx_data, 'name', extra_data.get('spei_concept'))
+                self._update_with_value(trx_data, 'payment_ref', extra_data.get('spei_beneficiary_tax_id'))
+                self._update_with_value(trx_data, 'payment_ref', extra_data.get('spei_beneficiary_name'))
+                self._update_with_value(trx_data, 'payment_ref', extra_data.get('spei_concept'))
 
                 # We are appending the reference to the name. This will be repeated data but it will
                 # be an improve in the bank statement wizard. The wizard only show the name of the
                 # statement line. does not show the reference and we needed so the user can easily
                 # check anything to make the reconcile.
-                if trx_data.get('ref') not in trx_data.get('name'):
-                    self._update_with_value(trx_data, 'name', trx_data.get('ref'))
+                if trx_data.get('ref') not in trx_data.get('payment_ref'):
+                    self._update_with_value(trx_data, 'payment_ref', trx_data.get('ref'))
 
             transactions.append(trx_data)
         return transactions
