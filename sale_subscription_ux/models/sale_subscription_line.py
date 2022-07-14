@@ -42,6 +42,7 @@ class SaleSubscriptionLine(models.Model):
 
     @api.onchange('product_id', 'quantity')
     def onchange_product_quantity(self):
+        old_discount = hasattr(self, '_origin') and self._origin.discount or self.discount
         res = super(SaleSubscriptionLine, self).onchange_product_quantity()
         if hasattr(self, '_origin') and self._origin \
                 and self.analytic_account_id.template_id.do_not_update_price \
@@ -50,6 +51,7 @@ class SaleSubscriptionLine(models.Model):
                 and self._origin.read(["product_id"])[0]["product_id"][0] == \
                 self.product_id.id:
             self.price_unit = self._origin.price_unit
+            self.discount = old_discount
             return res
         pricelist = self.analytic_account_id.pricelist_id
         if self.product_id and \
@@ -63,6 +65,7 @@ class SaleSubscriptionLine(models.Model):
                 uom=self.uom_id.id
             )
             self.price_unit = self._get_display_price(product, pricelist)
+            self.discount = old_discount
         return res
 
     @api.onchange('product_id', 'price_unit', 'uom_id', 'quantity')
