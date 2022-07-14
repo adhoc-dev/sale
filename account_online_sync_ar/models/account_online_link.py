@@ -186,14 +186,14 @@ class AccountOnlineLink(models.Model):
         response = self._paybook_fetch('GET', '/credentials/' + id_credential, response_status=True, raise_status=False)
         cred = response.get('response')[0]
         # The credential has not error byt has not been sync, force to sync
-        if cred.get('can_sync') and cred.get('is_authorized') and (cred.get('code') < 400 or cred.get('code') == 406):
+        if cred.get('can_sync') and cred.get('is_authorized') and (cred.get('code') < 400 or cred.get('code') in [406, 500]):
             response = self._paybook_fetch('PUT', '/credentials/' + id_credential + '/sync')
             extra_info = _('Se forzó la sincronizacion bancaria')
             self.message_post(body=extra_info)
             self._fetch_transactions()
         else:
             message = _('No es posible forzar la sincronización. ')
-            if cred.get('code') >= 400 and cred.get('code') != 406:
+            if cred.get('code') >= 400 and cred.get('code') not in [406, 500]:
                 message += _('Solo se pueden forzar credenciales sin estado de error.')
             elif not cred.get('is_authorized'):
                 message += _('La credencial no se encuentra autorizada.')
