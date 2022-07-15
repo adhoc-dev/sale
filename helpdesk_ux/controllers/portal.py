@@ -17,7 +17,7 @@ class CustomerPortal(CustomerPortal):
 
     @route()
     def my_helpdesk_tickets(self, page=1, date_begin=None, date_end=None,
-                            sortby=None, filterby='all', search=None,
+                            sortby=None, filterby=None, search=None,
                             groupby=None, search_in='content', **kw):
         """ this is only to group tickets by stage on portal view by default
         """
@@ -27,6 +27,9 @@ class CustomerPortal(CustomerPortal):
 
         if not sortby:
             sortby = 'stage'
+        
+        if not filterby:
+            filterby = 'open'
 
         res = super().my_helpdesk_tickets(page=page, date_begin=date_begin, date_end=date_end,
                             sortby=sortby, filterby=filterby, search=search,
