@@ -54,7 +54,7 @@
                 <t t-set="toc" t-value="toc.parent_id"/>
             </t>
         </t>
-        <li t-if="toc">
+        <li t-if="toc" class="breadcrumb-item">
             <a t-att-href="toc.url_suffix" t-field="toc.name"/>
         </li>
     </template>
@@ -66,13 +66,13 @@
                 <div class="container">
                     <div class="row">
                         <ol class="breadcrumb mb0">
-                            <li>
+                            <li class="breadcrumb-item">
                                 <a href="/doc">Documentation</a>
                             </li>
                             <t t-call="website_doc.breadcrumb">
                                 <t t-set="toc" t-value="toc.parent_id"/>
                             </t>
-                            <li class="active">
+                            <li class="breadcrumb-item">
                                 <span t-field="toc.name"/>
                             </li>
                         </ol>
