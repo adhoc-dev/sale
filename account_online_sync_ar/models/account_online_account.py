@@ -161,6 +161,19 @@ class PaybookAccount(models.Model):
                     # amount/end_amount
                     if tx.journal_entry_ids:
                         tx_raw.pop('amount')
+
+                    # No modificamos la fecha ni el importe de las transacciones más antiguas que una semana,
+                    # independientemente si tiene extractos diarios, semanales o mensuales y si las transacciones están
+                    # conciliadas o no. Esto porque nos estamos trayendo errores raros de paybook que estamos intentado
+                    # evitar
+                    if tx.date < force_dt.date():
+                        tx_raw.pop('date')
+                        tx_raw.pop('amount', False)
+
+                    # TODO Si cambia la fecha deberiamos reubicar la linea en el extracto que corresponda. Tener en
+                    # cuenta la config de agrupamiento del diario. Creo que ya hay un metodo que nos puede ayudar a
+                    # calcular esto.
+
                 # tx_raw.pop('end_amount')
                 if tx.exists():
                     tx.write(tx_raw)
