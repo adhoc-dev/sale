@@ -136,6 +136,12 @@ class PaybookAccount(models.Model):
         if not self.journal_ids:
             return 0
 
+        # Si hay una fecha maximo historica tomar esto como limite para no traer transacciones mas viejas y evitar
+        # traernos transacciones duplicadas.
+        max_date = self.account_online_provider_id.paybook_max_date
+        if max_date and force_dt < max_date:
+            force_dt = max_date
+
         transactions = self.paybook_get_transactions(dt_param='dt_refresh_from', force_dt=force_dt)
 
         all_lines = self.env['account.bank.statement.line'].search([
