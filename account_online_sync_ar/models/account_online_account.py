@@ -154,6 +154,12 @@ class PaybookAccount(models.Model):
             tx = all_lines.search([('online_transaction_identifier', '=', tx_raw['online_transaction_identifier'])])
             # Si la tx esta en Odoo
             if tx:
+                # No modificamos la transacction si es mayor a una semana. idependientemente si tiene extractos diarios,
+                # semanales o mensuales, si una transaccion cambia despues de esta cantidad de dias consideramos es un
+                # error de paybook, recientemente hemos tenidos muchos casos de estos :(
+                if tx.date < force_dt.date():
+                    continue
+
                 # Si ha sido marcada como deshabilitada o ha sido eliminada en paybook
                 if tx_raw['transaction_type'] in ['deleted', 'disable']:
                     # Si ha sido conciliada marcar y avisar se debe revisar y desconciliar en el chatter del extracto
@@ -168,14 +174,6 @@ class PaybookAccount(models.Model):
                     if tx.journal_entry_ids:
                         tx_raw.pop('amount')
                         tx_raw.pop('date')
-
-                    # No modificamos la fecha ni el importe de las transacciones más antiguas que una semana,
-                    # independientemente si tiene extractos diarios, semanales o mensuales y si las transacciones están
-                    # conciliadas o no. Esto porque nos estamos trayendo errores raros de paybook que estamos intentado
-                    # evitar
-                    if tx.date < force_dt.date():
-                        tx_raw.pop('date')
-                        tx_raw.pop('amount', False)
 
                     # TODO Si cambia la fecha deberiamos reubicar la linea en el extracto que corresponda. Tener en
                     # cuenta la config de agrupamiento del diario. Creo que ya hay un metodo que nos puede ayudar a
