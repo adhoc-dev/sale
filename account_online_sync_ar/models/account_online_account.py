@@ -179,19 +179,4 @@ class PaybookAccount(models.Model):
                     tx.write(tx_raw)
                 tx_count += 1
 
-        if txs_to_update:
-            statement_ids = txs_to_update.mapped('statement_id')
-            for st in statement_ids:
-                st.message_post(
-                    body=_(
-                        'These transactions have been deleted or disable by the bank provider,'
-                        ' please review them and if needed unreconcile them, delete them and try to reconcile with'
-                        ' the proper bank statement line. You can check this in action menu "Find possible duplicates"') + ' <ul>%s</ul>' % (
-                            ''.join([
-                                '<li><a href=# data-oe-model=account.bank.statement.line data-oe-id=%d>%s</a></li>' % (
-                                    item.id, item.name)
-                                for item in txs_to_update.filtered(lambda x: x.statement_id == st)
-                            ])
-                    ),
-                    subtype="mail.mt_comment")
         return tx_count

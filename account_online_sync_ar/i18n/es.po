@@ -468,20 +468,6 @@ msgid "There is not account credential to be deleted"
 msgstr "No hay cuenta/credencial para ser borrada"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_journal.py:0
-#, python-format
-msgid ""
-"These transactions have been deleted or disable by the bank provider, please"
-" review them and if needed unreconcile them, delete them and try to "
-"reconcile with the proper bank statement line. You can check this in action "
-"menu \"Find possible duplicates\""
-msgstr ""
-"Estas transacciones han sido eliminadas o deshabilitadas por el proveedor del banco, por favor"
-" reviselas y si es necesario desconcilielas, eliminelas e intente conciliarlas "
-"nuevamente con la linea de extracto bancario mas apropiada. Puede revisar esto en el menú "
-"acción  \"Encontrar posibles duplicados\""
-
-#. module: account_online_sync_ar
 #: model_terms:ir.ui.view,arch_db:account_online_sync_ar.online_provider_account_form_view
 msgid ""
 "This action can not be undone. Are you sure? This can affect any other "
