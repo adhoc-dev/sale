@@ -164,9 +164,10 @@ class PaybookAccount(models.Model):
                 else:
                     # Ha sido refrescada la info debemos actualizar los datos en Odoo
                     # Si ya fue conciliada actualizamos solo valores informativos/seguros, no actualizamos los campos
-                    # amount/end_amount
+                    # amount/end_amount o date
                     if tx.journal_entry_ids:
                         tx_raw.pop('amount')
+                        tx_raw.pop('date')
 
                     # No modificamos la fecha ni el importe de las transacciones más antiguas que una semana,
                     # independientemente si tiene extractos diarios, semanales o mensuales y si las transacciones están
