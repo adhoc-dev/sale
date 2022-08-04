@@ -276,13 +276,13 @@
                 <section class="container mt16">
                     <div class="row">
                         <ol class="breadcrumb mb0">
-                            <li>
+                            <li class="breadcrumb-item">
                                 <a href="/doc">Documentation</a>
                             </li>
                             <t t-call="website_doc.breadcrumb">
                                 <t t-set="toc" t-value="doc"/>
                             </t>
-                            <li class="active">
+                            <li class="active breadcrumb-item">
                                 <span>Search</span>
                             </li>
                         </ol>
