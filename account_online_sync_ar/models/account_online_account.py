@@ -138,7 +138,7 @@ class PaybookAccount(models.Model):
 
         # Si hay una fecha maximo historica tomar esto como limite para no traer transacciones mas viejas y evitar
         # traernos transacciones duplicadas.
-        max_date = self.account_online_provider_id.paybook_max_date
+        max_date = self.account_online_link_id.paybook_max_date
         if max_date and force_dt < max_date:
             force_dt = max_date
 
@@ -163,7 +163,7 @@ class PaybookAccount(models.Model):
                 # Si ha sido marcada como deshabilitada o ha sido eliminada en paybook
                 if tx_raw['transaction_type'] in ['deleted', 'disable']:
                     # Si ha sido conciliada marcar y avisar se debe revisar y desconciliar en el chatter del extracto
-                    if tx.journal_entry_ids:
+                    if tx.is_reconciled:
                         txs_to_update += tx
                     else:  # Si no ha sido conciliada entonces borrar directamente.
                         tx.unlink()
@@ -171,7 +171,7 @@ class PaybookAccount(models.Model):
                     # Ha sido refrescada la info debemos actualizar los datos en Odoo
                     # Si ya fue conciliada actualizamos solo valores informativos/seguros, no actualizamos los campos
                     # amount/end_amount o date
-                    if tx.journal_entry_ids:
+                    if tx.is_reconciled:
                         tx_raw.pop('amount')
                         tx_raw.pop('date')
 
