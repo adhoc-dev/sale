@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="task_type_edit" model="ir.ui.view">
+        <field name="name">project.task.type.form</field>
+        <field name="model">project.task.type</field>
+        <field name="inherit_id" ref="project.task_type_edit"/>
+        <field name="arch" type="xml">
+            <field name="is_closed" position="after">
+                <field name="solution_required"/>
+                <field name="show_solution_on_portal"/>
+            </field>
+        </field>
+    </record>
+</odoo>
