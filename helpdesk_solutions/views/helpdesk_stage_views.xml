@@ -7,7 +7,6 @@
         <field name="arch" type="xml">
             <field name="fold" position="after">
                 <field name="solution_required"/>
-                <field name="show_solution_on_portal"/>
             </field>
         </field>
     </record>

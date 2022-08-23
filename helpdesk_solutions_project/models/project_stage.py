@@ -14,9 +14,3 @@ class ProjectTaskType(models.Model):
         help='If you set it to true, then tasks that has a contact and are'
         'moved to this stage will require a solution.'
     )
-
-    show_solution_on_portal = fields.Boolean(
-        string="Solution at portal?",
-        help='If you set it to true, then tasks will show the solution in'
-        'portal while they are at this stage.'
-    )
