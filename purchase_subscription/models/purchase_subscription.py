@@ -229,7 +229,7 @@ class PurchaseSubscription(models.Model):
         account_id = fiscal_position.map_account(account).id
 
         tax = line.product_id.supplier_taxes_id.filtered(
-            lambda r: r.company_id == company)
+            lambda r: r.company_id == purchase_subscription_company)
         tax = fiscal_position.map_tax(tax)
         return {
             'name': line.name,
