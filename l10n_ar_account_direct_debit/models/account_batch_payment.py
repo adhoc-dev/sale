@@ -24,6 +24,9 @@ class AccountBatchPayment(models.Model):
             ref = ''.join(i for i in ref if i.isdigit())
         return ref[-lenght:].ljust(lenght)
 
+    def get_partner_identification(self, payment):
+        return payment.partner_id.vat or ''
+
     def _galicia_debito_txt(self):
         if not self.journal_id.direct_debit_merchant_number or not self.direct_debit_collection_date:
             raise UserError(
@@ -78,7 +81,7 @@ class AccountBatchPayment(models.Model):
             content += '0370'
 
             # Identificación del cliente
-            content += (rec.partner_id.vat or '').ljust(22)
+            content += self.get_partner_identification(rec).ljust(22)
 
             # CBU
             cbu = rec.direct_debit_mandate_id.partner_bank_id.acc_number
