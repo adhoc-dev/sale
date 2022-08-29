@@ -1,6 +1,6 @@
 {
     'name': 'Direct Debits for Argentina',
-    'version': "15.0.1.0.0",
+    'version': "15.0.1.1.0",
     'category': 'Accounting/Accounting',
     'sequence': 14,
     'summary': '',

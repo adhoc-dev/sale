@@ -91,7 +91,7 @@ class AccountBatchPayment(models.Model):
             content += self.direct_debit_collection_date.strftime("%Y%m%d")
 
             # IMPORTE
-            content += '%014d' % int(re.sub('[^0-9]', '', "%.2f" % rec.amount))
+            content += '%014d' % int(re.sub('[^0-9]', '', "%.2f" % rec.amount_company_currency_signed))
 
             # EL RESTO
             content += '000000000000000000000000000000000000000000000   000000000000000                      0000000000000000000000000000000000000000'
@@ -121,7 +121,7 @@ class AccountBatchPayment(models.Model):
         content += 'EMPRESA'
 
         # importe total
-        content += '%014d' % int(re.sub('[^0-9]', '', "%.2f" % rec.amount))
+        content += '%014d' % int(re.sub('[^0-9]', '', "%.2f" % self.amount))
 
         # cantidad de registros
         content += '%07d' % len(self.payment_ids)

@@ -9,6 +9,12 @@
             <field name="name" position="after">
                 <field name="periodo" attrs="{'invisible': [('direct_debit_format', '=', False)]}"/>
             </field>
+            <xpath expr="//field[@name='payment_ids']/tree//field[@name='amount_signed']" position="after">
+                <field name="amount_company_currency_signed" sum="Total en pesos" string="Importe en pesos" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='payment_ids']/tree//field[@name='amount_signed']" position="attributes">
+                <attribute name="sum"></attribute>
+            </xpath>
         </field>
     </record>
 
