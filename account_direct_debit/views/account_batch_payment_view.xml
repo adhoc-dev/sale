@@ -15,9 +15,12 @@
             <xpath expr="//field[@name='payment_ids']/tree" position="attributes">
                 <attribute name="decoration-muted">state in ['draft', 'cancelled']</attribute>
             </xpath>
+            <xpath expr="//button[@name='validate_batch_button']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('state', '=', 'draft'), ('payment_ids', '=', [])]}</attribute>
+            </xpath>
             <!-- si el batch esta posteado (payment sent) permitimos cancelar rapidamente pagos que no se acreditan -->
             <xpath expr="//field[@name='payment_ids']/tree" position="inside">
-                <button name="cancel_and_remove_from_batch" attrs="{'invisible': ['|', ('parent.state', '!=', 'sent'), ('state', 'not in', ['sent', 'posted'])]}" string="Cancel" confirm="The payment will be cancelled and removed from this batch, are you sure you want to continue?" type="object"/>
+                <button name="cancel_and_remove_from_batch" attrs="{'invisible': ['|', ('parent.state', 'not in', ['sent', 'reconciled']), ('state', '!=', 'posted')]}" string="Cancel" confirm="The payment will be cancelled and removed from this batch, are you sure you want to continue?" type="object"/>
             </xpath>
         </field>
     </record>
