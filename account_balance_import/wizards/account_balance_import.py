@@ -85,7 +85,7 @@ class AccountBalanceImport(models.TransientModel):
         "account.journal",
         string="Diario de Cheques de Terceros",
         domain="[('company_id', '=', company_id)," "('type', '=', 'cash'),"
-       "('inbound_payment_method_line_ids.code', '=', 'in_third_checks')]"
+       "('inbound_payment_method_line_ids.code', '=', 'in_third_party_checks')]"
     )
 
     check_checkbook_id = fields.Many2one("l10n_latam.checkbook", string="Chequera")
@@ -568,7 +568,7 @@ class AccountBalanceImport(models.TransientModel):
         else:  # Third-party Check
             operation = "holding"
             journal = self.check_journal_third_id
-            payment_method_line = self.check_journal_third_id._get_available_payment_method_lines('inbound').filtered(lambda x: x.code == 'new_third_checks')
+            payment_method_line = self.check_journal_third_id._get_available_payment_method_lines('inbound').filtered(lambda x: x.code == 'new_third_party_checks')
 
         # Iterate over each sheet row
         for row_no in range(1, sheet.nrows):
