@@ -562,11 +562,9 @@ class AccountBalanceImport(models.TransientModel):
 
         # Get Journal
         if self.check_type == "issue_check":
-            operation = "handed"
             journal = self.check_journal_bank_id
             payment_method_line = self.check_journal_bank_id._get_available_payment_method_lines('outbound').filtered(lambda x: x.code == 'check_printing')
         else:  # Third-party Check
-            operation = "holding"
             journal = self.check_journal_third_id
             payment_method_line = self.check_journal_third_id._get_available_payment_method_lines('inbound').filtered(lambda x: x.code == 'new_third_party_checks')
 
@@ -660,6 +658,7 @@ class AccountBalanceImport(models.TransientModel):
                 "journal_id": journal.id,
                 "payment_type": 'inbound',
                 "l10n_latam_check_payment_date": payment_date,
+                "date": self.accounting_date,
                 "payment_method_line_id": payment_method_line.id,
             }
             if self.check_type == "issue_check":
@@ -690,6 +689,9 @@ class AccountBalanceImport(models.TransientModel):
             payment.write({'check_number': check_data["check_number"]})
             payments += payment
         payments.action_post()
+        for payment in payments.with_context(skip_account_move_synchronization=True):
+            payment.move_id.line_ids.filtered(
+                lambda x: x.account_id.internal_type in ('receivable', 'payable')).account_id = self.counterpart_account_id
 
         return {
             "name": "Importación de Saldos Iniciales",
