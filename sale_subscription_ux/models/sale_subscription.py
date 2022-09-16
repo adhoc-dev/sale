@@ -56,4 +56,4 @@ class SaleSubscription(models.Model):
         for subscription in self:
             for line in subscription.recurring_invoice_line_ids:
                 line.onchange_product_quantity()
-        self._amount_all()
+            subscription._amount_all()
