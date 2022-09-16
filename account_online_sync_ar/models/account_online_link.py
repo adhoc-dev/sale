@@ -32,6 +32,7 @@ class AccountOnlineLink(models.Model):
         " a que cambio el username evitar ids duplicados.\n * Si hicieron carga manual de algun dia y quieren"
         " sincronizar a partir del dia siguiente", tracking=True)
 
+    auto_sync = fields.Boolean(tracking=True)
     paybook_refresh_days = fields.Integer("Last Days to be Updated/fixed", compute="_compute_paybook_refresh_days")
 
     # Este estaba en el viejo sync y lo necesitamos para almacenar el error recibido por paybook
