@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Helpdesk Timesheet UX',
-    'version': "15.0.1.1.0",
+    'version': "15.0.1.2.0",
     'category': 'Projects & Services',
     'sequence': 14,
     'summary': '',

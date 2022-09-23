@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='member_ids']//.." position="attributes">
-              <attribute name="attrs">{'invisible': [('assign_method', 'not in', ['randomly','balanced'])]}</attribute>
+              <attribute name="attrs">{'invisible': [('assign_method', 'not in', ['randomly','balanced'])], 'required': [('assign_method', 'in', ['randomly','balanced'])]}</attribute>
             </xpath>
             <div id="productivity">
                 <div class="col-md-6 o_setting_box" attrs="{'invisible': [('assign_method','!=', 'specific_user')]}">

@@ -26,6 +26,8 @@ class HelpdeskTeam(models.Model):
             ('groups_id', 'in', self.env.ref(
                 'helpdesk.group_helpdesk_user').id)],
     )
+    # we seting to False by code and required only by view
+    member_ids = fields.Many2many(required=False)
 
     @api.constrains('assign_method', 'member_ids')
     def _check_member_assignation(self):
