@@ -9,6 +9,7 @@ class RentalOrderLine(models.Model):
             """ Create picking for a move given"""
             vals = stock_move._get_new_picking_values()
             vals['picking_type_id'] = picking_type_id.id
+            vals['partner_id'] = self.order_id.partner_shipping_id.id
             picking = self.env['stock.picking'].create(vals)
             picking.date_done = fields.Datetime.now(self)
             picking.origin = self.order_id.name
