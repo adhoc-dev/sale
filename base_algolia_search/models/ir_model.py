@@ -1,5 +1,4 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import ValidationError
 from lxml import etree
@@ -12,6 +11,11 @@ _logger = logging.getLogger(__name__)
 
 # algolia search is only used on some operators
 ALLOWED_OPS = set(['ilike', 'like'])
+
+@tools.ormcache('ir.model', skiparg=0)
+def _get_algolia_search_model_names(self):
+    self.env.cr.execute('select model from ir_model where add_algolia_search = True')
+    return [row[0] for row in self.env.cr.fetchall()]
 
 
 @tools.ormcache(skiparg=0)
@@ -42,19 +46,49 @@ class Base(models.AbstractModel):
     @api.model
     def _search_algolia_search(self, operator, name):
         """
-        Por ahora este método no llama a
-        self.name_search(name, operator=operator) ya que este no es tan
-        performante si se llama a ilimitados registros que es lo que el
-        name search debe devolver. Por eso se reimplementa acá nuevamente.
-        Además name_search tiene una lógica por la cual trata de devolver
-        primero los que mejor coinciden, en este caso eso no es necesario
-        Igualmente seguro se puede mejorar y unificar bastante código
+        Este método es un metodo dummy para eliminar las
+        busquedas algolia_search
         """
-        if name and operator in ALLOWED_OPS:
-            rec_ids = self.env['ir.model'].search([('model', '=', str(self._name))])._agolia_search(name)
-            return [('id', 'in', rec_ids)]
         return []
 
+    @api.model
+    def _algolia_split_args(self, args):
+        """
+        Este método recibe un leaf de busqueda y devuelve
+         - algolia_ids: una lista de ids de los items encontrados
+         - args: Una nuevo lista de argumentos con las
+                  tupplas "argolia_search" transformadas en ids
+         - is_algolia_search: flag que informa si debo
+                  postprocesar el resultset para que se reordene
+        """
+
+        algolia_ids = []
+        is_algolia_search = False
+        if self._name in _get_algolia_search_model_names(self):
+            for i in range(0,len(args)):
+                if args[i][0] == 'algolia_search' and args[i][1] in ALLOWED_OPS:
+                    """
+                    Busco el model recien aca el modelo  evito hacerlo en los casos
+                    en que el arg algolia_search no esta presente y
+                    _get_add_algolia_search puede generar recursivos
+                    al Iniciar odoo
+                    """
+                    res_ids = self.env['ir.model'].search([('model', '=', str(self._name))])._agolia_search(args[i][2])
+                    algolia_ids += res_ids
+                    is_algolia_search = True
+                    args[i] = ('id', 'in', res_ids)
+
+        return algolia_ids, args, is_algolia_search
+
+    @api.model
+    def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
+
+        algolia_ids, args, is_algolia_search = self._algolia_split_args(args)
+        res = super()._search(args, offset, limit, order, count, access_rights_uid)
+
+        if is_algolia_search and isinstance(res, list) and (not order or 'algolia_search' in order):
+            res = sorted(res, key = algolia_ids.index)
+        return res
 
 class IrModel(models.Model):
     _inherit = 'ir.model'
@@ -83,7 +117,7 @@ class IrModel(models.Model):
 
     @api.depends('model')
     def _compute_algolia_index_name(self):
-        index_prefix = self.env["ir.config_parameter"].sudo().get_param('base_algolia_search.index_prefix') or ''
+        index_prefix = self.env["ir.config_parameter"].sudo().get_param('base_algolia_search.index_prefix', '')
         for rec in self:
             rec.algolia_index_name = rec.algolia_use_given_index or '%s%s' % (index_prefix, rec.model)
 

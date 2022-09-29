@@ -2,7 +2,13 @@
 {
     'name': 'Algolia Search',
     'summary': 'Algolia search on name_search and search views',
+<<<<<<< HEAD
     'version': "15.0.1.0.0",
+||||||| parent of 8f33c93... temp
+    'version': '13.0.1.1.0',
+=======
+    'version': '13.0.1.1.1',
+>>>>>>> 8f33c93... temp
     'category': 'Uncategorized',
     'author': 'ADHOC SA',
     'license': 'AGPL-3',
