@@ -205,11 +205,7 @@ class AccountBatchPayment(models.Model):
             content += '%015d' % int(rec.direct_debit_mandate_id.partner_bank_id.acc_number[9:])
 
             # identificación del adherente
-            if not rec.partner_id.vat:
-                raise UserError(
-                    'El partner %s con id %s debe tener número de identificación' % (
-                        self.partner_id.name, self.partner_id.id))
-            content += (rec.partner_id.vat or '').ljust(22)
+            content += rec.partner_id.name[:22].zfill(22)
 
             # identificación del débito
             content += self._get_reference(rec, 15, onlydigits=False)
