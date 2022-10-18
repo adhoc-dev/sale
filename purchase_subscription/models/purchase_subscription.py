@@ -337,7 +337,7 @@ class PurchaseSubscription(models.Model):
         self.ensure_one()
         invoices = self.env['account.move'].search(
             [('invoice_line_ids.purchase_subscription_id', 'in', self.ids)])
-        action = self.env.ref('account.action_move_in_invoice_type').read()[0]
+        action = self.env.ref('account.action_move_in_invoice_type').sudo().read()[0]
         action["context"] = {"create": False}
         if len(invoices) > 1:
             action['domain'] = [('id', 'in', invoices.ids)]

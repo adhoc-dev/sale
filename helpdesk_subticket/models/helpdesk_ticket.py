@@ -47,7 +47,7 @@ class HelpdeskTicket(models.Model):
     def action_subticket(self):
         ''' Create subticket window action '''
         action = self.env.ref(
-            'helpdesk_subticket.helpdesk_ticket_action_subticket').read()[0]
+            'helpdesk_subticket.helpdesk_ticket_action_subticket').sudo().read()[0]
         action['domain'] = [('id', 'child_of', self.id), ('id', '!=', self.id)]
         return action
 
