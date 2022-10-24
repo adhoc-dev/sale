@@ -115,7 +115,7 @@ class AccountExchangeDiffInvoice(models.TransientModel):
         # por ahor no validamos para dar mas flexibilidad a cualquier ajuste necesario
         # new_invoice.post()
         self.line_ids.mapped('partial_line_id').write({'exchange_diff_invoice_id': new_invoice.id})
-        action = self.env.ref('account.action_move_out_invoice_type').sudo().read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id('account.action_move_out_invoice_type')
         action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]
         action['res_id'] = new_invoice.id
         return action

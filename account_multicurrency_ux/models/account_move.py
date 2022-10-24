@@ -26,8 +26,7 @@ class AccountMove(models.Model):
 
     def open_partial_reconciles(self):
         self.ensure_one()
-        actions = self.env.ref('account_ux.action_account_move_partial_reconcile')
-        action_read = actions.sudo().read()[0]
+        action_read = self.env["ir.actions.actions"]._for_xml_id('account_ux.action_account_move_partial_reconcile')
         action_read['domain'] = [('id', 'in', self.line_ids.mapped('matched_credit_ids').ids)]
         return action_read
 
