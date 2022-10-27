@@ -14,6 +14,6 @@
                 'views/res_config_settings.xml',
                 'views/stock_picking_views.xml',
     ],
-    'installable': True,
+    'installable': False,
     'application': False
 }

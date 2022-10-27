@@ -11,6 +11,6 @@
     'summary': 'Calculate margins and profitabilities in subscriptions',
     'depends': ['sale_subscription'],
     'data': ['views/sale_subscription_margin_view.xml'],
-    'installable': True,
+    'installable': False,
     'application': False
 }

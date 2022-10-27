@@ -17,5 +17,5 @@
         'views/account_onboarding_templates.xml',
         'wizards/account_balance_import_wizard.xml',
     ],
-    'installable': True,
+    'installable': False,
 }

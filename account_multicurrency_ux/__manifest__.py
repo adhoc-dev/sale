@@ -41,7 +41,7 @@
     ],
     'demo': [
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'application': False,
     'pre_init_hook': 'pre_init_hook',

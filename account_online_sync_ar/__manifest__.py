@@ -22,5 +22,5 @@
         "wizards/account_link_journal_views.xml",
     ],
     'auto_install': True,
-    'installable': True,
+    'installable': False,
 }

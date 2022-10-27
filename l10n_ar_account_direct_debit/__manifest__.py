@@ -21,7 +21,7 @@
     'demo': [
         'demo/account_direct_debit_mandate_demo.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'application': False,
 }
