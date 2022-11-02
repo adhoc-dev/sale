@@ -14,8 +14,6 @@
 Sale Subscription Margin
 ========================
 
-#. Agrega una columna de costo a las líneas de suscripción.
-#. Agrega campos de margen de ganancia y rentabilidad a los totales de la suscripción.
 #. Colorea la vista árbol de suscripciones según el porcentaje de rentabilidad calculado para cada elemento.
 
 Installation

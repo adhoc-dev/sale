@@ -1,40 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <record model="ir.ui.view" id="sale_subscription_margin">
-        <field name="name">sale.subscription.margin.view.form</field>
-        <field name="model">sale.subscription</field>
-        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_form"/>
+    <record model="ir.ui.view" id="sale_margin_sale_order_tree">
+        <field name="name">sale.order.margin.view.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_tree"/>
         <field name="arch" type="xml">
-           <xpath expr="//field[@name='recurring_invoice_line_ids']/tree//field[@name='price_unit']" position="after">
-                <field name="purchase_price" groups="base.group_user"/>
-            </xpath>
-            <xpath expr="//field[@name='recurring_total']" position="before">
-                <field name="margin" groups="base.group_user"/>
-            </xpath>
-            <xpath expr="//field[@name='recurring_total']" position="after">
-                <field name="profitability" class="oe_subtotal_footer_separator" groups="base.group_user"/>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="sale_subscription_margin_tree" model="ir.ui.view">
-        <field name="name">sale.subscription.margin.inherit.view.tree</field>
-        <field name="model">sale.subscription</field>
-        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_list"/>
-        <field name="arch" type="xml">
+            <tree position="inside">
+                <field name="margin"/>
+                <field name="margin_percent"/>
+            </tree>
             <tree position="attributes">
-                <attribute name="decoration-success">profitability&gt;=60</attribute>
-                <attribute name="decoration-warning">profitability&gt;=30 and profitability&lt;60</attribute>
-                <attribute name="decoration-danger">(profitability&gt;0 and profitability&lt;30) or profitability&lt;0</attribute>
+                <attribute name="decoration-success">margin_percent&gt;=0.6</attribute>
+                <attribute name="decoration-warning">margin_percent&gt;=0.3 and margin_percent&lt;0.6</attribute>
+                <attribute name="decoration-danger">(margin_percent&gt;0 and margin_percent&lt;0.3) or margin_percent&lt;0</attribute>
                 <attribute name="decoration-muted">margin==0</attribute>
                 <attribute name="decoration-info">to_renew</attribute>
             </tree>
-            <field name="stage_id" position="after">
-                <field name="margin" groups="base.group_user"/>
-                <field name="profitability" groups="base.group_user"/>
-            </field>
         </field>
     </record>
-
 </odoo>
