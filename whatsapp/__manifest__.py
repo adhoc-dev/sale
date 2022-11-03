@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Whatsapp',
-    'version': "15.0.1.0.0",
+    'version': "16.0.1.0.0",
     'category': 'Tools',
     'sequence': 14,
     'summary': '',
@@ -32,7 +32,7 @@
     'data': [
         'views/res_partner_view.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }

@@ -4,14 +4,14 @@
         <field name="name">res.partner.view.form.whatsapp</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
-        <field name="priority">10</field>
+        <field name="priority">11</field>
         <field name="arch" type="xml">
             <field name="mobile" position="after">
                 <field name="whatsapp_number" invisible="1"/>
-                <button name="whatsapp_redirect" attrs="{'invisible': [('whatsapp_number', '=', False)]}"
-                        class="btn btn-link o_field_widget oe_read_only" title="Redirect to Whatsapp Web" type="object">
+                <button name="whatsapp_redirect" string="Redirect to Whatsapp Web" attrs="{'invisible': [('whatsapp_number', '=', False)]}"
+                        class="btn btn-link" title="Redirect to Whatsapp Web" type="object">
                     <i class="fa fa-whatsapp"/>
-                    <small class="font-weight-bold ml-1">Whatsapp</small>
+                    <small class="font-weight-bold ml-1"> Whatsapp</small>
                 </button>
             </field>
         </field>
