@@ -14,7 +14,7 @@
 Helpdesk Subticket
 ==================
 
-#. This module is used to group and proccess similar tickets in a parent, that can't be closed as long as subtickets aren't closed too.
+#. This module is used to group and proccess similar tickets in a parent, that can't be closed as long as subtickets aren't closed too. (Is considered as closing stages those ones that have the option "Folded in Kanban" checked).
 
 Installation
 ============
