@@ -23,7 +23,7 @@ class Task(models.Model):
         recs = self.filtered(lambda x: (
                 x.partner_id and
                 x.stage_id.solution_required and
-                len(html2plaintext(x.solution_description)) <= 1 and
+                len(html2plaintext(x.solution_description or '')) <= 1 and
                 len(html2plaintext(x.helpdesk_solution_id.customer_solution_description or '')) <= 1))
         if recs:
             raise ValidationError(_(

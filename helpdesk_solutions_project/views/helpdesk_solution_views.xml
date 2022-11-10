@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="helpdesk_solution_tree_view" model="ir.ui.view">
+        <field name="name">helpdesk.solution.tree.view</field>
+        <field name="model">helpdesk.solution</field>
+        <field name="inherit_id" ref="helpdesk_solutions.helpdesk_solution_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="ticket_count" position="after">
+                <field name="task_count"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="helpdesk_solution_form_view" model="ir.ui.view">
+        <field name="name">helpdesk.solution.form.view</field>
+        <field name="model">helpdesk.solution</field>
+        <field name="inherit_id" ref="helpdesk_solutions.helpdesk_solution_form_view"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="action" name="%(helpdesk_solutions_project.project_task_action_main_tree)d" icon="fa-life-ring" context="{'search_default_helpdesk_solution_id': active_id}">
+                    <field string="Tasks" name="task_count" widget="statinfo"/>
+                </button>
+            </div>
+        </field>
+    </record>
+
+</odoo>

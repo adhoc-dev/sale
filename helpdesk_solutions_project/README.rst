@@ -14,7 +14,9 @@
 Helpdesk Solution Project
 =========================
 
-#. Similar a helpdesk pero dejamos campos description nativo de odoo. Proximamente la idea sería modificar helpdesk solutions con mismo apporach.
+#. Add a m2o field from task to solutions called "Linked Solution" (helpdesk_solution_id).
+#. Add to the stages of the tasks a Boolean field to require a description in the solution tab if the ticket has a customer assigned.
+#. Add to the solution a button that links that solution to all the tasks related.
 
 Installation
 ============

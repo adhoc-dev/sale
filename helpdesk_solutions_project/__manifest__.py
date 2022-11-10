@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Helpdesk Solutions Project',
-    'version': "15.0.1.1.0",
+    'version': "16.0.1.0.0",
     'category': 'Projects & Services',
     'sequence': 14,
     'summary': '',
@@ -35,10 +35,11 @@
     'data': [
         'views/project_stage_views.xml',
         'views/project_task_views.xml',
+        'views/helpdesk_solution_views.xml',
     ],
     'demo': [
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 }
