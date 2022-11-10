@@ -1,62 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-        <record id="edit_project" model="ir.ui.view">
-            <field name="name">project.project.form</field>
-            <field name="model">project.project</field>
-            <field name="inherit_id" ref="project.edit_project"/>
-            <field name="arch" type="xml">
-                <xpath expr="//div[@id='rating_settings']" position="before">
-                    <div class="col-lg-6 o_setting_box" id="saas_settings">
-                        <div class="o_setting_left_pane">
-                            <field name="allow_tickets"/>
-                        </div>
-                        <div class="o_setting_right_pane">
-                            <label for="allow_tickets"/>
-                            <div class="text-muted">
-                                Allow ticket on this project
-                            </div>
-                        </div>
-                    </div>
-                </xpath>
-
-            </field>
-        </record>
-
-    <record id="project_project_view_form_inherit_helpdesk_timesheet" model="ir.ui.view">
+    <record id="edit_project" model="ir.ui.view">
         <field name="name">project.project.form</field>
         <field name="model">project.project</field>
-        <field name="groups_id" eval="[(4, ref('helpdesk.group_helpdesk_user'))]"/>
-        <field name="inherit_id" ref="helpdesk_timesheet.project_project_view_form_inherit_helpdesk_timesheet"/>
+        <field name="inherit_id" ref="project.edit_project"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='ticket_count']/.." position="attributes">
-                <attribute name="attrs">{'invisible': [('allow_tickets', '=', False)]}</attribute>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="helpdesk_ticket_view_search_inherit_helpdesk_timesheet" model="ir.ui.view">
-        <field name="name">helpdesk.ticket.search.inherit.timesheet</field>
-        <field name="model">helpdesk.ticket</field>
-        <field name="inherit_id" ref="helpdesk_timesheet.helpdesk_ticket_view_search_inherit_helpdesk_timesheet"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="project_id"/>
-            </xpath>
+            <group name="group_time_managment" position="inside">
+                <div class="col-lg-6 o_setting_box" id="saas_settings">
+                    <div class="o_setting_left_pane">
+                        <field name="allow_tickets"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="allow_tickets"/>
+                        <div class="text-muted">
+                            Allow ticket on this project
+                        </div>
+                    </div>
+                </div>
+            </group>
         </field>
     </record>
 
     <record id="view_project_kanban" model="ir.ui.view">
         <field name="name">project.project.kanban</field>
         <field name="model">project.project</field>
-        <field name="groups_id" eval="[(4, ref('helpdesk.group_helpdesk_user'))]"/>
         <field name="inherit_id" ref="project.view_project_kanban"/>
         <field name="arch" type="xml">
             <field name="partner_id" position="after">
-                <field name="ticket_count" invisible="1"/>
+                <field name="ticket_count" invisible="1" groups="helpdesk.group_helpdesk_user"/>
             </field>
             <xpath expr="//a[hasclass('o_project_kanban_box')]" position="after">
-                <a t-if="record.ticket_count" class="o_project_kanban_box" name="%(helpdesk_timesheet.project_project_action_view_helpdesk_tickets)d" type="action" attrs="{'invisible': [('ticket_count', '=', 0)]}" context="{'search_default_project_id': [active_id], 'default_project_id': active_id}">
+                <a t-if="record.ticket_count" class="o_project_kanban_box" name="%(helpdesk_timesheet.project_project_action_view_helpdesk_tickets)d" type="action" attrs="{'invisible': [('ticket_count', '=', 0)]}" context="{'search_default_project_id': [active_id], 'default_project_id': active_id}" groups="helpdesk.group_helpdesk_user">
                     <div>
                         <span class="o_value"><t t-esc="record.ticket_count.value"/></span>
                         <span class="o_label"><span title="Tickets" class="fa fa-life-ring"/></span>

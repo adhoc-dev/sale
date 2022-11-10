@@ -13,15 +13,14 @@
         </field>
     </record>
 
-    <record id="helpdesk_ticket_view_form" model="ir.ui.view">
-        <field name="name">helpdesk.ticket.form.inherit</field>
+    <record id="helpdesk_ticket_view_search_inherit_helpdesk_timesheet" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search.inherit.timesheet</field>
         <field name="model">helpdesk.ticket</field>
-        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="inherit_id" ref="helpdesk_timesheet.helpdesk_ticket_view_search_inherit_helpdesk_timesheet"/>
         <field name="arch" type="xml">
-            <field name="team_id" position="attributes">
-                <attribute name="required">True</attribute>
-            </field>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="project_id"/>
+            </xpath>
         </field>
     </record>
-
 </odoo>

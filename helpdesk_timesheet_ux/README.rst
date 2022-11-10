@@ -19,18 +19,21 @@ This module ensures that:
 * You can configure a project to have or not related tickets, by default they
   are not related to tickets.
 
-* You can only close(archive) projects if they don't have any active ticket (we
+* You can only archive projects if they don't have any active ticket (we
   consider active tickets the ones in stages without option "folded")
 
 * For the tickets, only can relate to project which are allowed tickets.
 
 * When we set a helpdesk team to trace timesheet then the related project of
   the team will be set to be ticket allowed even if the project is a new
-  project or we are linking an old one.
+  project or we are linking an old one (the only restriction neccesary to see
+  the existing proyect in the list so as to be selected to trace timesheet is
+  that the project needs to have the "allow timesheets" boolean selected).
 
 * When a ticket is created from a project, the default partner will be project's partner.
 
-* The project in tickets not longer be related to team.
+* The project in tickets not longer be related to team. Now when a ticket is
+  created a different project can be selected from the one configured for the team.
 
 Installation
 ============

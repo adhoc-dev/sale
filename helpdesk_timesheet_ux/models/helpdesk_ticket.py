@@ -13,15 +13,15 @@ class HelpdeskTicket(models.Model):
 
     project_id = fields.Many2one("project.project", related=False, readonly=False)
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, list_value):
         """ On creating a ticket, if not user is set, then we get if from
         _onchange_team_id """
-        rec = super().create(vals)
-        if not rec.user_id and rec.team_id.assign_method == 'project_responsable':
-            rec.user_id = rec.project_id.user_id
-        return rec
-
+        recs = super().create(list_value)
+        for rec in recs:
+            if not rec.user_id and rec.team_id.assign_method == 'project_responsable':
+                rec.user_id = rec.project_id.user_id
+        return recs
 
 
     @api.depends('team_id')

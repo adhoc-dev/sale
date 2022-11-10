@@ -41,21 +41,23 @@ class HelpdeskTeam(models.Model):
         """ If use_helpdesk_timesheet then set the related project to
         allow_tickets
         """
-        if 'use_helpdesk_timesheet' in vals:
+        res = super().write(vals)
+        if 'use_helpdesk_timesheet' in vals or 'project_id' in vals:
             projects = self.filtered('use_helpdesk_timesheet').mapped('project_id')
             if projects:
                 projects.write({'allow_tickets': True})
-        return super().write(vals)
+        return res
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         """ If use_helpdesk_timesheet then set the related project to
         allow_tickets
         """
-        res = super().create(vals)
-        if res.use_helpdesk_timesheet and res.project_id:
-            res.project_id.allow_tickets = True
-        return res
+        recs = super().create(vals_list)
+        for rec in recs:
+            if rec.use_helpdesk_timesheet and rec.project_id:
+                rec.project_id.allow_tickets = True
+        return recs
 
     def _determine_user_to_assign(self):
         """ We add for 2 cases of assination of user from the team.

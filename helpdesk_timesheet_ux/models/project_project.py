@@ -28,9 +28,16 @@ class ProjectProject(models.Model):
         if not self.user_has_groups('helpdesk.group_helpdesk_user'):
             return
         result = self.env['helpdesk.ticket'].read_group([
-            ('project_id', 'in', self.ids), ('stage_id.is_close', '=', False)
+            ('project_id', 'in', self.ids), ('stage_id.fold', '=', False)
         ], ['project_id'], ['project_id'])
         data = {data['project_id'][0]: data['project_id_count']
                 for data in result}
         for project in self:
             project.ticket_count = data.get(project.id, 0)
+
+    def action_open_project_tickets(self):
+        action = super().action_open_project_tickets()
+        action.update({
+            'context': {'active_id': self.id, 'default_project_id': self.id},
+        })
+        return action
