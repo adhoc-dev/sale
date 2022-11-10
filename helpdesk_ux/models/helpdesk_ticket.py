@@ -3,7 +3,7 @@
 # directory
 ##############################################################################
 
-from odoo import fields, models, api
+from odoo import fields, models
 
 
 class HelpdeskTicket(models.Model):
@@ -26,16 +26,14 @@ class HelpdeskTicket(models.Model):
 
     def _track_template(self, changes):
         ticket = self[0]
-        # PATCH START: Remove this part after odoo fix the error ...
         res = super()._track_template(changes)
-        if 'stage_id' in changes and ticket.stage_id.template_id:
-            res['stage_id'] = (ticket.stage_id.template_id, {
-                'message_type': 'comment',
-                'auto_delete_message': True,
-                'email_layout_xmlid': 'mail.mail_notification_light'})
-        # PATCH END: until this line
         if 'stage_id' in res and ticket.dont_send_stage_email == True and\
             ticket.stage_id.template_id:
             res.pop('stage_id')
             ticket.dont_send_stage_email = False
         return res
+
+    def search(self, domain, offset=0, limit=None, order=None, count=False):
+        if self._context.get('order_by_priority'):
+            order = 'stage_id, {}'.format(self._order)
+        return super().search(domain=domain, offset=offset, limit=limit, order=order, count=count)
