@@ -22,7 +22,7 @@
                 <label for="helpdesk_solution_id"/>
                 <div class="o_row">
                     <field name="helpdesk_solution_id" context="{'default_name':name,'default_solution_description': solution_description,'default_ticket_description':ticket_description}"/>
-                    <button name="copy_solution" type="object" class="oe_link oe_read_only" attrs="{'invisible': [('helpdesk_solution_id', '=', False)]}" help="Overwrite the actual solution with the costumer solution of the linked solution" icon="fa-copy"/>
+                    <button name="copy_solution" type="object" class="oe_link" attrs="{'invisible': [('helpdesk_solution_id', '=', False)]}" title="Copy Solution" help="Overwrite the actual solution with the costumer solution of the linked solution" icon="fa-copy"/>
                 </div>
             </field>
             <xpath expr="//sheet/notebook/page[1]" position="before">

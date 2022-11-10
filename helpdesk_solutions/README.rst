@@ -15,7 +15,7 @@ Helpdesk Solution
 =================
 
 #. Add new object call solutions and adds a m2o field from tickets to solutions.
-#. Add to the stages of the tasks and tickets, a Boolean field to require the description solution.
+#. Add to the stages of the tasks and tickets, a Boolean field to require a description in the solution tab if the ticket has a customer assigned.
 
 Installation
 ============
