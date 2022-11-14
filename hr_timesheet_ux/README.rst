@@ -16,7 +16,6 @@ Timesheet UX
 
 #. Do not let to create new projects or new tasks from timesheets form and list
    view.
-#. Re add the description field in the account.analytic.line, this was in version 11.0 but was removed in version 12.0 from timesheet_grid module.
 
 Installation
 ============
