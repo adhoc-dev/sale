@@ -5,20 +5,14 @@
 from odoo import models, fields
 
 
-class SaleSubscriptionTemplate(models.Model):
+class SaleOrderTemplate(models.Model):
 
-    _inherit = "sale.subscription.template"
+    _inherit = "sale.order.template"
 
-    use_different_invoice_address = fields.Boolean(
-        string="Use different invoice address?",
-        help="Set specific billing partner (that could be different from subscription partner)",
-    )
     dates_required = fields.Boolean(
         "Dates Required",
     )
-    do_not_update_price = fields.Boolean(
-        help="Don't update price when quantity change"
-    )
+
     add_period_dates_to_description = fields.Boolean(
         'Add Period Dates to Description',
         help='If setted, a description of the invoiced period will be added to the invoice narration',

@@ -14,18 +14,10 @@
 Sale Subscription UX
 ====================
 
-#. Add an option to add or not period description on invoice narration
-#. Check company consistency between subscription and partner and partner invoice
+#. Add a boolean option to quit period description on invoice narration. By default the value is true and Odoo will show the period in the invoice.
 #. Add Dates required boolean field on Subscription Template model, if setted, then the Start date and End date will be required
-#. Add funcionality to use "without discount" in subscription lines.
-#. Add sequence on sale subscriptions lines that let us to order the
-   subscription lines.
-#. Update prices in subscriptions: update price in subscription lines from the
-   values in the related products.
-#. Add option for 'Not update prices' when update quantity in sale subscription line.
-#. Add Invoice Address field to the subscription, similar to the one in the sale.order in order to be used when creating recurring invoicees (optional by subscription template)
-#. Fixes the default behavior that brings payment term to generated invoices from SO even if it's empty, so if SO hasn't got any payment term value, it's brought from the partner's payment term.
-#. Add menu item for subscription lines
+#. Update line data: update price in subscription lines from the values in the related products
+#. Add menu item for Subscription Lines in the Suscription main menu.
 
 Installation
 ============

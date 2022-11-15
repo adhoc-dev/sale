@@ -1,41 +1,19 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <record id="sale_subscription_view_form" model="ir.ui.view">
-        <field name="name">sale.subscription.form</field>
-        <field name="model">sale.subscription</field>
-        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_form"/>
+    <record id="sale_subscription_order_view_form" model="ir.ui.view">
+        <field name="name">sale.subscription.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_order_view_form"/>
         <field name="arch" type="xml">
-            <form>
+            <field name="is_subscription" position="after">
                 <field name="dates_required" invisible="1"/>
-                <field name="use_different_invoice_address" invisible="1"/>
-            </form>
-            <field name="partner_id" position="after">
-                <field name="partner_invoice_id" context="{'default_type':'invoice'}" options='{"always_reload": True}' attrs="{'invisible': [('use_different_invoice_address', '=', False)]}"/>
             </field>
-            <field name="date" position="attributes">
+            <xpath expr="//div[hasclass('o_row')]/field[@name='end_date']" position="attributes">
                 <attribute name="attrs">{'required': [('dates_required', '=', True)]}</attribute>
-            </field>
-            <field name="date_start" position="attributes">
+            </xpath>
+            <field name="start_date" position="attributes">
                 <attribute name="attrs">{'required': [('dates_required', '=', True)]}</attribute>
-            </field>
-            <field name="recurring_next_date" position="after">
-                <button class="oe_link" name="update_lines_prices_from_products" string="⇒ Actualizar precios" type="object" confirm="Se van a actualizar los precios las lineas de la suscripcion con los precios actualizados para la lista seleccionada"/>
-            </field>
-            <field name="product_id" position="before">
-                <field name="sequence" widget="handle"/>
-            </field>
-        </field>
-    </record>
-
-    <record id="sale_subscription_view_search" model="ir.ui.view">
-        <field name="name">sale.subscription.view.search</field>
-        <field name="model">sale.subscription</field>
-        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_search"/>
-        <field name="arch" type="xml">
-            <!-- hacemos este arreglo porque el campo name de odoo no parece tener mucho uso y no se actualiza al cambiar el ref. O sea, casi no tiene sentido que busque por ese name -->
-            <field name="name" position="attributes">
-                <attribute name="filter_domain">['|', '|', ('analytic_account_id', 'ilike', self), ('code', 'ilike', self), ('name', 'ilike', self)]</attribute>
             </field>
         </field>
     </record>
