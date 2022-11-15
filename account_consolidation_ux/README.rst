@@ -14,7 +14,7 @@
 Consolidation UX
 ================
 
-#. Extend 'consolidation accounts' to allow adding custom domain
+#. Extend 'consolidation accounts' to allow adding custom domain to filtrate account moves.
 
 Installation
 ============
