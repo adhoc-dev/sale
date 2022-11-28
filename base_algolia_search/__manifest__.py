@@ -2,7 +2,7 @@
 {
     'name': 'Algolia Search',
     'summary': 'Algolia search on name_search and search views',
-    'version': "15.0.1.0.0",
+    'version': "16.0.1.0.0",
     'category': 'Uncategorized',
     'author': 'ADHOC SA',
     'license': 'AGPL-3',
@@ -20,6 +20,6 @@
             'algoliasearch'
         ],
     },
-    'installable': False,
+    'installable': True,
     "uninstall_hook": "uninstall_hook",
 }

@@ -41,7 +41,7 @@ class Base(models.AbstractModel):
     )
 
     def _compute_algolia_search(self):
-        self.update({'algolia_search': False})
+        self.algolia_search = False
 
     @api.model
     def _search_algolia_search(self, operator, name):
@@ -225,6 +225,8 @@ class IrModel(models.Model):
                     "You can't use an 'Algolia Existing Index' togheter with 'Algolia attributes list', please remove "
                     "one of them"))
 
+
+
     def _register_hook(self):
 
         def patch_algolia_name_search():
@@ -252,31 +254,27 @@ class IrModel(models.Model):
                 return res
             return _name_search
 
-        def patch_fields_view_get():
-            @api.model
-            def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
-                res = fields_view_get.origin(
-                    self, view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
-                if view_type == 'search' and _get_add_algolia_search(self):
-                    eview = etree.fromstring(res['arch'])
-                    placeholders = eview.xpath("//search/field")
-                    if placeholders:
-                        placeholder = placeholders[0]
-                    else:
-                        placeholder = eview.xpath("//search")[0]
-                    placeholder.addnext(
-                        etree.Element('field', {'name': 'algolia_search'}))
-                    eview.remove(placeholder)
-                    res['arch'] = etree.tostring(eview)
-                    res['fields'].update(self.fields_get(['algolia_search']))
-                return res
-            return fields_view_get
-
-        models.BaseModel._patch_method("fields_view_get", patch_fields_view_get())
-
         for model in self.sudo().search(self.ids or []):
             Model = self.env.get(model.model)
             if Model is not None:
                 Model._patch_method('_name_search', patch_algolia_name_search())
 
         return super()._register_hook()
+
+class Model(models.AbstractModel):
+    _inherit = 'base'
+
+    @api.model
+    def _get_view(self, view_id=None, view_type='form', **options):
+        arch, view = super()._get_view(view_id=view_id, view_type=view_type, **options)
+        if view_type == 'search' and _get_add_algolia_search(self):
+            node = arch
+            placeholders = node.xpath("//search/field")
+            if placeholders:
+                placeholder = placeholders[0]
+            else:
+                placeholder = node.xpath("//search")[0]
+            placeholder.addnext(
+                etree.Element('field', {'name': 'algolia_search'}))
+            node.remove(placeholder)
+        return arch, view

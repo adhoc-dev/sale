@@ -47,5 +47,5 @@ class AlgoliaField(models.Model):
             self.sub_field_id = False
 
     _sql_constraints = [
-        ('algolia_field_uniqe', 'unique(field_id, model_id)', 'Algolia field must be unique per model!'),
+        ('algolia_field_unique', 'unique(field_id, model_id)', 'Algolia field must be unique per model!'),
     ]
