@@ -21,17 +21,17 @@
     'name': 'Website Documentation',
     'category': 'Website',
     'summary': 'Website, Documentation',
-    'version': "15.0.1.1.0",
+    'version': "16.0.1.0.0",
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
     'depends': [
         'base_algolia_search',
-        'google_drive',
+        'google_account',
         'website',
     ],
     'external_dependencies': {
-        'python': ['html2text']
+        'python': ['html2text', 'googleapiclient']
     },
     'data': [
         'data/doc_data.xml',
@@ -42,6 +42,6 @@
     ],
     'demo': [
     ],
-    'installable': False,
+    'installable': True,
     'application': True,
 }

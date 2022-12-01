@@ -2,10 +2,17 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from odoo import http
+from odoo import http, _
+import logging
 from odoo.http import request
 import werkzeug.utils
+from werkzeug.exceptions import Forbidden
 from odoo.addons.website.controllers.main import Website as controllers
+
+from datetime import datetime
+
+
+_logger = logging.getLogger(__name__)
 
 controllers = controllers()
 
@@ -93,3 +100,35 @@ class WebsiteDoc(http.Controller):
         rec = request.env[model_name].browse(_id)
         rec.inverse_read(not rec.read_status)
         return bool(rec.read_status)
+
+    @http.route('/website_doc/confirm', type='http', auth='user')
+    def website_doc_consent_callback(self, code=None, error=None, **kwargs):
+        """Callback URL during the OAuth process.
+        """
+        if not request.env.user.has_group('base.group_system'):
+            _logger.error('system user is required in oauth doc.')
+            raise Forbidden()
+
+        if error:
+            return _('An error occur during the authentication process: %s.') % error
+
+        try:
+            refresh_token, access_token, expiration = request.env['website.doc.toc'].sudo()._fetch_refresh_token(code)
+        except Exception as e:
+            _logger.error(e)
+            return _('An error occur during the authentication process.')
+
+        param_sudo = request.env['ir.config_parameter'].sudo()
+        client_id = param_sudo.get_param('gs_auth2.client_id')
+        expiration = datetime.fromtimestamp(expiration).isoformat(sep='T')
+
+        token = {
+            "token": access_token,
+            "refresh_token": refresh_token,
+            "client_id": client_id,
+            "expiry": expiration
+        }
+        param_sudo.set_param('gs_auth2.token_json', token)
+
+        return 'El token funciona ok'
+

@@ -3,3 +3,4 @@
 # directory
 ##############################################################################
 from . import website_doc_toc
+from . import google_service

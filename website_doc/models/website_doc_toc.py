@@ -5,6 +5,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError, UserError
 from odoo.addons.google_account.models.google_service import TIMEOUT
+from odoo.addons.google_account.models.google_service import GOOGLE_TOKEN_ENDPOINT
 from odoo.tools import html2plaintext
 import requests
 import json
@@ -15,14 +16,20 @@ _logger = logging.getLogger(__name__)
 class WebsiteDocToc(models.Model):
     _name = 'website.doc.toc'
     _description = 'Documentation ToC'
-    _inherit = ['website.seo.metadata', 'mail.thread', 'mail.activity.mixin']
+    _inherit = ['website.seo.metadata', 'mail.thread', 'mail.activity.mixin', 'google.service']
     _order = "sequence, parent_path"
     _parent_order = "sequence, name"
     _parent_store = True
 
+    _SERVICE_SCOPE = ['https://www.googleapis.com/auth/spreadsheets.readonly',
+                      'https://www.googleapis.com/auth/documents.readonly',
+                      'https://www.googleapis.com/auth/drive']
+    _gs_field = 'google_doc_code'
+
     sequence = fields.Integer(
         default=10,
     )
+
     name = fields.Char(
         required=True,
         # to avoid complications we disable translation
@@ -262,6 +269,10 @@ class WebsiteDocToc(models.Model):
         res_id = self.id
         res_model = self._name
         name_gdocs = 'Articulo: %s' % self.name
+        self.google_doc_code = self.copy_document(template_id, name_gdocs)
+
+        return
+
         google_web_base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         access_token = self.env['google.drive.config'].get_access_token()
         # Copy template in to drive with help of new access token
@@ -309,16 +320,5 @@ class WebsiteDocToc(models.Model):
         Export the content of Google Doc file which id was saved in field 'google_doc_code' and save it in 'content'
         field
         '''
-        google_doc_id = self.google_doc_code
-        mimetype = 'text/plain'
-        access_token = self.env['google.drive.config'].get_access_token()
-        request_url = "https://www.googleapis.com/drive/v2/files/%s/export/?mimeType=%s" % (google_doc_id, mimetype)
-        headers = {'Authorization': "Bearer %s" % access_token}
-        try:
-            req = requests.get(request_url, headers=headers, timeout=TIMEOUT)
-            req.raise_for_status()
-            req.encoding = 'UTF-8'
-            content = req.text
-        except requests.HTTPError:
-            raise UserError(_("The Google document cannot be found. Maybe it has been deleted."))
-        self.content = content
+        for doc in self:
+            doc.content = doc.read_document(doc.google_doc_code)
