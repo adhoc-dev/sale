@@ -88,8 +88,6 @@ class AccountBalanceImport(models.TransientModel):
        "('inbound_payment_method_line_ids.code', '=', 'in_third_party_checks')]"
     )
 
-    check_checkbook_id = fields.Many2one("l10n_latam.checkbook", string="Chequera")
-
     check_file = fields.Binary("Archivo de Importación de Cheques")
 
     def action_generate_xls(self):
@@ -549,7 +547,7 @@ class AccountBalanceImport(models.TransientModel):
             "amount_company_currency",
         ]
         if self.check_type == "third_check":
-            fields.append("owner_vat")
+            fields.insert(4,"owner_vat")
 
         generated_move_ids = list()  # For storing generated account move ids
         pre_data = list()  # For storing data before persisting to db
@@ -663,9 +661,9 @@ class AccountBalanceImport(models.TransientModel):
             }
             if self.check_type == "issue_check":
                 check_data.update({
-                    "l10n_latam_checkbook_id": self.check_checkbook_id.id,
                     "payment_type": 'outbound',
                     })
+
             if other_currency and amount_company_currency:
                 check_data.update(
                     {
@@ -691,7 +689,7 @@ class AccountBalanceImport(models.TransientModel):
         payments.action_post()
         for payment in payments.with_context(skip_account_move_synchronization=True):
             payment.move_id.line_ids.filtered(
-                lambda x: x.account_id.internal_type in ('receivable', 'payable')).account_id = self.counterpart_account_id
+                lambda x: x.account_id.account_type in ('receivable', 'payable')).account_id = self.counterpart_account_id
 
         return {
             "name": "Importación de Saldos Iniciales",

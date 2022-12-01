@@ -6,69 +6,82 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form>
-                <group>
-                    <field name="company_id"/>
-                    <field name="mode"/>
-                    <field name="accounting_date"/>
-                    <field name="counterpart_account_id" groups="base.group_no_one"/>
-                </group>
-                <group>
+                <sheet>
                     <group>
-                        <div class="alert alert-info" role="alert">
-                            <h1>
-                                <span class="fa fa-info" aria-label="info"></span>
-                            </h1>
+                        <field name="company_id"/>
+                        <field name="mode"/>
+                        <field name="accounting_date"/>
+                        <field name="counterpart_account_id"/>
+                    </group>
+                    <group>
+                        <group class="alert alert-info" role="alert">
+                            <div>
+                                <h1>
+                                    <span class="fa fa-info" aria-label="info"></span>
+                                </h1>
+                            </div>
                             <p>
                                 Descargue la plantilla de importación siguiendo el link
                                 y edítelo manteniendo la estructura del archivo.<br/>
                                 Una vez finalizada la edición, suba el archivo modificado
                                 y haga click en el botón "Importar" ubicado más abajo.
                             </p>
+                        </group>
+                        <!-- Check Balance Selected -->
+                        <div attrs="{'invisible': [('mode', 'not in', 'check_balance')] }">
+                            <h3 colspan="3">Importación de Cheques</h3>
+                            <group class="oe_inline">
+                                <field name="check_type" attrs="{'required': [('mode', '=', 'check_balance')] }" />
+                                <field name="check_journal_bank_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'issue_check')], 'invisible': [('check_type', 'not in', 'issue_check')] }" options="{'no_create':True}" />
+                                <field name="check_journal_third_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'third_check')],
+                                'invisible': [('check_type', 'not in', 'third_check')] }" options="{'no_create':True}"/>
+                                <br/>
+                            </group>
+                                <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'partner_balance')], 'invisible':[ ('check_type', '!=', 'issue_check')]}" href="/account_balance_import/static/xls/own_check_balance.xls" role="button">
+                                    <span class="fa fa-download" title="download"></span>
+                                    Descargar Plantilla de Importación de Cheques Propios
+                                </a>
+                                <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'partner_balance')], 'invisible':[ ('check_type', '=', 'issue_check')]}" href="/account_balance_import/static/xls/third_check_balance.xls" role="button">
+                                    <span class="fa fa-download" title="download"></span>
+                                    Descargar Plantilla de Importación de Cheques de Terceros
+                                </a>
+                            <br/>
+                            <group class="oe_inline">
+                                <field name="check_file" attrs="{'required': [('mode', '=', 'check')] }"/>
+                            </group>
+                        </div>
+                        <!-- Account Balance Selected -->
+                        <div attrs="{'invisible': [('mode', 'not in', 'account_balance')] }">
+                            <h3 colspan="4">Importación de Saldos Contables</h3>
+                            <group class="oe_inline">
+                                <field name="account_opening_entries_journal_id" attrs="{'required': [('mode', '=', 'account_balance')] }" />
+                            </group>
+                                <br/>
+                                <button name="action_generate_xls" colspan="4" type="object" class=" oe_link oe_inline" string="⇒ Descargar Plantilla de Importación de Saldos Contables"/>
+                                <br/>
+                            <group class="oe_inline">
+                                <field name="account_balance_file"/>
+                            </group>
+                        </div>
+                        <!-- Partner Balance Selected -->
+                        <div attrs="{'invisible': [('mode', 'not in', 'partner_balance')] }">
+                            <h3 colspan="4">Importación de Saldos de Partners</h3>
+                            <group class="oe_inline">
+                                <field name="partner_balance_journal_id" attrs="{'required': [('mode', '=', 'partner_balance')] }" />
+                                <field name="partner_balance_type" attrs="{'required': [('mode', '=', 'partner_balance')] }" />
+                            </group>
+                            <br/>
+                                <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'partner_balance')] }" href="/account_balance_import/static/xls/partner_balance.xls" role="button">
+                                    <span class="fa fa-download" title="download"></span>
+                                    Descargar Plantilla de Importación de Saldos de Partners
+                                </a>
+                            <br/>
+                            <group class="oe_inline">
+                                <field name="partner_balance_file" attrs="{'required': [('mode', '=', 'partner_balance')] }"/>
+                            </group>
                         </div>
                     </group>
-                    <!-- Check Balance Selected -->
-                    <group attrs="{'invisible': [('mode', 'not in', 'check_balance')] }">
-                        <h3 colspan="4">Importación de Cheques</h3>
-                        <field name="check_type" attrs="{'required': [('mode', '=', 'check_balance')] }" />
-                        <field name="check_journal_bank_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'issue_check')], 'invisible': [('check_type', 'not in', 'issue_check')] }" options="{'no_create':True}" />
-                        <field name="check_checkbook_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'issue_check')], 'invisible': [('check_type', 'not in', 'issue_check')]}" domain="[('journal_id', '=', check_journal_bank_id)]" options="{'no_create':True}"/>
-                        <field name="check_journal_third_id" attrs="{'required': [('mode', '=', 'check_balance'), ('check_type', '=', 'third_check')],
-                        'invisible': [('check_type', 'not in', 'third_check')] }" options="{'no_create':True}"/>
-                        <br/>
-                        <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'partner_balance')], 'invisible':[ ('check_type', '!=', 'issue_check')]}" href="/account_balance_import/static/xls/own_check_balance.xls" role="button">
-                            <span class="fa fa-download" title="download"></span>
-                            Descargar Plantilla de Importación de Cheques Propios
-                        </a>
-                        <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'partner_balance')], 'invisible':[ ('check_type', '=', 'issue_check')]}" href="/account_balance_import/static/xls/third_check_balance.xls" role="button">
-                            <span class="fa fa-download" title="download"></span>
-                            Descargar Plantilla de Importación de Cheques de Terceros
-                        </a>
-                        <br/>
-                        <field name="check_file" attrs="{'required': [('mode', '=', 'check')] }"/>
-                    </group>
-                    <!-- Account Balance Selected -->
-                    <group attrs="{'invisible': [('mode', 'not in', 'account_balance')] }">
-                        <h3 colspan="4">Importación de Saldos Contables</h3>
-                        <field name="account_opening_entries_journal_id" attrs="{'required': [('mode', '=', 'account_balance')] }" />
-                        <br/>
-                        <button name="action_generate_xls" colspan="4" type="object" class=" oe_link oe_inline" string="⇒ Descargar Plantilla de Importación de Saldos Contables"/>
-                        <br/>
-                        <field name="account_balance_file"/>
-                    </group>
-                    <!-- Partner Balance Selected -->
-                    <group attrs="{'invisible': [('mode', 'not in', 'partner_balance')] }">
-                        <h3 colspan="4">Importación de Saldos de Partners</h3>
-                        <field name="partner_balance_journal_id" attrs="{'required': [('mode', '=', 'partner_balance')] }" />
-                        <field name="partner_balance_type" attrs="{'required': [('mode', '=', 'partner_balance')] }" />
-                        <br/>
-                        <a class="btn btn-link" colspan="4" attrs="{'required': [('mode', '=', 'partner_balance')] }" href="/account_balance_import/static/xls/partner_balance.xls" role="button">
-                            <span class="fa fa-download" title="download"></span>
-                            Descargar Plantilla de Importación de Saldos de Partners
-                        </a>
-                        <br/>
-                        <field name="partner_balance_file" attrs="{'required': [('mode', '=', 'partner_balance')] }"/>
-                    </group>
-                </group>
+                </sheet>
                 <footer>
                     <button type="object" name="check_balance_import_xls" class="btn btn-primary" attrs="{'invisible': [('mode', 'not in', 'check_balance')]}">Importar Cheques</button>
                     <button type="object" name="account_balance_import_xls" class="btn btn-primary" attrs="{'invisible': [('mode', 'not in', 'account_balance')] }">Importar Saldos Contables</button>

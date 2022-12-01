@@ -15,7 +15,7 @@ class GenerateXLS(http.Controller):
         """
         # Fetch accounts
         accounts = request.env["account.account"].search([
-            ("user_type_id.type", "not in", ["receivable", "payable"]),
+            ("account_type", "not in", ["receivable", "payable"]),
             ("company_id", "=", company_id)
         ]).sorted().read(["code", "name"])
         # Create workbook
