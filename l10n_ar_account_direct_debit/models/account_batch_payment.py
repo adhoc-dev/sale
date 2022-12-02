@@ -5,6 +5,7 @@ from datetime import datetime
 from odoo import models, fields, api
 
 from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 
 class AccountBatchPayment(models.Model):
@@ -199,10 +200,18 @@ class AccountBatchPayment(models.Model):
 
             # tipo de cuenta (por ahora consideramos que todos son CBU sin importar el banco)
             # (3 - Cta. Cte. ,  4 - Caja de Ahorros para cuentas de Banco Macro - Bansud. Para cuentas de otros bancos no informar)
-            content += ' '
-
-            # cuenta bancaria del adherente
-            content += '%015d' % int(rec.direct_debit_mandate_id.partner_bank_id.acc_number[9:])
+            if rec.direct_debit_mandate_id.partner_bank_id.acc_number[:3] == '285':
+                # tipo de cuenta Macro
+                content += rec.direct_debit_mandate_id.partner_bank_id.acc_number[8]
+                # cuenta bancaria del adherente para Macro
+                content += rec.direct_debit_mandate_id.partner_bank_id.acc_number[8]
+                content += rec.direct_debit_mandate_id.partner_bank_id.acc_number[4:7]
+                content += rec.direct_debit_mandate_id.partner_bank_id.acc_number[10:21]
+            else:
+                # tipo de cuenta
+                content += ' '
+                # cuenta bancaria del adherente
+                content += '%015d' % int(rec.direct_debit_mandate_id.partner_bank_id.acc_number[8:])
 
             # identificación del adherente
             content += rec.partner_id.name[:22].zfill(22)
@@ -292,7 +301,7 @@ class AccountBatchPayment(models.Model):
             content += '01'
 
             # importe
-            content += ('%012.2f' % abs(self.amount)).replace('.','')
+            content += ('%012.2f' % abs(rec.amount)).replace('.','')
 
             # periodo
             content += self.periodo
@@ -345,7 +354,7 @@ class AccountBatchPayment(models.Model):
         # marca fin de registro
         content += '*'
 
-        content += '\n'
+        content += '\r\n'
 
         mandates_already_used = self.env['account.payment'].search([
             ('batch_payment_id.id', '!=', self.id),
@@ -376,18 +385,19 @@ class AccountBatchPayment(models.Model):
             content += ('%016.2f' % rec.amount).replace('.', '')
 
             # identificador del débito (lo tiene que consultar jjs con el cliente)
-            content += '%05d' % int(rec.partner_id.ref)
+            content +=  ('%05d' % int(rec.direct_debit_mandate_id.id))[-5:]
             content += ' '*10
 
             # si es la primera vez que se debita con la tarjeta pasar "E", si no " "
-            content += ' ' if rec.direct_debit_mandate_id in mandates_already_used else 'E'
+            #content += ' ' if rec.direct_debit_mandate_id in mandates_already_used else 'E'
+            content += 'E'
 
             # espacios
             content += ' '*28
 
             # marca de fin *
             content += '*'
-            content += '\n'
+            content += '\r\n'
 
         # PIE
         # constante
@@ -420,11 +430,12 @@ class AccountBatchPayment(models.Model):
         content += '*'
 
         # caracter de control (1 enter)
-        content += '\n'
+        content += '\r\n'
 
         return content
 
     def _generate_export_file(self):
+        visa = False
         if not self.direct_debit_format:
             return super()._generate_export_file()
         if self.direct_debit_format == 'cbu_galicia':
@@ -433,11 +444,15 @@ class AccountBatchPayment(models.Model):
             content = self._macro_cbu()
         elif self.direct_debit_format == 'master_credito':
             content = self._master_credito_txt()
-        elif self.direct_debit_format == 'visa_credito' or self.direct_debit_format == 'visa_debito':
+        elif self.direct_debit_format == 'visa_credito':
             content = self._visa_txt()
+            visa = 'C'
+        elif self.direct_debit_format == 'visa_debito':
+            content = self._visa_txt()
+            visa = 'D'
         return {
             'file': base64.encodebytes(content.encode('UTF-8')),
-            'filename': "Archivo Débito Automático-" + self.journal_id.code + "-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".txt",
+            'filename': f"DEBLIQ{visa}.txt" if visa else "Archivo Débito Automático-" + self.journal_id.code + "-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".txt",
         }
 
     def _get_methods_generating_files(self):
