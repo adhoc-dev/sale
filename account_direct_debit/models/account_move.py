@@ -51,11 +51,13 @@ class AccountMove(models.Model):
                     'ref': rec.ref or rec.name,
                     'partner_type': 'customer' if rec.move_type == 'out_invoice' else 'supplier',
                     'partner_id': rec.partner_id.commercial_partner_id.id,
-                    'date': rec.invoice_date_due or rec.invoice_date
+                    'date': rec.invoice_date_due or rec.invoice_date,
+                    'asset_remaining_value': 0.0,
+                    'asset_depreciated_value': 0.0,
                 })
             payment.action_post()
             (rec.line_ids + payment.line_ids).filtered_domain([
                 ('parent_state', '=', 'posted'),
-                ('account_internal_type', 'in', ('receivable', 'payable')),
+                ('account_type', 'in', ('asset_receivable', 'liability_payable')),
                 ('reconciled', '=', False),
             ]).reconcile()

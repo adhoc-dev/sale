@@ -33,7 +33,7 @@ class SDDMandate(models.Model):
         help="Company for whose invoices the mandate can be used.")
     paid_invoice_ids = fields.One2many(
         'account.move', 'direct_debit_mandate_id', string='Invoices Paid', readonly=True,
-        help="Invoices paid using this mandate.")
+        help="Invoices paid using this mandate.", domain=[('payment_state','in', ['paid', 'in_payment'])])
     journal_id = fields.Many2one(
         'account.journal', string='Journal', check_company=True,
         readonly=True, states={'draft': [('readonly', False)]},
