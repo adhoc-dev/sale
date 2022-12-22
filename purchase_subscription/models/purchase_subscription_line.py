@@ -12,6 +12,7 @@ _logger = logging.getLogger(__name__)
 class PurchaseSubscriptionLine(models.Model):
     _name = "purchase.subscription.line"
     _description = "Purchase Subscription Line"
+    _inherit = ["analytic.mixin"]
 
     purchase_subscription_id = fields.Many2one(
         'purchase.subscription',

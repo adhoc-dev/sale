@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 class PurchaseSubscription(models.Model):
     _name = "purchase.subscription"
     _description = "Purchase Subscription"
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'analytic.mixin']
     _check_company_auto= True
 
     name = fields.Char(
@@ -44,11 +44,6 @@ class PurchaseSubscription(models.Model):
         default=lambda s: s.env['res.company']._company_default_get(),
         required=True,
     )
-    tag_ids = fields.Many2many(
-        'account.analytic.tag',
-        string='Tags',
-        check_company=True,
-    )
     recurring_invoice_line_ids = fields.One2many(
         'purchase.subscription.line',
         'purchase_subscription_id',
@@ -72,11 +67,6 @@ class PurchaseSubscription(models.Model):
         tracking=True,
         copy=False,
         default='draft',
-    )
-    analytic_account_id = fields.Many2one(
-        'account.analytic.account',
-        'Analytic Account',
-        check_company=True,
     )
     date_start = fields.Date(
         default=fields.Date.today,
@@ -163,14 +153,15 @@ class PurchaseSubscription(models.Model):
         self._recurring_create_invoice()
         return self.action_subscription_invoice()
 
-    @api.model
-    def create(self, vals):
-        if not vals.get('code', False):
-            vals['code'] = self.env['ir.sequence'].next_by_code(
-                'purchase.subscription') or 'New'
-        if vals.get('name', 'New') == 'New':
-            vals['name'] = vals['code']
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('code', False):
+                vals['code'] = self.env['ir.sequence'].next_by_code(
+                    'purchase.subscription') or 'New'
+            if vals.get('name', 'New') == 'New':
+                vals['name'] = vals['code']
+        return super().create(vals_list)
 
     def _prepare_invoice_data(self):
         self.ensure_one()
@@ -234,7 +225,7 @@ class PurchaseSubscription(models.Model):
         return {
             'name': line.name,
             'account_id': account_id,
-            'analytic_account_id': line.purchase_subscription_id.analytic_account_id.id,
+            'analytic_distribution': line.analytic_distribution,
             'purchase_subscription_id': line.purchase_subscription_id.id,
             'price_unit': line.price_unit or 0.0,
             'discount': line.discount,
@@ -242,8 +233,6 @@ class PurchaseSubscription(models.Model):
             'product_uom_id': line.uom_id.id,
             'product_id': line.product_id.id,
             'tax_ids': [(6, 0, tax.ids)],
-            'analytic_tag_ids': [
-                (6, 0, line.purchase_subscription_id.tag_ids.ids)]
         }
 
     def _prepare_invoice_lines(self, fiscal_position):

@@ -116,7 +116,7 @@ msgid "Activity Type Icon"
 msgstr ""
 
 #. module: purchase_subscription
-#: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__analytic_account_id
+#: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__analytic_distribution
 msgid "Analytic Account"
 msgstr "Cuenta Analítica"
 
@@ -688,11 +688,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:purchase_subscription.view_purchase_subscription_tree
 msgid "Supplier"
 msgstr "Proveedor"
-
-#. module: purchase_subscription
-#: model:ir.model.fields,field_description:purchase_subscription.field_purchase_subscription__tag_ids
-msgid "Tags"
-msgstr "Etiquetas"
 
 #. module: purchase_subscription
 #: model_terms:ir.ui.view,arch_db:purchase_subscription.view_purchase_subscription_form

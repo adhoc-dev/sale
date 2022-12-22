@@ -52,7 +52,6 @@
                     <button name="set_close" string="Close Subscription" type="object" attrs="{'invisible': [('state','in',['draft','close'])]}"/>
                     <button name="set_cancel" string="Cancel Subscription" type="object" attrs="{'invisible': [('state','in',['cancel','close'])]}"/>
                     <field name="state" widget="statusbar"/>
-
                 </header>
                 <sheet string="Subscription">
                     <div class="oe_button_box" name="button_box" attrs="{'invisible': [('invoice_count','=',0)]}">
@@ -71,7 +70,7 @@
                             <field name="code"/>
                             <field name="currency_id" />
                             <label for="recurring_next_date" string="Date of Next Invoice"/>
-                            <div>
+                            <div class="o_row">
                                 <field name="recurring_next_date"/>
                                 <button string="&#8658; Generate Invoice" class="oe_link" name="recurring_invoice" type="object"/>
                             </div>
@@ -83,6 +82,7 @@
                                 <field name="recurring_rule_type" class="oe_inline"/>
                             </div>
                             <field name="manager_id"/>
+                            <field name="company_id" invisible="1"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="date_start"/>
                             <field name="date"/>
@@ -111,8 +111,12 @@
                         </page>
                         <page string="Settings" id="settings">
                             <group>
-                                <field name="tag_ids" widget="many2many_tags"/>
-                                <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
+                                <field
+                                    name="analytic_distribution"
+                                    widget="analytic_distribution"
+                                    options="{'product_field': 'product_id', 'business_domain': 'purchase_subscription_line'}"
+                                    groups="analytic.group_analytic_accounting"
+                                />
                             </group>
                             <div name="description">
                                 <field name="description" placeholder="Terms and Conditions"/>
