@@ -31,11 +31,14 @@ class HelpdeskTeam(models.Model):
 
     @api.constrains('assign_method', 'member_ids')
     def _check_member_assignation(self):
-        if not self.member_ids and self.assign_method in [
-                'randomly', 'balanced']:
-            raise ValidationError(_(
-                "You must have team members assigned to change the "
-                "assignation method."))
+        # TODO we should remove this constraint and keep this fields required by view as it is on odoo standard.
+        # maybe we can also remove this new assign_method options?
+        for rec in self:
+            if rec.auto_assignment and not rec.member_ids and rec.assign_method in [
+                    'randomly', 'balanced']:
+                raise ValidationError(_(
+                    "You must have team members assigned to change the "
+                    "assignation method."))
 
     def write(self, vals):
         """ If use_helpdesk_timesheet then set the related project to
