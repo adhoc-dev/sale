@@ -1,6 +1,6 @@
 {
     'name': "Account Online Sync Argentina",
-    'version': '15.0.1.5.0',
+    'version': "16.0.1.0.0",
     'category': 'Accounting/Accounting',
     'sequence': 14,
     'author': 'ADHOC SA',
@@ -22,5 +22,5 @@
         "wizards/account_link_journal_views.xml",
     ],
     'auto_install': True,
-    'installable': False,
+    'installable': True,
 }

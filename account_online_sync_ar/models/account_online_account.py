@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from odoo import _, api, fields, models
 from datetime import datetime
 from odoo.tools.safe_eval import safe_eval
@@ -26,7 +25,7 @@ class PaybookAccount(models.Model):
             return super()._retrieve_transactions()
 
         transactions = self.paybook_get_transactions()
-        return self.env['account.bank.statement']._online_sync_bank_statement(transactions, self)
+        return self.env['account.bank.statement.line']._online_sync_bank_statement(transactions, self)
 
     def write(self, values):
         """ Hacemos track en el chatter del provider de cuando un usuario modifica la fecha de ultima sincronizacion
@@ -113,7 +112,7 @@ class PaybookAccount(models.Model):
                 'transaction_type': transaction_type,
                 'narration': '' if not tx_update_dt else
                 transaction_type + ' ' + datetime.fromtimestamp(tx_update_dt).date().strftime('%Y/%m/%d'),
-                'account_online_journal_id': self.id,
+                'online_account_id': self.id,
             }
 
             extra_data = trx.get('extra')

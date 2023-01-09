@@ -23,7 +23,7 @@
                 <div attrs="{'invisible': [('provider_type', '!=', 'paybook')]}" divs="base.group_no_one">
                     <button name="action_paybook_update_state" string="Check Status" icon="fa-plus" type="object" class="oe_link"/>
                     <button name="action_paybook_force_sync" string="Force Sync" icon="fa-refresh" type="object" class="oe_link"/>
-                    <button name="action_paybook_update_transactions" string="Update/Fix" icon="fa-wrench" type="object" class="oe_link" help="Update refreshed transactions, delete and disabled ones"/>
+                    <button name="action_paybook_update_transactions" string="Update/Fix" icon="fa-wrench" type="object" class="oe_link" title="Update refreshed transactions, delete and disabled ones"/>
                     (Last <field name="paybook_refresh_days"/> days)
                     <button name="online_account_delete_credentials" string="Delete Online Credentials" confirm="Esta acción no se puede deshacer. Estas seguro que quieres aplicarla? Esto afectara a cualquier otra base de datos usando la misma credencial" icon="fa-trash" type="object" class="oe_link"/>
                 </div>

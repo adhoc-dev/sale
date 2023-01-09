@@ -7,7 +7,7 @@ class AccountBankStatementLine(models.Model):
     _inherit = 'account.bank.statement.line'
 
     def unlink(self):
-        """ overwrite in order to save history information in the related account.online.journal."""
+        """ Overwrite in order to save history information in the related account.online.journal."""
         data = {}
         online_txs = self.filtered(lambda x: x.online_transaction_identifier)
         for account_online_journal in online_txs.mapped('online_account_id'):
@@ -18,7 +18,7 @@ class AccountBankStatementLine(models.Model):
         return res
 
     def register_deleted_transactions(self, data):
-        """ receive the data of the deleted transactions grouped by account online journal.
+        """ Receive the data of the deleted transactions grouped by account online journal.
         Write in the account.onlint.jounal the information about the deleted transaction (id, who did it, when) """
         for (account_online_journal, transactions) in data.items():
             dicc = safe_eval(account_online_journal.transactions_blacklist)

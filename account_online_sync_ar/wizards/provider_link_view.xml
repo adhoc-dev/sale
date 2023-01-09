@@ -6,14 +6,12 @@
         <field name="model">provider.link</field>
         <field name="arch" type="xml">
             <form string="Seleccione Proveedor de Sincronización Bancaria">
-                <group>
-                    <field name="details" readonly="1" nolabel="1"/>
-                    <newline/>
-                    <div>
-                        <field name="ok_terms" nolabel="1"/>
-                        <label for="ok_terms"/>
-                    </div>
-                </group>
+                <field name="details" readonly="1" nolabel="1"/>
+                <newline/>
+                <div>
+                    <field name="ok_terms" nolabel="1"/>
+                    <label for="ok_terms"/>
+                </div>
                 <footer>
                     <button name="action_open_saltedge" string="Saltedge" type="object" class="oe_highlight"/>
                     <button name="action_open_paybook" string="Syncfy" type="object" class="oe_highlight"/>
