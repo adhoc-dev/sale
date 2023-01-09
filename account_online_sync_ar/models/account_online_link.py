@@ -40,12 +40,18 @@ class AccountOnlineLink(models.Model):
     action_required = fields.Boolean(readonly=True, help='True if user needs to take action by updating account', default=False)
     provider_identifier = fields.Char(readonly=True, help='ID of the banking institution in third party server used for debugging purpose')
 
+    def check_client_id(self):
+        if not self.client_id:
+            raise UserError(_(
+                'Usted no puede ejecutar esta accion porque no existe la credencial'))
+
     def _compute_paybook_refresh_days(self):
         self.paybook_refresh_days = int(self.env['ir.config_parameter'].sudo().get_param('account_online_sync_ar.update_last_days', "7"))
 
     def action_paybook_update_transactions(self):
         """ This method will review if there is refreshed transactions and will update its values on Odoo """
         self.ensure_one()
+        self.check_client_id()
         transactions = []
         fix_days = int(self.env['ir.config_parameter'].sudo().get_param('account_online_sync_ar.update_last_days', "7"))
         for account in self.account_online_account_ids:
@@ -181,6 +187,7 @@ class AccountOnlineLink(models.Model):
         """ This method will try to make a request to syncfy to force the update of the available transactions in order
         to try to sync new transactions from the bank """
         self.ensure_one()
+        self.check_client_id()
         id_credential = self.client_id
         _logger.info('Syncfy Try force credential sync')
         response = self._paybook_fetch('GET', '/credentials/' + id_credential, response_status=True, raise_status=False)
@@ -213,6 +220,7 @@ class AccountOnlineLink(models.Model):
 
         # Get Account Data and create accounts in Odoo
         self.ensure_one()
+        self.check_client_id()
         account_values = self._get_account_values()
         if account_values:
             self.sudo().write({'account_online_account_ids': account_values})
@@ -224,6 +232,7 @@ class AccountOnlineLink(models.Model):
 
     def action_paybook_update_state(self):
         self.ensure_one()
+        self.check_client_id()
         values = self._paybook_get_credentials(self.company_id, self.client_id)
         self.write(values)
         self.show_result({'status': self.state, 'message': _("Actualizado estado de credencial: ") + self.message})
@@ -510,6 +519,7 @@ class AccountOnlineLink(models.Model):
         if self.provider_type != 'paybook':
             return super()._fetch_transactions(refresh=refresh, accounts=accounts)
 
+        self.check_client_id()
         bank_statement_line_ids = self.env['account.bank.statement.line']
         acc = accounts or self.account_online_account_ids
         for online_account in acc:
