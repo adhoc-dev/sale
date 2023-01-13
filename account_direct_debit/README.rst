@@ -18,6 +18,20 @@ TODO: si odoo permite que se agregue varias veces mismo metodo de pago ademas de
 
 La otra alternativa sería generar un payment method distinto para cada tipo de debito
 
+Permite manejar medios de pagos directos dentro del flujo de Odoo, a través de contratos de débito directo y generación de lotes de pago.
+
+1. Creación de Método de Pago : Direct Debit
+
+2. Campo "Collection Date" en Pago en Lote. Fecha de cobro que se va a detallar en el TXT 
+
+3. Campo "Format" en Journal : Especifica el TXT a generar (Ej. CBU Galica, CBU Macro,etc)
+
+4. Direct Debit Mandate: Creación de contratos de débitos directo. Tomando Customer (datos de contacto); Journal (diario) -> Si el diario tiene como método de pago entrante "direct debit" permite ser elegido; y si el diario tiene configurado un formato de débito directo (ej: CBU Galicia) permite poner el CBU que toma del dato del Contacto -> Cuentas Bancarias.
+
+5.  Campo "Direct Debit Mandate" en Factura para asociar contrato de débito directo cómo medio de pago directo.
+
+6. Botón "Cancel" en Pago Por Lote (solo en estado "Validado"): Se utliza para pagos rechazados.  El recibo pasa a estado cancelado, se elimina del lote de pagos y la factura pasa a estado no pagada.
+
 
 Installation
 ============

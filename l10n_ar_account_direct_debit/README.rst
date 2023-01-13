@@ -14,28 +14,41 @@
 Direct Debits for Argentina
 ===========================
 
-#. TODO
+1. Generación de TXT para cobranza de débito directo del BANCO GALICIA; MACRO ; MASTER CRÉDITO ; VISA DÉBITO Y CRÉDITO
+
+2. Generación de contratos de débito directo "Direct Debit Mandates"  
+
+3.  Campo "Direct Debit" en Journal para configurar banco y Campo "Merchant Number" en Journal para configurar  número de comercio
+
 
 Installation
 ============
 
 To install this module, you need to:
 
-#. Just install
+1. Instalar l10n_ar_account_direct_debit
 
 Configuration
 =============
 
 To configure this module, you need to:
 
-#. Don't need any configuration
+1. Configurar Diario de Débito Directo Galicia con método de pago "Direct Debit" eligiendo BANCO GALICIA y "Merchant Number" según Nro de Comercio
 
 Usage
 =====
 
 To use this module, you need to:
 
-#. Just use it.
+1. Configurar CBU en contacto
+
+2. Crear contrato de débito directo
+
+3. Generar factura y pago con direct debit mandate
+
+4. Generar Pago por Lote
+
+5. Exportar TXT
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
