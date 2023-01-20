@@ -1,0 +1,121 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* helpdesk_timesheet_ux
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-01-13 13:48+0000\n"
+"PO-Revision-Date: 2023-01-13 13:48+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#. module: helpdesk_timesheet_ux
+#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet_ux.view_project_kanban
+msgid "<span class=\"o_label\"><span title=\"Tickets\" class=\"fa fa-life-ring\"/></span>"
+msgstr ""
+
+#. module: helpdesk_timesheet_ux
+#: model:ir.model.fields,field_description:helpdesk_timesheet_ux.field_helpdesk_team__algolia_search
+#: model:ir.model.fields,field_description:helpdesk_timesheet_ux.field_helpdesk_ticket__algolia_search
+#: model:ir.model.fields,field_description:helpdesk_timesheet_ux.field_project_project__algolia_search
+msgid "Algolia Search"
+msgstr ""
+
+#. module: helpdesk_timesheet_ux
+#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet_ux.edit_project
+msgid "Allow ticket on this project"
+msgstr ""
+
+#. module: helpdesk_timesheet_ux
+#: model:ir.model.fields,field_description:helpdesk_timesheet_ux.field_project_project__allow_tickets
+msgid "Allow tickets"
+msgstr ""
+
+#. module: helpdesk_timesheet_ux
+#: model:ir.model.fields,field_description:helpdesk_timesheet_ux.field_helpdesk_team__assign_method
+msgid "Assignment Method"
+msgstr "Método de asignación"
+
+#. module: helpdesk_timesheet_ux
+#: model:ir.model,name:helpdesk_timesheet_ux.model_helpdesk_team
+msgid "Helpdesk Team"
+msgstr "Equipo de servicio de asistencia"
+
+#. module: helpdesk_timesheet_ux
+#: model:ir.model,name:helpdesk_timesheet_ux.model_helpdesk_ticket
+msgid "Helpdesk Ticket"
+msgstr "Ticket de servicio de asistencia"
+
+#. module: helpdesk_timesheet_ux
+#: model:ir.model.fields,help:helpdesk_timesheet_ux.field_helpdesk_team__assign_method
+msgid ""
+"New tickets will automatically be assigned to the team members that are "
+"available, according to their working hours and their time off."
+msgstr ""
+
+#. module: helpdesk_timesheet_ux
+#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet_ux.portal_my_task
+msgid "Nº de Ticket"
+msgstr ""
+
+#. module: helpdesk_timesheet_ux
+#: model:ir.model,name:helpdesk_timesheet_ux.model_project_project
+#: model:ir.model.fields,field_description:helpdesk_timesheet_ux.field_helpdesk_ticket__project_id
+msgid "Project"
+msgstr "Proyecto"
+
+#. module: helpdesk_timesheet_ux
+#: model:ir.model.fields.selection,name:helpdesk_timesheet_ux.selection__helpdesk_team__assign_method__project_responsable
+msgid "Project Responsable"
+msgstr ""
+
+#. module: helpdesk_timesheet_ux
+#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet_ux.helpdesk_team_view_form
+msgid "Select Specific User"
+msgstr ""
+
+#. module: helpdesk_timesheet_ux
+#: model:ir.model.fields.selection,name:helpdesk_timesheet_ux.selection__helpdesk_team__assign_method__specific_user
+msgid "Specific User"
+msgstr ""
+
+#. module: helpdesk_timesheet_ux
+#: model:ir.model.fields,field_description:helpdesk_timesheet_ux.field_helpdesk_team__user_id
+msgid "Specific user"
+msgstr ""
+
+#. module: helpdesk_timesheet_ux
+#: model:ir.model.fields,field_description:helpdesk_timesheet_ux.field_helpdesk_team__member_ids
+msgid "Team Members"
+msgstr ""
+
+#. module: helpdesk_timesheet_ux
+#: model:ir.model.fields.selection,name:helpdesk_timesheet_ux.selection__helpdesk_team__assign_method__unassigned
+msgid "Unassigned"
+msgstr ""
+
+#. module: helpdesk_timesheet_ux
+#. odoo-python
+#: code:addons/helpdesk_timesheet_ux/models/project_project.py:0
+#, python-format
+msgid ""
+"You can not close a project with active tickets, we consider active ticket "
+"the one in stages without option 'folded' (ticket IDs %s)"
+msgstr ""
+
+#. module: helpdesk_timesheet_ux
+#. odoo-python
+#: code:addons/helpdesk_timesheet_ux/models/helpdesk_team.py:0
+#, python-format
+msgid "You must have team members assigned to change the assignation method."
+msgstr ""

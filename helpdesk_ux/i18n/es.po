@@ -3,21 +3,26 @@
 # 	* helpdesk_ux
 # 
 # Translators:
-# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-25 13:09+0000\n"
-"PO-Revision-Date: 2022-04-19 13:55+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022\n"
-"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/133229/es/)\n"
+"POT-Creation-Date: 2023-01-13 13:48+0000\n"
+"PO-Revision-Date: 2023-01-13 13:48+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#. module: helpdesk_ux
+#: model:ir.model.fields,field_description:helpdesk_ux.field_helpdesk_ticket__algolia_search
+msgid "Algolia Search"
+msgstr ""
 
 #. module: helpdesk_ux
 #: model:ir.model.fields,field_description:helpdesk_ux.field_helpdesk_ticket__dont_send_stage_email
@@ -35,6 +40,7 @@ msgid "Helpdesk Ticket"
 msgstr "Ticket de servicio de asistencia"
 
 #. module: helpdesk_ux
+#. odoo-python
 #: code:addons/helpdesk_ux/controllers/portal.py:0
 #, python-format
 msgid "Priority"

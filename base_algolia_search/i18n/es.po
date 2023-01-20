@@ -3,16 +3,16 @@
 # 	* base_algolia_search
 # 
 # Translators:
-# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-08 20:12+0000\n"
-"PO-Revision-Date: 2022-06-08 20:12+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022\n"
-"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/133229/es/)\n"
+"POT-Creation-Date: 2023-01-13 14:02+0000\n"
+"PO-Revision-Date: 2023-01-13 14:02+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -65,7 +65,6 @@ msgstr ""
 #. module: base_algolia_search
 #: model:ir.actions.server,name:base_algolia_search.cron_algolia_index_sync_ir_actions_server
 #: model:ir.cron,cron_name:base_algolia_search.cron_algolia_index_sync
-#: model:ir.cron,name:base_algolia_search.cron_algolia_index_sync
 msgid "Algolia Index Sync"
 msgstr ""
 
@@ -93,7 +92,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:base_algolia_search.field_base_module_upgrade__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_base_partner_merge_automatic_wizard__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_base_partner_merge_line__algolia_search
-#: model:ir.model.fields,field_description:base_algolia_search.field_base_update_translations__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_change_password_own__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_change_password_user__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_change_password_wizard__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_decimal_precision__algolia_search
@@ -111,6 +110,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_asset__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_attachment__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_autovacuum__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_binary__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_config_parameter__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_cron__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_cron_trigger__algolia_search
@@ -158,11 +158,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_relative__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_selection__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_text__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_ir_qweb_field_time__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_rule__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_sequence__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_sequence_date_range__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_server_object_lines__algolia_search
-#: model:ir.model.fields,field_description:base_algolia_search.field_ir_translation__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_ui_menu__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_ui_view__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_ir_ui_view_custom__algolia_search
@@ -190,6 +190,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:base_algolia_search.field_res_users_apikeys__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_res_users_apikeys_description__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_res_users_apikeys_show__algolia_search
+#: model:ir.model.fields,field_description:base_algolia_search.field_res_users_deletion__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_res_users_identitycheck__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_res_users_log__algolia_search
 #: model:ir.model.fields,field_description:base_algolia_search.field_reset_view_arch_wizard__algolia_search
@@ -209,11 +210,12 @@ msgid "Algolia attrbitue that stores ID"
 msgstr ""
 
 #. module: base_algolia_search
-#: model:ir.model.constraint,message:base_algolia_search.constraint_algolia_field_algolia_field_uniqe
+#: model:ir.model.constraint,message:base_algolia_search.constraint_algolia_field_algolia_field_unique
 msgid "Algolia field must be unique per model!"
 msgstr ""
 
 #. module: base_algolia_search
+#. odoo-python
 #: code:addons/base_algolia_search/models/ir_model.py:0
 #, python-format
 msgid "Algolia key or appId notconfigured"
@@ -279,6 +281,7 @@ msgid "If you disable cron you should sync data by an automation or manually"
 msgstr ""
 
 #. module: base_algolia_search
+#. odoo-python
 #: code:addons/base_algolia_search/models/ir_model.py:0
 #, python-format
 msgid ""
@@ -327,6 +330,7 @@ msgid "Models"
 msgstr "Modelos"
 
 #. module: base_algolia_search
+#. odoo-python
 #: code:addons/base_algolia_search/models/ir_model.py:0
 #, python-format
 msgid "No pudimos conectarnos a Algolia. Esto es lo que recibimos: %s"
@@ -402,6 +406,7 @@ msgid "Use on name search"
 msgstr ""
 
 #. module: base_algolia_search
+#. odoo-python
 #: code:addons/base_algolia_search/models/ir_model.py:0
 #, python-format
 msgid ""

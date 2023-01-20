@@ -3,21 +3,21 @@
 # 	* helpdesk_solutions
 # 
 # Translators:
-# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-25 13:08+0000\n"
-"PO-Revision-Date: 2022-04-19 13:55+0000\n"
-"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2022\n"
-"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/133229/es/)\n"
+"POT-Creation-Date: 2023-01-13 13:47+0000\n"
+"PO-Revision-Date: 2023-01-13 13:47+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: helpdesk_solutions
 #: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_needaction
@@ -70,6 +70,15 @@ msgid "Add ticket description..."
 msgstr ""
 
 #. module: helpdesk_solutions
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__algolia_search
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_faq_category__algolia_search
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag__algolia_search
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_stage__algolia_search
+#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_ticket__algolia_search
+msgid "Algolia Search"
+msgstr ""
+
+#. module: helpdesk_solutions
 #: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_form_view
 #: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_search_view
 msgid "Archived"
@@ -85,6 +94,11 @@ msgstr "Conteo de archivos adjuntos"
 #: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag__color
 msgid "Color Index"
 msgstr "Índice de Color"
+
+#. module: helpdesk_solutions
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_ticket_view_form
+msgid "Copy Solution"
+msgstr ""
 
 #. module: helpdesk_solutions
 #: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__create_uid
@@ -114,11 +128,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_ticket_view_form
 msgid "Description"
 msgstr "Descripción"
-
-#. module: helpdesk_solutions
-#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_ticket__description_copy
-msgid "Description (copy)"
-msgstr ""
 
 #. module: helpdesk_solutions
 #: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__display_name
@@ -195,7 +204,7 @@ msgstr ""
 #. module: helpdesk_solutions
 #: model:ir.model,name:helpdesk_solutions.model_helpdesk_stage
 msgid "Helpdesk Stage"
-msgstr "Etapa de servicio de asistencia"
+msgstr "Etapas de asistencias"
 
 #. module: helpdesk_solutions
 #: model:ir.model,name:helpdesk_solutions.model_helpdesk_ticket
@@ -207,7 +216,7 @@ msgstr "Ticket de servicio de asistencia"
 #: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_faq_category__id
 #: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution_tag__id
 msgid "ID"
-msgstr "ID"
+msgstr "ID (identificación)"
 
 #. module: helpdesk_solutions
 #: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__activity_exception_icon
@@ -221,7 +230,6 @@ msgstr ""
 
 #. module: helpdesk_solutions
 #: model:ir.model.fields,help:helpdesk_solutions.field_helpdesk_solution__message_needaction
-#: model:ir.model.fields,help:helpdesk_solutions.field_helpdesk_solution__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "Si está marcado, hay nuevos mensajes que requieren su atención."
 
@@ -239,21 +247,9 @@ msgid ""
 msgstr ""
 
 #. module: helpdesk_solutions
-#: model:ir.model.fields,help:helpdesk_solutions.field_helpdesk_stage__show_solution_on_portal
-msgid ""
-"If you set it to true, then tickets will show the solution inportal while "
-"they are at this stage."
-msgstr ""
-
-#. module: helpdesk_solutions
 #: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_ticket_view_form
 msgid "Internal Description"
 msgstr "Descripción Interna"
-
-#. module: helpdesk_solutions
-#: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_ticket_view_form
-msgid "Internal Description (*)"
-msgstr ""
 
 #. module: helpdesk_solutions
 #: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_solution_form_view
@@ -374,11 +370,6 @@ msgid "Number of messages with delivery error"
 msgstr "Número de mensajes con error de envío"
 
 #. module: helpdesk_solutions
-#: model:ir.model.fields,help:helpdesk_solutions.field_helpdesk_solution__message_unread_counter
-msgid "Number of unread messages"
-msgstr "Número de mensajes sin leer"
-
-#. module: helpdesk_solutions
 #: model_terms:ir.ui.view,arch_db:helpdesk_solutions.helpdesk_ticket_view_form
 msgid ""
 "Overwrite the actual solution with the costumer solution of the linked "
@@ -410,11 +401,6 @@ msgstr "Descripción de Solución"
 #. module: helpdesk_solutions
 #: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_stage__solution_required
 msgid "Solution Required?"
-msgstr ""
-
-#. module: helpdesk_solutions
-#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_stage__show_solution_on_portal
-msgid "Solution at portal?"
 msgstr ""
 
 #. module: helpdesk_solutions
@@ -493,16 +479,6 @@ msgid "Type of the exception activity on record."
 msgstr ""
 
 #. module: helpdesk_solutions
-#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_unread
-msgid "Unread Messages"
-msgstr "Mensajes No Leídos"
-
-#. module: helpdesk_solutions
-#: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__message_unread_counter
-msgid "Unread Messages Counter"
-msgstr "Contador de mensajes no leídos"
-
-#. module: helpdesk_solutions
 #: model:ir.model.fields,field_description:helpdesk_solutions.field_helpdesk_solution__website_message_ids
 msgid "Website Messages"
 msgstr "Mensajes del sitio web"
@@ -513,6 +489,7 @@ msgid "Website communication history"
 msgstr "Historial de comunicación del sitio web"
 
 #. module: helpdesk_solutions
+#. odoo-python
 #: code:addons/helpdesk_solutions/models/helpdesk_ticket.py:0
 #, python-format
 msgid ""

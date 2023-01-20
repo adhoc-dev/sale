@@ -1,0 +1,128 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* helpdesk_solutions_project
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-01-13 13:48+0000\n"
+"PO-Revision-Date: 2023-01-13 13:47+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#. module: helpdesk_solutions_project
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions_project.project_task_view_form
+msgid "Add solution description..."
+msgstr "Agregar descripción de solución..."
+
+#. module: helpdesk_solutions_project
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions_project.project_task_view_form
+msgid "Add task internal description..."
+msgstr ""
+
+#. module: helpdesk_solutions_project
+#: model:ir.model.fields,field_description:helpdesk_solutions_project.field_helpdesk_solution__algolia_search
+#: model:ir.model.fields,field_description:helpdesk_solutions_project.field_project_task__algolia_search
+#: model:ir.model.fields,field_description:helpdesk_solutions_project.field_project_task_type__algolia_search
+msgid "Algolia Search"
+msgstr ""
+
+#. module: helpdesk_solutions_project
+#: model:ir.model,name:helpdesk_solutions_project.model_helpdesk_solution
+msgid "Helpdesk Solution"
+msgstr ""
+
+#. module: helpdesk_solutions_project
+#: model:ir.model.fields,help:helpdesk_solutions_project.field_project_task_type__solution_required
+msgid ""
+"If you set it to true, then tasks that has a contact and aremoved to this "
+"stage will require a solution."
+msgstr ""
+
+#. module: helpdesk_solutions_project
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions_project.project_task_view_form
+msgid "Internal Description"
+msgstr "Descripción Interna"
+
+#. module: helpdesk_solutions_project
+#: model_terms:ir.actions.act_window,help:helpdesk_solutions_project.project_task_action_main_tree
+msgid ""
+"Keep track of the progress of your tasks from creation to completion.<br>\n"
+"            Collaborate efficiently by chatting in real-time or via email."
+msgstr ""
+
+#. module: helpdesk_solutions_project
+#: model:ir.model.fields,field_description:helpdesk_solutions_project.field_project_task__helpdesk_solution_id
+msgid "Linked Solution"
+msgstr "Solución Vinculada"
+
+#. module: helpdesk_solutions_project
+#: model_terms:ir.actions.act_window,help:helpdesk_solutions_project.project_task_action_main_tree
+msgid "No tasks found. Let's create one!"
+msgstr ""
+
+#. module: helpdesk_solutions_project
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions_project.project_task_view_form
+msgid ""
+"Overwrite the actual solution with the costumer solution of the linked "
+"solution"
+msgstr ""
+
+#. module: helpdesk_solutions_project
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions_project.project_task_view_form
+msgid "Solution"
+msgstr "Solución"
+
+#. module: helpdesk_solutions_project
+#: model:ir.model.fields,field_description:helpdesk_solutions_project.field_project_task__solution_description
+msgid "Solution Description"
+msgstr "Descripción de Solución"
+
+#. module: helpdesk_solutions_project
+#: model:ir.model.fields,field_description:helpdesk_solutions_project.field_project_task_type__solution_required
+msgid "Solution Required?"
+msgstr ""
+
+#. module: helpdesk_solutions_project
+#: model:ir.model,name:helpdesk_solutions_project.model_project_task
+msgid "Task"
+msgstr "Tarea"
+
+#. module: helpdesk_solutions_project
+#: model:ir.model.fields,field_description:helpdesk_solutions_project.field_helpdesk_solution__task_count
+msgid "Task Count"
+msgstr ""
+
+#. module: helpdesk_solutions_project
+#: model:ir.model.fields,field_description:helpdesk_solutions_project.field_project_task__task_description
+msgid "Task Description"
+msgstr ""
+
+#. module: helpdesk_solutions_project
+#: model:ir.model,name:helpdesk_solutions_project.model_project_task_type
+msgid "Task Stage"
+msgstr "Etapa de la tarea"
+
+#. module: helpdesk_solutions_project
+#: model:ir.actions.act_window,name:helpdesk_solutions_project.project_task_action_main_tree
+#: model:ir.model.fields,field_description:helpdesk_solutions_project.field_helpdesk_solution__task_ids
+#: model_terms:ir.ui.view,arch_db:helpdesk_solutions_project.helpdesk_solution_form_view
+msgid "Tasks"
+msgstr ""
+
+#. module: helpdesk_solutions_project
+#. odoo-python
+#: code:addons/helpdesk_solutions_project/models/project_task.py:0
+#, python-format
+msgid ""
+"You need to complete solution description to change the stage. Rec ids: %s"
+msgstr ""

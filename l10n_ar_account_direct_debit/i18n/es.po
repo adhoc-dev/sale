@@ -1,0 +1,126 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_ar_account_direct_debit
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-01-13 13:49+0000\n"
+"PO-Revision-Date: 2023-01-13 13:49+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023\n"
+"Language-Team: Spanish (https://www.transifex.com/adhoc/teams/46451/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#. module: l10n_ar_account_direct_debit
+#. odoo-python
+#: code:addons/l10n_ar_account_direct_debit/models/account_direct_debit_mandate.py:0
+#, python-format
+msgid "A CBU account is requred for this mandate"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model:ir.model.fields,help:l10n_ar_account_direct_debit.field_account_direct_debit_mandate__partner_bank_id
+msgid "Account of the customer to collect payments from."
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model:ir.model.fields,field_description:l10n_ar_account_direct_debit.field_account_batch_payment__algolia_search
+#: model:ir.model.fields,field_description:l10n_ar_account_direct_debit.field_account_direct_debit_mandate__algolia_search
+#: model:ir.model.fields,field_description:l10n_ar_account_direct_debit.field_account_journal__algolia_search
+msgid "Algolia Search"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model:ir.model,name:l10n_ar_account_direct_debit.model_account_batch_payment
+msgid "Batch Payment"
+msgstr "Pago por lotes"
+
+#. module: l10n_ar_account_direct_debit
+#: model:ir.model.fields,field_description:l10n_ar_account_direct_debit.field_account_direct_debit_mandate__partner_bank_id
+msgid "CBU"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model:ir.model.fields.selection,name:l10n_ar_account_direct_debit.selection__account_journal__direct_debit_format__cbu_galicia
+msgid "CBU Galicia"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model:ir.model.fields.selection,name:l10n_ar_account_direct_debit.selection__account_journal__direct_debit_format__cbu_macro
+msgid "CBU Macro"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model:ir.model.fields,field_description:l10n_ar_account_direct_debit.field_account_direct_debit_mandate__credit_card_number
+msgid "Credit Card Number"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#. odoo-python
+#: code:addons/l10n_ar_account_direct_debit/models/account_direct_debit_mandate.py:0
+#, python-format
+msgid "Credit Card Number is required for this mandate"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model:ir.model.fields,field_description:l10n_ar_account_direct_debit.field_account_journal__direct_debit_format
+msgid "Direct Debit Format"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model:ir.model,name:l10n_ar_account_direct_debit.model_account_direct_debit_mandate
+msgid "Direct Debit Mandates"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model_terms:ir.ui.view,arch_db:l10n_ar_account_direct_debit.view_batch_payment_form_inherit
+msgid "Importe en pesos"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model:ir.model,name:l10n_ar_account_direct_debit.model_account_journal
+msgid "Journal"
+msgstr "Diario"
+
+#. module: l10n_ar_account_direct_debit
+#: model:ir.model.fields.selection,name:l10n_ar_account_direct_debit.selection__account_journal__direct_debit_format__master_credito
+msgid "Master Crédito"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model_terms:ir.ui.view,arch_db:l10n_ar_account_direct_debit.view_account_journal_form
+msgid "Merchant number"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model:ir.model.fields,field_description:l10n_ar_account_direct_debit.field_account_journal__direct_debit_merchant_number
+msgid "Número de comercio"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model:ir.model.fields,field_description:l10n_ar_account_direct_debit.field_account_batch_payment__periodo
+msgid "Periodo"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model_terms:ir.ui.view,arch_db:l10n_ar_account_direct_debit.view_batch_payment_form_inherit
+msgid "Total en pesos"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model:ir.model.fields.selection,name:l10n_ar_account_direct_debit.selection__account_journal__direct_debit_format__visa_credito
+msgid "VISA Crédito"
+msgstr ""
+
+#. module: l10n_ar_account_direct_debit
+#: model:ir.model.fields.selection,name:l10n_ar_account_direct_debit.selection__account_journal__direct_debit_format__visa_debito
+msgid "VISA Débito"
+msgstr ""
