@@ -1,6 +1,6 @@
 {
     'name': 'Direct Debits Management',
-    'version': "16.0.1.0.0",
+    'version': "16.0.1.1.0",
     'category': 'Accounting/Accounting',
     'sequence': 14,
     'summary': '',
@@ -11,6 +11,7 @@
     ],
     'depends': [
         'account_batch_payment',
+        'sale_subscription',
     ],
     'data': [
         'views/account_move_view.xml',

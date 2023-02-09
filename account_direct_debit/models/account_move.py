@@ -6,22 +6,12 @@ class AccountMove(models.Model):
 
     direct_debit_mandate_id = fields.Many2one(
         'account.direct_debit.mandate',
-        compute='_compute_direct_debit_mandate',
         store=True,
         readonly=False,
         ondelete='restrict',
         help='If configured, when posting the invoice a payment will be automatically created using '
         'this mandate')
 
-    @api.depends('partner_id')
-    def _compute_direct_debit_mandate(self):
-        for rec in self.filtered(lambda x: x.move_type == 'out_invoice'):
-            mandate = False
-            if rec.partner_id:
-                mandate = self.env['account.direct_debit.mandate'].search([
-                    ('partner_id.commercial_partner_id', '=', rec.partner_id.commercial_partner_id.id),
-                    ('state', '=', 'active')], limit=1)
-            rec.direct_debit_mandate_id = mandate
 
     def _post(self, soft=True):
         res = super()._post(soft=soft)
