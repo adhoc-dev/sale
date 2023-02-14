@@ -16,7 +16,7 @@ class AccountMove(models.Model):
     def _post(self, soft=True):
         res = super()._post(soft=soft)
         to_pay_moves = self.filtered(
-                lambda x: x.direct_debit_mandate_id and x.state == 'posted' and
+                lambda x: x.direct_debit_mandate_id.journal_id and x.state == 'posted' and
                 x.payment_state == 'not_paid' and x.move_type == 'out_invoice')
         to_pay_moves.direct_debit_payment()
         return res
