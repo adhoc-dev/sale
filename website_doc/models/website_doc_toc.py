@@ -53,7 +53,8 @@ class WebsiteDocToc(models.Model):
         auto_join=True,
     )
     parent_path = fields.Char(
-        index=True
+        index=True,
+        unaccent=False,
     )
     is_article = fields.Boolean(
         'Is Article?',
