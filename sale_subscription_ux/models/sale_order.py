@@ -37,6 +37,11 @@ class SaleOrder(models.Model):
         if self.id:
             super()._create_upsell_activity()
 
+    @api.model
+    def _cron_recurring_create_invoice(self):
+        return self.with_context(no_auto_post=True)._create_recurring_invoice(automatic=True)
+
+
 class SaleOrderLine(models.Model):
 
     _inherit = "sale.order.line"
