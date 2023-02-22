@@ -103,13 +103,7 @@ class AccountBalanceImport(models.TransientModel):
         """This method return the currency, if wasn't find any currency that match with the name in xls we return empty recordset"""
         other_currency = self.env["res.currency"]
         if currency:
-            domain = [
-                "|",
-                ("name", "=", currency),
-                ("l10n_ar_afip_code", "=", currency),
-            ]
-
-            other_currency = self.env["res.currency"].search(domain)
+            other_currency = self.env["res.currency"]._search_by_name(currency)
         return other_currency
 
     def account_balance_import_xls(self):

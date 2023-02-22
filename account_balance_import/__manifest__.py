@@ -1,6 +1,6 @@
 {
     'name': "Account Balance",
-    'version': "16.0.1.0.0",
+    'version': "16.0.1.1.0",
     'category': 'Planner',
     'sequence': 14,
     'author': 'ADHOC SA',
@@ -8,7 +8,6 @@
     'license': 'AGPL-3',
     'summary': 'Provides a wizard for importing initial account balances',
     "depends": [
-        "l10n_ar_edi",
         "account_ux",
         "l10n_latam_check",
         'account_payment_group',
