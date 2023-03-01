@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_pricelist_view" model="ir.ui.view">
+        <field name="name">sale.temporal.product.pricelist.form.inherit</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="sale_temporal.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <group name="pricelist_settings">
+                <field name="use_time_based_rules"/>
+            </group>
+            <page name="product_pricing_ids" position="attributes">
+                <attribute name="attrs">{'invisible': [('use_time_based_rules', '=', False)]}</attribute>
+            </page>
+        </field>
+    </record>
+</odoo>
