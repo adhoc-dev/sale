@@ -36,6 +36,9 @@
         'views/helpdesk_portal_templates.xml',
         'views/helpdesk_ticket_form_ext.xml',
     ],
+    'demo': [
+        'demo/helpdesk_ticket_demo.xml',
+    ],
     'installable': True,
     'auto_install': False,
     'application': False,
