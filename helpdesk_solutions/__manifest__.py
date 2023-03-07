@@ -41,6 +41,7 @@
         'security/ir.model.access.csv',
     ],
     'demo': [
+        'demo/helpdesk_solution_demo.xml',
     ],
     'installable': True,
     'auto_install': False,

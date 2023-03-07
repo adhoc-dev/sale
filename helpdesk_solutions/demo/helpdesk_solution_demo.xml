@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="solution_tag_1" model="helpdesk.solution.tag">
+            <field name="name">No need for personalized attention</field>
+        </record>
+        <record id="solution_tag_2" model="helpdesk.solution.tag">
+            <field name="name">Need personalized attention</field>
+        </record>
+
+        <record id="solution_faq_category_1" model="helpdesk.solution.faq.category">
+            <field name="name">Query about product</field>
+        </record>
+        <record id="solution_faq_category_2" model="helpdesk.solution.faq.category">
+            <field name="name">Customer complaint</field>
+        </record>
+
+        <record id="helpdesk_solution_1" model="helpdesk.solution">
+            <field name="name">Send catalog to answer questions about product characteristics</field>
+            <field name="tag_ids" eval="[(6,0,[ref('helpdesk_solutions.solution_tag_1')])]"/>
+            <field name="faq_category_ids" eval="[(6,0,[ref('helpdesk_solutions.solution_faq_category_1')])]"/>
+            <field name="customer_solution_description" type="html">
+<p>Hello,<br/><br/>
+You can download the catalog on our website and see all product features.<br/><br/>
+Thank you for communicating with us.
+</p>
+            </field>
+        </record>
+    </data>
+</odoo>
