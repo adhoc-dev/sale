@@ -26,7 +26,15 @@ class HelpdeskTicket(models.Model):
 
     def _track_template(self, changes):
         ticket = self[0]
+        # PATCH START: Remove this part after odoo fix the error ...
         res = super()._track_template(changes)
+        if 'stage_id' in changes and ticket.stage_id.template_id:
+            res['stage_id'] = (ticket.stage_id.template_id, {
+                'message_type': 'comment',
+                'auto_delete_message': True,
+                'subtype_id': self.env['ir.model.data']._xmlid_to_res_id('mail.mt_comment'),
+                'email_layout_xmlid': 'mail.mail_notification_light'})
+        # PATCH END: until this line
         if 'stage_id' in res and ticket.dont_send_stage_email == True and\
             ticket.stage_id.template_id:
             res.pop('stage_id')
