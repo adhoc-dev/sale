@@ -14,10 +14,12 @@
 Sale Subscription UX
 ====================
 
-#. Add a boolean option to quit period description on invoice narration. By default the value is true and Odoo will show the period in the invoice.
-#. Add Dates required boolean field on Subscription Template model, if setted, then the Start date and End date will be required
-#. Update line data: update price in subscription lines from the values in the related products
-#. Add menu item for Subscription Lines in the Suscription main menu.
+#. Adds a boolean option to quit period description on invoice narration. By default the value is true and Odoo will show the period in the invoice.
+#. Adds Dates required boolean field on Subscription Template model, if setted, then the Start date and End date will be required
+#. Updates line data: update price in subscription lines from the values in the related products
+#. Adds menu item for Subscription Lines in the Suscription main menu.
+#. Adds in the list view in the Sales Order model,  a column with the MRR. If it's a subscription, it will show a positive number, if not, the amount shown will be 0.
+#. Allows to hide the column that cointains the client_order_ref field in the Subscriptions list view.
 
 Installation
 ============

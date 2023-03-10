@@ -18,4 +18,18 @@
         </field>
     </record>
 
+   <record model="ir.ui.view" id="sale_subscription_view_tree">
+        <field name="name">sale.subscription.view.tree.ux</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="client_order_ref" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="amount_untaxed" position="before">
+                <field name="recurring_monthly" string="MRR"/>
+            </field>
+        </field>
+    </record>
+
 </odoo>

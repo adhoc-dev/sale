@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Sale Subscription UX',
-    'version': "16.0.1.0.0",
+    'version': "16.0.1.1.0",
     'category': 'Sales Management',
     'sequence': 14,
     'summary': '',
@@ -36,6 +36,7 @@
         'views/sale_subscription_views.xml',
         'views/sale_subscription_template_views.xml',
         'views/sale_subscription_line_views.xml',
+        'views/sale_views.xml',
     ],
     'demo': [
     ],
