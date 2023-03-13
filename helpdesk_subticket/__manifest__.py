@@ -35,6 +35,7 @@
         'views/helpdesk_ticket_view.xml',
     ],
     'demo': [
+        'demo/helpdesk_ticket_demo.xml',
     ],
     'installable': True,
     'auto_install': False,
