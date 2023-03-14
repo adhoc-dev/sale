@@ -331,7 +331,7 @@ class AccountOnlineLink(models.Model):
             'state': 'error' if response_code >= 400 else 'connected',
             'status_code': response_code,
             'message': (response.get('message') or '') + hint_message + ready_in_msg,
-            'action_required': response_code >= 400,
+            'action_required': 500 > response_code >= 400,
         }
 
     @api.model
