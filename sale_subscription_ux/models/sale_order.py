@@ -31,6 +31,11 @@ class SaleOrder(models.Model):
                     product_currency=line.currency_id
                 )
 
+    # Este fix surge de un problema que reporta adhoc al querer editar las cantidades de una línea de una suscripción.
+    # TODO revisar
+    def _create_upsell_activity(self):
+        if self.ids:
+            super()._create_upsell_activity()
 
 class SaleOrderLine(models.Model):
 
