@@ -20,7 +20,9 @@ Es importante que antes de que se creen la conciliaciones ya esté bien definida
 
 Una posible mejora sería agregar un cron que se encargue de recalcular todos los días al ir teniendo nuevas cotizaciones.
 
-Por ultimo, actualmente no estaría sugiriendo cuando se requiera hacer las NC y esto es una limitación conocida por como se debe hacer el calculo.
+Actualmente no estaría sugiriendo cuando se requiera hacer las NC y esto es una limitación conocida por como se debe hacer el calculo.
+
+Esta funcionalidad solo está disponible para compañías con opción "Reconcile On Company Currency" y cuenta contable sin moneda. En el resto de los casos se usa mecanismo nativo de odoo y el ajuste se hace automáticamente.
 
 Installation
 ============

@@ -7,12 +7,12 @@
         <field name="inherit_id" ref="account.view_invoice_tree"/>
         <field name="priority">100</field>
         <field name="arch" type="xml">
-            <field name="company_id" position="attributes">
+            <!-- <field name="company_id" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
             <field name="partner_id" position="attributes">
                 <attribute name="invisible">1</attribute>
-            </field>
+            </field> -->
             <tree>
                 <button name="get_formview_action" icon="fa-external-link" string="Open Invoice" type="object"/>
             </tree>
@@ -54,10 +54,10 @@
         <field name="name">account.move.form</field>
         <field name="model">account.move</field>
         <field name="inherit_id" ref="view_move_form"/>
-        <field name="groups_id" eval="[(4, ref('account.group_account_user'))]"/>
         <field name="arch" type="xml">
             <field name="invoice_outstanding_credits_debits_widget" position="after">
                 <button name="open_partial_reconciles" type="object" string="=> Ver conciliaciones" class="oe_link oe_nolabel" groups="base.group_no_one"/>
+                <!-- account.group_account_user -->
             </field>
         </field>
     </record>

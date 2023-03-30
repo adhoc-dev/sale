@@ -101,7 +101,7 @@ class AccountExchangeDiffInvoice(models.TransientModel):
             'user_id': debit_line.move_id.user_id.id,
             'partner_id': debit_line.move_id.partner_id.id,
             'company_id': self.company_id.id,
-            'type': invoice_type,
+            'move_type': invoice_type,
             'invoice_line_ids': [(0, 0, {
                 'account_id': account_id.id,
                 'name': 'Ajuste por diferencia de cambio\n%s' % message,

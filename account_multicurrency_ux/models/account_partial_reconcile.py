@@ -28,8 +28,11 @@ class AccountPartialReconcile(models.Model):
 
     def _get_partial_adjustment_vals(self):
         partial_vals = {}
+        # solo sugerimos exchange diff si la cuenta NO tiene moneda y si la compañía tiene marcado
+        # porque en el resto de los casos se concilia con mecanismo de odoo y los ajustes se hacen automáticamente
         for rec in self.filtered(
-                lambda x: x.amount and x.debit_move_id.currency_id and x.debit_move_id.amount_currency and
+                lambda x: x.amount and x.company_id.reconcile_on_company_currency and not x.debit_move_id.account_id.currency_id and
+                x.debit_move_id.currency_id and x.debit_move_id.amount_currency and
                 x.debit_move_id.move_id.move_type == 'out_invoice' and not x.exchange_diff_ignored and x.exchange_diff_invoice_id.state not in ['posted']):
             debit_line = rec.debit_move_id
             credit_line = rec.credit_move_id
@@ -83,7 +86,8 @@ class AccountPartialReconcile(models.Model):
             else:
                 rec.exchange_diff_adjustment_required = False
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=False)
+    def _protect_adjusted_payments(self):
         recs = self.filtered('exchange_diff_invoice_id')
         if recs:
             raise UserError(_(
@@ -93,7 +97,6 @@ class AccountPartialReconcile(models.Model):
                     ', '.join(recs.mapped(lambda x: "%s [id: %s]" % (x.exchange_diff_invoice_id.display_name, x.exchange_diff_invoice_id.id))),
                     ', '.join(recs.mapped('debit_move_id.display_name')),
                 ))
-        return super().unlink()
 
 # Intento de hacer que al cancelar conciliacion con ajuste de deuda, no se
 # revierta si no que se cancele. Ibamos a probar hacer que genere los asientos
