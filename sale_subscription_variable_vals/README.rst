@@ -15,7 +15,7 @@ Subscription Variable Line Values
 =================================
 
 Allow to set formulas to define variable values for subscription lines.
-When recurring invoice is created the formula evaluated and customizable values can be override. Some use cases could be:
+When recurring invoice is created the formula evaluated and can override any invoice line value needed. Some use cases could be:
 
 #. Use a variable quantity dependening on custom code
 #. Use a dinamic analytic distribution dependening on custom code

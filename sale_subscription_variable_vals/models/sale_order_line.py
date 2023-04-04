@@ -28,5 +28,6 @@ class SaleOrderLine(models.Model):
         self.ensure_one()
         res = super()._prepare_invoice_line(**optional_values)
         if self.order_id.is_subscription and self.quantity_formula_id:
-            res.update(self.quantity_formula_id._get_result(self))
+            res.update(self.quantity_formula_id._get_result(
+                self, res.get('subscription_start_date'), res.get('subscription_end_date')))
         return res

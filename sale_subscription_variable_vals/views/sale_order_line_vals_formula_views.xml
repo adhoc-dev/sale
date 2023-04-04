@@ -16,6 +16,9 @@
         <field name="model">sale.order.line.vals_formula</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button string="Test formula" invisible="not context.get('sale_line_id')" type="object" name="test_formula"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
