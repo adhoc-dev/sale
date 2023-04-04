@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/tree//field[@name='product_uom_qty']" position="before">
+                <field name="quantity_formula_id" help="asdas" decoration-info="temporal_type == 'subscription'" decoration-bf="(not display_type and invoice_status == 'to invoice')" attrs="{'column_invisible': [('parent.is_subscription', '=', False)]}" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
