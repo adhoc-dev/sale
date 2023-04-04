@@ -3,4 +3,4 @@
 # directory
 ##############################################################################
 from . import sale_order_line
-from . import sale_order_line_quantity_formula
+from . import sale_order_line_vals_formula

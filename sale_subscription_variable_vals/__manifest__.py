@@ -18,7 +18,7 @@
 #
 ##############################################################################
 {
-    'name': 'Sale Subscription Variable Quantity',
+    'name': 'Subscription Variable Line Values',
     'version': "16.0.1.0.0",
     'category': 'Sales Management',
     'sequence': 14,
@@ -33,7 +33,7 @@
     ],
     'data': [
         'views/sale_order_views.xml',
-        'views/sale_order_line_quantity_formula_views.xml',
+        'views/sale_order_line_vals_formula_views.xml',
         'security/ir.model.access.csv',
     ],
     'demo': [

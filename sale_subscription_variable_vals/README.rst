@@ -10,12 +10,15 @@
    :target: https://www.gnu.org/licenses/agpl
    :alt: License: AGPL-3
 
-===================================
-Sale Subscription Variable Quantity
-===================================
+=================================
+Subscription Variable Line Values
+=================================
 
-Allow to set formulas for subscription lines.
-Amount will be computed when recurring invoice is being created
+Allow to set formulas to define variable values for subscription lines.
+When recurring invoice is created the formula evaluated and customizable values can be override. Some use cases could be:
+
+#. Use a variable quantity dependening on custom code
+#. Use a dinamic analytic distribution dependening on custom code
 
 Installation
 ============

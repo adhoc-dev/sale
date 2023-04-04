@@ -7,9 +7,9 @@ from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import safe_eval
 
 
-class SaleOrderLineQuantityFormula(models.Model):
+class SaleOrderLineValsFormula(models.Model):
 
-    _name = "sale.order.line.quantity.formula"
+    _name = "sale.order.line.vals_formula"
     _description = "Subscription Quantity Formula"
 
     name = fields.Char(required=True, translate=True)
