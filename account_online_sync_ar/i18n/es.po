@@ -1,22 +1,32 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* account_online_sync_ar
-#
+# 
+# Translators:
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-27 19:30+0000\n"
-"PO-Revision-Date: 2021-07-27 19:30+0000\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"POT-Creation-Date: 2023-04-17 09:20+0000\n"
+"PO-Revision-Date: 2023-04-17 09:20+0000\n"
+"Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>, 2023\n"
+"Language-Team: Spanish (https://app.transifex.com/adhoc/teams/46451/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.account_online_link_view_form
+msgid "(Last"
+msgstr ""
+
+#. module: account_online_sync_ar
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "100: Register - The API registers a new process (through a REST request)"
@@ -25,7 +35,8 @@ msgstr ""
 "REST)"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "101: Starting - The process information was obtained to start operating"
@@ -33,20 +44,23 @@ msgstr ""
 "101: Iniciando - Se obtuvo la información del proceso para comenzar a operar"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "102: Running - The process is running (login successful)"
 msgstr ""
 "102: En ejecución: el proceso se está ejecutando (inicio de sesión exitoso)"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "103: TokenReceived - The process received the token"
 msgstr "103: Token Recibido: el proceso recibió el token"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "200: Finish - The connection has been successful. Data has been extracted"
@@ -55,7 +69,8 @@ msgstr ""
 "los datos"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "201: Pending - The connection has been successful. We have partially "
@@ -67,7 +82,8 @@ msgstr ""
 "procesos de fondo."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "202: NoTransactions - The connection has been successful. However, no "
@@ -77,7 +93,8 @@ msgstr ""
 "embargo, no se encontraron transacciones."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "203: PartialTransactions - The connection has been successful. However, more"
@@ -87,7 +104,8 @@ msgstr ""
 " embargo, más de una cuenta no tiene transacciones."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "204: Incomplete - The connection has been successful. However, the data "
@@ -97,7 +115,8 @@ msgstr ""
 " datos descargados están incompletos."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "206: NoAccounts - The connection has been successful. However, there were no"
@@ -107,13 +126,15 @@ msgstr ""
 " no había cuentas vinculadas a las credenciales proporcionadas."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "400: Bad Request."
 msgstr "400: Petición Incorrecta."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "401: Unauthorized - The value of one of the given Authentication Fields was "
@@ -125,13 +146,15 @@ msgstr ""
 "intentarlo."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "402: Payment Required"
 msgstr "402: Pago requerido"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "403: Forbidden or Invalidtoken - The given token value introduced was not "
@@ -141,13 +164,15 @@ msgstr ""
 "token introducido o se alcanzó el tiempo de vencimiento."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "404: Not Found."
 msgstr "404: No encontrado."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "405: Locked - The institution has blocked the given credential, please "
@@ -159,7 +184,8 @@ msgstr ""
 "funcione correctamente antes de volver a intentarlo."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "406: Conflict - The institution does not allow to have more than one user "
@@ -170,7 +196,8 @@ msgstr ""
 "\n"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "408: UserAction - The institution requires attention from the user. We "
@@ -182,7 +209,8 @@ msgstr ""
 "funciona correctamente. Tras la confirmación, inténtelo de nuevo."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "409: WrongSite - The given credentials seem to be valid but they belong to a"
@@ -192,20 +220,23 @@ msgstr ""
 "pero pertenecen a un sitio diferente de la misma organización."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "410: Waiting - Waiting for MFA Value"
 msgstr "410: Esperando - Esperando valor de MFA"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "411: TwofaTimeout - The time to introduce the MFA value has been exceeded."
 msgstr "411: TwofaTimeout: se superó el tiempo para introducir el valor MFA."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "413: LoginError - There is a error in Login Process, please try again."
 msgstr ""
@@ -213,13 +244,15 @@ msgstr ""
 "de nuevo."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "429: Too Many Requests."
 msgstr "429: Demasiadas solicitudes."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "500: Error - An internal error has been ocurred while connecting to the "
@@ -228,23 +261,24 @@ msgstr ""
 "500: Error - Se produjo un error interno al conectarse a la institución"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
-"501: Unavailable - The institución has informed to us that there was a "
+"501: Unavailable - The instituion has informed to us that there was a "
 "problem in the connection"
 msgstr ""
-"501: No disponible - La institución nos ha informado que hubo un problema en "
-"la conexión"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "503: Service Unavailable."
 msgstr "503: Servicio no Disponible.\n"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "504: ConnectionTimeout - An internal error has been ocurred while connecting"
@@ -254,10 +288,47 @@ msgstr ""
 " institución."
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "509: UndergoingMaintenance - The institution is under maintenance."
 msgstr "509: Sometido a mantenimiento: la institución está en mantenimiento."
+
+#. module: account_online_sync_ar
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
+#, python-format
+msgid "<b>%s</b> - <i>%s</i>"
+msgstr ""
+
+#. module: account_online_sync_ar
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
+#, python-format
+msgid "<i>. Fueron agregados %s registros</i>"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_provider_link__ok_terms
+msgid "Acepto Términos y Condiciones"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_link__action_required
+msgid "Action Required"
+msgstr ""
+
+#. module: account_online_sync_ar
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
+#, python-format
+msgid "Actualizado estado de credencial: "
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.account_online_link_view_form
+msgid "Actualizar Contraseña"
+msgstr ""
 
 #. module: account_online_sync_ar
 #: model_terms:ir.ui.view,arch_db:account_online_sync_ar.update_credential
@@ -265,26 +336,60 @@ msgid "Actualizar Credencial del Banco"
 msgstr ""
 
 #. module: account_online_sync_ar
-#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.online_provider_account_form_view
-msgid "Add/Configure accounts"
-msgstr "Agregar/Configurar cuentas"
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
+#, python-format
+msgid "Actualizar contraseña del banco: "
+msgstr ""
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
+#, python-format
+msgid "Actualizar transacciones existentes: "
+msgstr ""
+
+#. module: account_online_sync_ar
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "An error has occurred (code %s)"
 msgstr "Un error ha ocurrido (código %s)"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
-#, python-format
-msgid "Bad Request."
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_link__auto_sync
+msgid "Automatic synchronization"
 msgstr ""
 
 #. module: account_online_sync_ar
-#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.online_provider_account_form_view
+#: model:ir.model,name:account_online_sync_ar.model_account_online_link
+msgid "Bank Connection"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model,name:account_online_sync_ar.model_account_bank_statement_line
+msgid "Bank Statement Line"
+msgstr "Línea de extracto bancario"
+
+#. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.provider_link_view_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.account_online_link_view_form
 msgid "Check Status"
-msgstr "Verificar Status"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_link__client_id
+msgid "Client"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,help:account_online_sync_ar.field_account_online_link__status_code
+msgid "Code to identify problem"
+msgstr ""
 
 #. module: account_online_sync_ar
 #: model:ir.model,name:account_online_sync_ar.model_res_company
@@ -298,17 +403,70 @@ msgid "Company ID"
 msgstr "ID Compañía"
 
 #. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.provider_link_view_form
+msgid "Crear banco (sin sincronización)"
+msgstr ""
+
+#. module: account_online_sync_ar
+#. odoo-python
+#: code:addons/account_online_sync_ar/wizards/provider_link.py:0
+#, python-format
+msgid "Create a Bank Account"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_provider_link__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_provider_link__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: account_online_sync_ar
 #: model_terms:ir.ui.view,arch_db:account_online_sync_ar.paybook_login
 #: model_terms:ir.ui.view,arch_db:account_online_sync_ar.update_credential
 msgid "Credential ID"
 msgstr ""
 
 #. module: account_online_sync_ar
-#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.online_provider_account_form_view
-msgid "Delete Online Credentials"
-msgstr "Eliminar Credenciales en línea"
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_provider_link__default_action
+msgid "Default Action"
+msgstr ""
 
 #. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.account_online_link_view_form
+msgid "Delete Online Credentials"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_provider_link__details
+msgid "Details"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_provider_link__display_name
+msgid "Display Name"
+msgstr "Mostrar Nombre"
+
+#. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.account_online_link_view_form
+msgid ""
+"Esta acción no se puede deshacer. Estas seguro que quieres aplicarla? Esto "
+"afectara a cualquier otra base de datos usando la misma credencial"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.account_online_link_view_form
+msgid ""
+"Esta funcionalidad es solo para cambiar contraseña. Si necesita cambiar "
+"algun otro dato de login/usuario debe eliminar esta credencial y crear una "
+"nueva. Para ello vaya al menu Mi base / Administrar Credenciales"
+msgstr ""
+
+#. module: account_online_sync_ar
+#. odoo-python
 #: code:addons/account_online_sync_ar/models/res_company.py:0
 #, python-format
 msgid ""
@@ -316,15 +474,26 @@ msgid ""
 msgstr ""
 
 #. module: account_online_sync_ar
+#. odoo-python
 #: code:addons/account_online_sync_ar/models/res_company.py:0
 #, python-format
 msgid "Falta configuración de credenciales de ADHOC para creacion de new user"
 msgstr ""
 
 #. module: account_online_sync_ar
-#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.online_provider_account_form_view
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_link__paybook_max_date
+msgid "Fecha tope sincronización"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.account_online_link_view_form
 msgid "Force Sync"
-msgstr "Forzar Sincronización"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_provider_link__id
+msgid "ID"
+msgstr "ID (identificación)"
 
 #. module: account_online_sync_ar
 #: model_terms:ir.ui.view,arch_db:account_online_sync_ar.update_credential
@@ -332,12 +501,22 @@ msgid "ID Site"
 msgstr "ID del Sitio"
 
 #. module: account_online_sync_ar
-#: model:ir.model,name:account_online_sync_ar.model_account_online_journal
-msgid "Interface for Online Account Journal"
-msgstr "Interfaz para el diario de cuenta en línea"
+#: model:ir.model.fields,help:account_online_sync_ar.field_account_online_link__provider_identifier
+msgid ""
+"ID of the banking institution in third party server used for debugging "
+"purpose"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,help:account_online_sync_ar.field_account_online_link__auto_sync
+msgid ""
+"If possible, we will try to automatically fetch new transactions for this "
+"record"
+msgstr ""
 
 #. module: account_online_sync_ar
 #: model:ir.model,name:account_online_sync_ar.model_account_journal
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_provider_link__journal_id
 msgid "Journal"
 msgstr "Diario"
 
@@ -348,7 +527,33 @@ msgid "Journal ID"
 msgstr "ID del Diario"
 
 #. module: account_online_sync_ar
-#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_bank_statement_import_journal_creation__paybook_last_transaction
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
+#, python-format
+msgid "La credencial no se encuentra autorizada."
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_link__paybook_refresh_days
+msgid "Last Days to be Updated/fixed"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_provider_link____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_provider_link__write_uid
+msgid "Last Updated by"
+msgstr "Última Actualización por"
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_provider_link__write_date
+msgid "Last Updated on"
+msgstr "Última Actualización el"
+
+#. module: account_online_sync_ar
 #: model:ir.model.fields,field_description:account_online_sync_ar.field_account_journal__paybook_last_transaction
 msgid "Last synced transaction"
 msgstr "Ultima transacción sincronizada"
@@ -359,27 +564,51 @@ msgid "Last:"
 msgstr "Última:"
 
 #. module: account_online_sync_ar
-#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_bank_statement_import_journal_creation__paybook_next_available
-#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_journal__paybook_next_available
-#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_provider__paybook_next_refresh
-msgid "Next transactions will be available at"
-msgstr "Próximas transacciones estarán disponibles el"
+#: model:ir.actions.act_window,name:account_online_sync_ar.action_account_link_journal
+msgid "Link Account to Journal"
+msgstr ""
 
 #. module: account_online_sync_ar
-#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.account_journal_dashboard_inherit_online_sync
-msgid "Next:"
-msgstr "Próxima:"
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_link__paybook_username_hint
+msgid "Login/User"
+msgstr ""
 
 #. module: account_online_sync_ar
-#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_provider__next_refresh
-msgid "Odoo cron next run"
-msgstr "Próxima corrida de acción planificada en Odoo"
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_link__message
+msgid "Message"
+msgstr ""
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
-#: model:ir.model.fields.selection,name:account_online_sync_ar.selection__account_online_provider__provider_type__paybook
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_account.py:0
 #, python-format
-msgid "Paybook"
+msgid "Modificada Fecha Última Sincronización"
+msgstr ""
+
+#. module: account_online_sync_ar
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
+#, python-format
+msgid "No es posible forzar la sincronización. "
+msgstr ""
+
+#. module: account_online_sync_ar
+#. odoo-python
+#: code:addons/account_online_sync_ar/wizards/provider_link.py:0
+#, python-format
+msgid ""
+"No puede continuar hasta tanto no acepte los términos y condiciones del "
+"servicio"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields.selection,name:account_online_sync_ar.selection__account_online_link__provider_type__saltedge
+msgid "Odoo"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_link__next_refresh
+msgid "Oodo Cron Next Run"
 msgstr ""
 
 #. module: account_online_sync_ar
@@ -399,55 +628,128 @@ msgid "Paybook User Token"
 msgstr ""
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid ""
 "Paybook fetch: Please comunicate with your Odoo Provider. This is what we "
 "got %s"
-msgstr "Paybook fetch: Por favor comuniquese con tu Proveedor de Odoo. Esto es lo que obtenemos "
+msgstr ""
+"Paybook fetch: Por favor comuniquese con tu Proveedor de Odoo. Esto es lo "
+"que obtenemos "
+
+#. module: account_online_sync_ar
+#: model:ir.actions.server,name:account_online_sync_ar.ir_cron_clean_transactions_blacklist_ir_actions_server
+#: model:ir.cron,cron_name:account_online_sync_ar.ir_cron_clean_transactions_blacklist
+msgid "Paybook: Delete olders transactions from blacklist"
+msgstr ""
 
 #. module: account_online_sync_ar
 #: model:ir.actions.server,name:account_online_sync_ar.ir_cron_paybook_update_transactions_ir_actions_server
 #: model:ir.cron,cron_name:account_online_sync_ar.ir_cron_paybook_update_transactions
-#: model:ir.cron,name:account_online_sync_ar.ir_cron_paybook_update_transactions
 msgid "Paybook: Update transactions"
-msgstr "Paybook: Actualizar transacciones"
-
-#. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
-#, python-format
-msgid "Payment Required"
 msgstr ""
 
 #. module: account_online_sync_ar
-#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_bank_statement_import_journal_creation__account_online_provider_type
 #: model:ir.model.fields,field_description:account_online_sync_ar.field_account_journal__account_online_provider_type
-#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_provider__provider_type
-msgid "Provider Type"
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_link__provider_type
+msgid "Proveedor"
 msgstr "Tipo de Proveedor"
 
 #. module: account_online_sync_ar
-#: model:ir.model,name:account_online_sync_ar.model_account_online_provider
-msgid "Provider for online account synchronization"
-msgstr "Proveedor de sincronización de cuenta en línea"
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_link__provider_identifier
+msgid "Provider Identifier"
+msgstr ""
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#: model:ir.model,name:account_online_sync_ar.model_provider_link
+msgid "Provider Link"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,help:account_online_sync_ar.field_account_online_link__client_id
+msgid "Represent a link for a given user towards a banking institution"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.update_credential
+msgid "Result"
+msgstr "Resultado"
+
+#. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.provider_link_view_form
+msgid "Saltedge"
+msgstr ""
+
+#. module: account_online_sync_ar
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
+#, python-format
+msgid "Se forzó la sincronizacion bancaria"
+msgstr ""
+
+#. module: account_online_sync_ar
+#. odoo-python
+#: code:addons/account_online_sync_ar/wizards/provider_link.py:0
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.provider_link_view_form
+#, python-format
+msgid "Seleccione Proveedor de Sincronización Bancaria"
+msgstr ""
+
+#. module: account_online_sync_ar
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "Server not reachable, please try again later"
 msgstr ""
 "No se puede acceder al servidor, por favor intente otra vez más tarde. "
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#: model:ir.model.fields,help:account_online_sync_ar.field_account_online_link__paybook_max_date
+msgid ""
+"Si esta configurada indica la fecha tope hacia atrás en la cual se puede hacer sincronización con esta credencial. Esto sirve por:\n"
+" * Si se tuvo que reemplazar la credencial debido a que cambio el username evitar ids duplicados.\n"
+" * Si hicieron carga manual de algun dia y quieren sincronizar a partir del dia siguiente"
+msgstr ""
+
+#. module: account_online_sync_ar
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
-msgid "Service Unavailable."
-msgstr "Serivio No disponibl"
+msgid "Sincronizar transacciones"
+msgstr ""
+
+#. module: account_online_sync_ar
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
+#, python-format
+msgid "Solo se pueden forzar credenciales sin estado de error."
+msgstr ""
 
 #. module: account_online_sync_ar
 #: model_terms:ir.ui.view,arch_db:account_online_sync_ar.update_credential
 msgid "State"
 msgstr "Estado"
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_link__status_code
+msgid "Status Code"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.provider_link_view_form
+msgid "Syncfy"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields.selection,name:account_online_sync_ar.selection__account_online_link__provider_type__paybook
+msgid "Synfcy"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,help:account_online_sync_ar.field_account_online_link__message
+msgid "Techhnical message from third party provider that can help debugging"
+msgstr ""
 
 #. module: account_online_sync_ar
 #: model_terms:ir.ui.view,arch_db:account_online_sync_ar.paybook_login
@@ -456,50 +758,75 @@ msgid "Test it"
 msgstr "Pruébalo"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "The next transactions sync will be available in %s hours"
 msgstr "Las próximas transacciones estarán disponibles en %s horas"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "There is not account credential to be deleted"
 msgstr "No hay cuenta/credencial para ser borrada"
 
 #. module: account_online_sync_ar
-#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.online_provider_account_form_view
-msgid ""
-"This action can not be undone. Are you sure? This can affect any other "
-"database using the same credential"
-msgstr ""
-"Esta acción no se puede deshacer. ¿Está seguro? Esto puede afectar a "
-"cualquier otra base de datos que utilice la misma credencial."
-
-#. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "Timeout: the server did not reply within 60s"
 msgstr "Se agotó el tiempo: El servidor no ha respondido en 60s"
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#: model:ir.model.fields,field_description:account_online_sync_ar.field_account_online_account__transactions_blacklist
+msgid "Transactions Blacklist"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model.fields,help:account_online_sync_ar.field_account_online_link__action_required
+msgid "True if user needs to take action by updating account"
+msgstr ""
+
+#. module: account_online_sync_ar
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
 msgid "Unknown exception %s"
 msgstr "Excepción Desconocida %s"
 
 #. module: account_online_sync_ar
-#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.online_provider_account_form_view
-msgid "Update Password"
-msgstr "Actualizar Contraseña"
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.account_online_link_view_form
+msgid "Update refreshed transactions, delete and disabled ones"
+msgstr ""
 
 #. module: account_online_sync_ar
-#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.online_provider_account_form_view
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.account_online_link_view_form
 msgid "Update/Fix"
-msgstr "Actualizar/Corregir"
+msgstr ""
 
 #. module: account_online_sync_ar
-#: code:addons/account_online_sync_ar/models/account_online_provider.py:0
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
 #, python-format
-msgid "We don't find any new account to add / configure"
-msgstr "No encontramos ningúna cuenta que agregar / configurar "
+msgid "Usted no puede ejecutar esta accion porque no existe la credencial"
+msgstr ""
+
+#. module: account_online_sync_ar
+#. odoo-python
+#: code:addons/account_online_sync_ar/models/account_online_link.py:0
+#, python-format
+msgid ""
+"Ya se ha forzado la sincronización recientemente. Puede intentar nuevamente "
+"a las "
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model_terms:ir.ui.view,arch_db:account_online_sync_ar.account_online_link_view_form
+msgid "days)"
+msgstr ""
+
+#. module: account_online_sync_ar
+#: model:ir.model,name:account_online_sync_ar.model_account_online_account
+msgid "representation of an online bank account"
+msgstr "representación de una cuenta bancaria en línea"
