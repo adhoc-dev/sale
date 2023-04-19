@@ -37,9 +37,15 @@ class SaleOrder(models.Model):
         if self.id:
             super()._create_upsell_activity()
 
-    @api.model
-    def _cron_recurring_create_invoice(self):
-        return self.with_context(no_auto_post=True)._create_recurring_invoice(automatic=True)
+    def _handle_automatic_invoices(self, auto_commit, invoices):
+        # Modificamos para permitir el posteo o no según corresponda
+        auto_post_orders = self.filtered(lambda x: x.sale_order_template_id.recurring_auto_post or x.payment_token_id)
+        without_auto_post_orders = self - auto_post_orders
+        for order in without_auto_post_orders:
+            invoice = invoices.filtered(lambda inv: inv.invoice_origin == order.name)
+            invoices -= invoice
+            super(SaleOrder, order)._handle_automatic_invoices(auto_commit, invoice.with_context(disable_action_post=True))
+        return super(SaleOrder, auto_post_orders)._handle_automatic_invoices(auto_commit, invoices)
 
 
 class SaleOrderLine(models.Model):

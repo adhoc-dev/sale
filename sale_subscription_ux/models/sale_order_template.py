@@ -13,6 +13,10 @@ class SaleOrderTemplate(models.Model):
         "Dates Required",
     )
 
+    recurring_auto_post = fields.Boolean(
+        default=False
+    )
+
     add_period_dates_to_description = fields.Boolean(
         'Add Period Dates to Description',
         help='If setted, a description of the invoiced period will be added to the invoice narration',

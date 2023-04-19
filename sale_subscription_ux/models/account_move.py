@@ -6,6 +6,6 @@ class AccountMove(models.Model):
 
     def action_post(self):
         #For Adhoc Migration - Task pending to add selection feature
-        if self._context.get('no_auto_post'):
+        if self._context.get('disable_action_post'):
             return
         return super().action_post()
