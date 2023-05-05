@@ -39,3 +39,9 @@ class AccountMove(models.Model):
                 rec.cancel()
                 rec.message_post(body=_('Payment cancelled from batch %s') % (rec.batch_payment_id.display_name))
         self.write({'batch_payment_id': False})
+
+    @api.depends('journal_id')
+    def _compute_currency_id(self):
+        """ Hacemos esto ya que es un parche porque al querer confirmar una factura con direct debit mandate o generar un recibo de cliente (account.payment.group) se termina limpiando del pago el journal_id y luego termina computando mal el diario del move que se viene seteando con el valor del diario por defecto que es diferente al diario del débito automático y lanza un error (El asiento de diario Borrador de asiento (* 2145169) (SUB257) no es válido. Para continuar, los apuntes de diario deben incluir una y solo una cuenta de pagos pendientes o de recibos.) """
+        self.move_id.journal_id
+        super()._compute_currency_id()
