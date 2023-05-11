@@ -32,4 +32,15 @@
         </field>
     </record>
 
+    <record id="sale_subscription_primary_form_view" model="ir.ui.view">
+        <field name="name">sale.subscription.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_primary_form_view"/>
+        <field name="arch" type="xml">
+            <field name="sale_order_template_id" position="attributes">
+                <attribute name="attrs">{'invisible':[('subscription_management', '=', 'upsell')]}</attribute>
+            </field>
+        </field>
+    </record>
+
 </odoo>

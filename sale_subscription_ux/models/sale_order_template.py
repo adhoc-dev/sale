@@ -13,8 +13,16 @@ class SaleOrderTemplate(models.Model):
         "Dates Required",
     )
 
-    recurring_auto_post = fields.Boolean(
-        default=False
+    invoicing_method = fields.Selection(
+        selection=[('draft', 'Draft'),
+            ('autopost', 'Autopost')],
+        string='Invoice Method',
+        default='autopost',
+        required=True,
+        help='This field can take the following values :\n'
+             '  * Autopost: Invoices will be posted once they are created\n'
+             '  * Draft: Invoices will not be posted and will stay in draft once they are created\n'
+             'In any case, if there is a payment token, it will try to generate the payment and post the invoice',
     )
 
     add_period_dates_to_description = fields.Boolean(

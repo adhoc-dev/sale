@@ -11,7 +11,7 @@
             </field>
             <field name="journal_id" position="after">
                 <field name="add_period_dates_to_description" attrs="{'invisible': [('is_subscription', '=', False)]}"/>
-                <field name="recurring_auto_post" attrs="{'invisible': [('is_subscription', '=', False)]}"/>
+                <field name="invoicing_method" attrs="{'invisible': [('recurrence_id', '=', False)]}"/>
             </field>
         </field>
     </record>

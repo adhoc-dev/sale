@@ -39,12 +39,16 @@ class SaleOrder(models.Model):
 
     def _handle_automatic_invoices(self, auto_commit, invoices):
         # Modificamos para permitir el posteo o no según corresponda
-        auto_post_orders = self.filtered(lambda x: x.sale_order_template_id.recurring_auto_post or x.payment_token_id)
+        auto_post_orders = self.filtered(
+            lambda x: not x.sale_order_template_id or
+              x.sale_order_template_id.invoicing_method == 'autopost' or
+              x.payment_token_id
+            )
         without_auto_post_orders = self - auto_post_orders
+        # Sacamos las facturas que no tienen autopost para que no corra el _handle_automatic_invoice y queden en borrador
         for order in without_auto_post_orders:
             invoice = invoices.filtered(lambda inv: inv.invoice_origin == order.name)
             invoices -= invoice
-            super(SaleOrder, order)._handle_automatic_invoices(auto_commit, invoice.with_context(disable_action_post=True))
         return super(SaleOrder, auto_post_orders)._handle_automatic_invoices(auto_commit, invoices)
 
 
