@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="product_template_form_view_pricing" model="ir.ui.view">
+    <field name="name">product.template.form.inherit.multipricing</field>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="sale_temporal.product_template_form_view_pricing"/>
+    <field name="arch" type="xml">
+        <field name="pricelist_id" position="attributes">
+            <attribute name="domain">[('use_time_based_rules', '=', True)]</attribute>
+        </field>
+    </field>
+  </record>
+
+</odoo>

@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Sale Temporal UX',
-    'version': "16.0.1.0.0",
+    'version': "16.0.1.1.0",
     'category': 'Sales Management',
     'sequence': 14,
     'summary': '',
@@ -33,6 +33,7 @@
     ],
     'data': [
         'views/product_pricelist_views.xml',
+        'views/product_template_views.xml',
     ],
     'demo': [
     ],
