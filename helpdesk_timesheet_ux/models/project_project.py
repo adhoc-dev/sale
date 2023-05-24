@@ -26,6 +26,7 @@ class ProjectProject(models.Model):
     @api.depends('ticket_ids.project_id')
     def _compute_ticket_count(self):
         if not self.user_has_groups('helpdesk.group_helpdesk_user'):
+            self.ticket_count = 0
             return
         result = self.env['helpdesk.ticket'].read_group([
             ('project_id', 'in', self.ids), ('stage_id.fold', '=', False)
