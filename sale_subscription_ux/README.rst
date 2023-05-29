@@ -20,6 +20,8 @@ Sale Subscription UX
 #. Adds menu item for Subscription Lines in the Suscription main menu.
 #. Adds in the list view in the Sales Order model,  a column with the MRR. If it's a subscription, it will show a positive number, if not, the amount shown will be 0.
 #. Allows to hide the column that cointains the client_order_ref field in the Subscriptions list view.
+#. Adds option 'Invoice Method' in subscription templates allowing invoices to be created and stay in draft.
+#. Keeps field 'Subscription Plan/Quotation Plan' visible while a subscriptions is confirmed.
 
 Installation
 ============
