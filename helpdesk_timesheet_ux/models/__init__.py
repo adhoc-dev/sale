@@ -3,6 +3,7 @@
 # directory
 ##############################################################################
 
+from . import account_analytic_line
 from . import project_project
 from . import helpdesk_ticket
 from . import helpdesk_team
