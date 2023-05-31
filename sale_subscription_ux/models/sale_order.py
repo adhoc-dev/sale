@@ -48,6 +48,13 @@ class SaleOrder(models.Model):
         # Sacamos las facturas que no tienen autopost para que no corra el _handle_automatic_invoice y queden en borrador
         for order in without_auto_post_orders:
             invoice = invoices.filtered(lambda inv: inv.invoice_origin == order.name)
+            if invoice.move_type == 'out_invoice' and invoice.partner_id:
+                # Las facturas que se crean en borrador cuyo partner tiene direct debit mandate tengan asignado
+                # dicho mandate en la factura, para que al validarla manualmente se genere el recibo correspondiente
+                mandate = self.env['account.direct_debit.mandate'].search([
+                    ('partner_id.commercial_partner_id', '=', invoice.partner_id.commercial_partner_id.id),
+                    ('state', '=', 'active')], limit=1)
+                invoice.direct_debit_mandate_id = mandate
             invoices -= invoice
         return super(SaleOrder, auto_post_orders)._handle_automatic_invoices(auto_commit, invoices)
 
