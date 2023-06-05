@@ -54,9 +54,9 @@
                         </h1>
                     </div>
                     <field name="active" invisible="1"/>
-                    <field name="tag_ids" widget="many2many_tags" placeholder="Tags..." options="{'color_field': 'color', 'no_create_edit': True}"/>
+                    <field name="tag_ids" widget="many2many_tags" placeholder="Tags..." options="{'color_field': 'color', 'no_create': True}"/>
                     <br/>
-                    <field name="faq_category_ids" widget="many2many_tags" placeholder="FAQ Categories..." options="{'color_field': 'color', 'no_create_edit': True, 'no_create': True}"/>
+                    <field name="faq_category_ids" widget="many2many_tags" placeholder="FAQ Categories..." options="{'color_field': 'color', 'no_create': True}"/>
                     <notebook>
                         <page string="Ticket Description">
                             <field name="ticket_description" placeholder="Add a ticket description..."/>
