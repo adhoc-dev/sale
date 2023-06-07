@@ -22,6 +22,7 @@ Sale Subscription UX
 #. Allows to hide the column that cointains the client_order_ref field in the Subscriptions list view.
 #. Adds option 'Invoice Method' in subscription templates allowing invoices to be created and stay in draft.
 #. Keeps field 'Subscription Plan/Quotation Plan' visible while a subscriptions is confirmed.
+#. Improves the invoices' link (invoice_ids) to the subscription by considering also the ones linked by account.move.line.subscription_invoice_line_ids. This is for two reasons: 1. help on migration from v15- where by default some invoices are not shown linked to the SO. 2. If the user unlinks a sale.order.line already created, the link between SO and invoice may disappear.
 
 Installation
 ============

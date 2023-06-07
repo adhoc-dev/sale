@@ -14,6 +14,22 @@ class SaleOrder(models.Model):
     dates_required = fields.Boolean(
         related="sale_order_template_id.dates_required",
     )
+    subscription_invoice_line_ids = fields.One2many('account.move.line', 'subscription_id')
+
+    @api.depends('subscription_invoice_line_ids')
+    def _get_invoiced(self):
+        """ con el cambio de suscripciones a ventas odoo cambia la forma en que linkea suscripciones y facturas,
+        ahora lo hace a traves de las sale.order.line y la account.move.line con los campos sale_line_ids / invoice_lines
+        el tema es que si se borra un producto en la suscripcion es posible que desaparezcan todas las facturas vincualdas
+        (salvo que el borrado de la línea se realiza a través de un sale order de downsell)
+        siendo que odoo mantiene campo "subscription_id" en las líneas de factura, aprovechamos ese campo
+        para mostar facturas vinculadas
+        """
+        super()._get_invoiced()
+        for sub in self.filtered('is_subscription'):
+            invoices = sub.subscription_invoice_line_ids.mapped('move_id')
+            sub.invoice_ids |= invoices
+            sub.invoice_count = len(sub.invoice_ids)
 
     def update_lines_prices_from_products(self):
         """ Update subscription lines, all the line including prices.
