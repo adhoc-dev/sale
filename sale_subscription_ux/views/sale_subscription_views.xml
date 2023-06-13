@@ -29,6 +29,11 @@
             <field name="amount_untaxed" position="before">
                 <field name="recurring_monthly" string="MRR"/>
             </field>
+            <tree>
+                <header>
+                    <button name="action_update_subscription_prices" type="object" help="Recompute all prices based on this pricelist" string="Update Prices" confirm="This will update all unit prices based on the currently set pricelist."/>
+                </header>
+            </tree>
         </field>
     </record>
 
@@ -40,6 +45,9 @@
             <field name="sale_order_template_id" position="attributes">
                 <attribute name="attrs">{'invisible':[('subscription_management', '=', 'upsell')]}</attribute>
             </field>
+            <button name="action_update_prices" position="after">
+                <button name="action_update_prices" type="object" string="Update Prices" help="Recompute all prices based on this pricelist" class="btn-link mb-1 px-0" icon="fa-refresh" confirm="This will update all unit prices based on the currently set pricelist." attrs="{'invisible': ['|', ('is_subscription', '=', False), ('state', 'not in', ['sale', 'done'])]}"/>
+            </button>
         </field>
     </record>
 

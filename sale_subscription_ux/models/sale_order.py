@@ -5,6 +5,7 @@
 from odoo import models, fields, api
 from markupsafe import Markup
 from odoo.tools import is_html_empty
+from odoo.exceptions import UserError
 
 
 class SaleOrder(models.Model):
@@ -30,22 +31,6 @@ class SaleOrder(models.Model):
             invoices = sub.subscription_invoice_line_ids.mapped('move_id')
             sub.invoice_ids |= invoices
             sub.invoice_count = len(sub.invoice_ids)
-
-    def update_lines_prices_from_products(self):
-        """ Update subscription lines, all the line including prices.
-        """
-        for subscription in self:
-            for line in subscription.order_line:
-                price = line.with_company(line.company_id)._get_display_price()
-                line.price_unit = line.product_id._get_tax_included_unit_price(
-                    line.company_id,
-                    line.order_id.currency_id,
-                    line.order_id.date_order,
-                    'sale',
-                    fiscal_position=line.order_id.fiscal_position_id,
-                    product_price_unit=price,
-                    product_currency=line.currency_id
-                )
 
     # Este fix surge de un problema que reporta adhoc al querer editar las cantidades de una línea de una suscripción.
     # TODO revisar
@@ -73,6 +58,12 @@ class SaleOrder(models.Model):
                 invoice.direct_debit_mandate_id = mandate
             invoices -= invoice
         return super(SaleOrder, auto_post_orders)._handle_automatic_invoices(auto_commit, invoices)
+
+    def action_update_subscription_prices(self):
+        if any(not so.is_subscription for so in self):
+            raise UserError('Some SOs are not subscriptions')
+        for rec in self:
+            rec.action_update_prices()
 
 
 class SaleOrderLine(models.Model):
