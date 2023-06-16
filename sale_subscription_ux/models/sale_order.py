@@ -60,10 +60,21 @@ class SaleOrder(models.Model):
         return super(SaleOrder, auto_post_orders)._handle_automatic_invoices(auto_commit, invoices)
 
     def action_update_subscription_prices(self):
+        """ Para actualziar los precios de suscripciones activas tenemos varios desafios y terminamos optando por estos
+        hacks:
+        1. Actualizamos temporalmente la fecha de la orden porque muchos metodos que calculan precios y descuentos
+        usan el dato date_order y deberíamos re-escribir demasiado código
+        2. mandamos por contexto action_update_subscription_prices porque el metodo _compute_price_unit no es
+        muy heredable y si hay lineas facturas hace skip a la actualización de precios
+        """
         if any(not so.is_subscription for so in self):
             raise UserError('Some SOs are not subscriptions')
-        for rec in self:
+        date_now = fields.Datetime.now()
+        for rec in self.with_context(action_update_subscription_prices=True):
+            old_date = rec.date_order
+            rec.date_order = date_now
             rec.action_update_prices()
+            rec.date_order = old_date
 
 
 class SaleOrderLine(models.Model):
@@ -78,3 +89,22 @@ class SaleOrderLine(models.Model):
                 'name': product_desc,
             })
         return res
+
+    @api.depends_context('action_update_subscription_prices')
+    def _compute_price_unit(self):
+        if not self._context.get('action_update_subscription_prices'):
+            super()._compute_price_unit()
+        for line in self:
+            if not line.product_uom or not line.product_id or not line.order_id.pricelist_id:
+                line.price_unit = 0.0
+            else:
+                price = line.with_company(line.company_id)._get_display_price()
+                line.price_unit = line.product_id._get_tax_included_unit_price(
+                    line.company_id,
+                    line.order_id.currency_id,
+                    line.order_id.date_order,
+                    'sale',
+                    fiscal_position=line.order_id.fiscal_position_id,
+                    product_price_unit=price,
+                    product_currency=line.currency_id
+                )
