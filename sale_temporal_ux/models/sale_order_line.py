@@ -23,3 +23,20 @@ class SaleOrderLine(models.Model):
         super(SaleOrderLine, self)._compute_pricelist_item_id()
         for k, v in temporal_types.items():
             k.temporal_type = v
+
+    def  _compute_discount(self):
+        """
+        Cambiamos temporal_type para las suscripciones que no tienen time_based_rules para se comporten como una SO normal
+        y tome el descuento aplicado.
+        Ignoramos casos de upsell para que se calcule como lo hace nativamente odoo
+        """
+        # temporal lines con la opcion de time base rules desactivada y que no son uspell
+        none_temporal_lines = self.filtered(
+            lambda x: x.temporal_type and not x.order_id.pricelist_id.use_time_based_rules and x.order_id.subscription_management != 'upsell')
+        temporal_types = {x: x.temporal_type for x in none_temporal_lines}
+        # antes de ir a suepr borramos dato de temporal_type para que compute normal
+        none_temporal_lines.temporal_type = False
+        super()._compute_discount()
+        # restauramos temporal_type orinal
+        for k, v in temporal_types.items():
+            k.temporal_type = v

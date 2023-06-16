@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': 'Sale Temporal UX',
-    'version': "16.0.1.1.0",
+    'version': "16.0.1.2.0",
     'category': 'Sales Management',
     'sequence': 14,
     'summary': '',
