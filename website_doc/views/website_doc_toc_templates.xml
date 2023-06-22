@@ -239,13 +239,6 @@
     <!-- Error search word minimum length -->
     <template id="error_search_len" name="Error search length">
         <t t-call="website.layout">
-            <t t-set="head">
-                <script type="text/javascript" src="/web/static/lib/ckeditor/ckeditor.js"/>
-                <script type="text/javascript">
-                    CKEDITOR.config.toolbar = [['Bold','Italic','Underline','Strike'],['NumberedList','BulletedList', 'Blockquote']
-                    ,['Outdent','Indent','Link','Unlink','Image'],] ;
-                </script>
-            </t>
             <div class="container mt16 website_forum">
                 <div class="navbar navbar-default">
                     <t t-call="website_doc.search_form"/>
@@ -264,13 +257,6 @@
     <!-- Search Results Layout -->
     <template id="search_results" name="Search Results">
         <t t-call="website.layout">
-            <t t-set="head">
-                <script type="text/javascript" src="/web/static/lib/ckeditor/ckeditor.js"/>
-                <script type="text/javascript">
-                    CKEDITOR.config.toolbar = [['Bold','Italic','Underline','Strike'],['NumberedList','BulletedList', 'Blockquote']
-                    ,['Outdent','Indent','Link','Unlink','Image'],] ;
-                </script>
-            </t>
             <div id="wrap" class="oe_structure">
                 <!-- agregamos breadcrumb -->
                 <section class="container mt16">
