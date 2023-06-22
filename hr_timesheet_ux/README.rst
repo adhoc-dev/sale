@@ -17,6 +17,9 @@ Timesheet UX
 #. Do not let to create new projects or new tasks from timesheets form and list
    view.
 
+#. Allows to allocate hours in a task that belongs to a different company than 
+   the one the user is standing on
+
 Installation
 ============
 

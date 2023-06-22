@@ -35,6 +35,9 @@ This module ensures that:
 * The project in tickets not longer be related to team. Now when a ticket is
   created a different project can be selected from the one configured for the team.
 
+* Allows to allocate hours in a ticket which team (and therefore, the ticket) belongs to 
+  a different company than the one the user is standing on
+
 Installation
 ============
 
