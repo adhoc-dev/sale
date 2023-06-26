@@ -31,7 +31,7 @@
             </field>
             <tree>
                 <header>
-                    <button name="action_update_subscription_prices" type="object" help="Recompute all prices based on this pricelist" string="Update Prices" confirm="This will update all unit prices based on the currently set pricelist."/>
+                    <button name="action_update_subscription_prices" type="object" help="Recompute only recurring products' prices based on this pricelist" string="Update Recurring Prices" confirm="This will update recurring products' unit prices based on the currently set pricelist."/>
                 </header>
             </tree>
         </field>
@@ -46,7 +46,7 @@
                 <attribute name="attrs">{'invisible':[('subscription_management', '=', 'upsell')]}</attribute>
             </field>
             <button name="action_update_prices" position="after">
-                <button name="action_update_subscription_prices" type="object" string="Update Prices" help="Recompute all prices based on this pricelist" class="btn-link mb-1 px-0" icon="fa-refresh" confirm="This will update all unit prices based on the currently set pricelist." attrs="{'invisible': ['|', ('is_subscription', '=', False), ('state', 'not in', ['sale', 'done'])]}"/>
+                <button name="action_update_subscription_prices" type="object" string="Update Recurring Prices" help="Recompute only recurring products' prices based on the subscription's pricelist" class="btn-link mb-1 px-0" icon="fa-refresh" confirm="This will update recurring products' prices based on the currently set pricelist." attrs="{'invisible': ['|', ('is_subscription', '=', False), ('state', 'not in', ['sale', 'done'])]}"/>
             </button>
         </field>
     </record>

@@ -76,6 +76,15 @@ class SaleOrder(models.Model):
             rec.action_update_prices()
             rec.date_order = old_date
 
+    def _get_update_prices_lines(self):
+        """
+        Omitimos productos no recurrentes para actualizacion de precios en suscripciones.
+        """
+        rec = super()._get_update_prices_lines()
+        if self._context.get('action_update_subscription_prices'):
+            rec = rec.filtered(lambda line: line.product_id.recurring_invoice)
+        return rec
+
 
 class SaleOrderLine(models.Model):
 
