@@ -28,8 +28,8 @@
         <field name="arch" type="xml">
             <tree decoration-muted="not active">
                 <field name="name"/>
-                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                <field name="faq_category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" optional="hide"/>
+                <field name="faq_category_ids" widget="many2many_tags" options="{'color_field': 'color'}" optional="hide"/>
                 <field name="ticket_count"/>
                 <field name="active" invisible="True"/>
             </tree>
@@ -41,6 +41,7 @@
         <field name="model">helpdesk.solution</field>
         <field name="arch" type="xml">
             <form string="Solution">
+                <field name="active" invisible="1"/>
                 <sheet string="Solution">
                     <div class="oe_button_box" name="button_box" groups="base.group_user">
                         <button class="oe_stat_button" type="action" name="%(helpdesk.helpdesk_ticket_action_main_tree)d" icon="fa-life-ring" context="{'search_default_helpdesk_solution_id': active_id}">
@@ -48,15 +49,17 @@
                         </button>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
-                    <div class="oe_title">
-                        <h1 class="o_row">
-                            <field name="name" placeholder="Name..." class="oe_inline"/>
-                        </h1>
-                    </div>
-                    <field name="active" invisible="1"/>
-                    <field name="tag_ids" widget="many2many_tags" placeholder="Tags..." options="{'color_field': 'color', 'no_create': True}"/>
-                    <br/>
-                    <field name="faq_category_ids" widget="many2many_tags" placeholder="FAQ Categories..." options="{'color_field': 'color', 'no_create': True}"/>
+                    <h1 class="o_row">
+                        <field name="name" class="text-truncate w-100 w-md-100" placeholder="Name..."/>
+                    </h1>
+                    <group>
+                        <group name="col1">
+                            <field name="tag_ids" widget="many2many_tags" placeholder="Tags..." options="{'color_field': 'color', 'no_create_edit': True}"/>
+                        </group>
+                        <group name="col2">
+                            <field name="faq_category_ids" widget="many2many_tags" placeholder="FAQ Categories..." options="{'color_field': 'color', 'no_create_edit': True, 'no_create': True}"/>
+                        </group>
+                    </group>
                     <notebook>
                         <page string="Ticket Description">
                             <field name="ticket_description" placeholder="Add a ticket description..."/>
