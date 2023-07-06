@@ -683,7 +683,7 @@ class AccountBalanceImport(models.TransientModel):
         payments.action_post()
         for payment in payments.with_context(skip_account_move_synchronization=True):
             payment.move_id.line_ids.filtered(
-                lambda x: x.account_id.account_type in ('receivable', 'payable')).account_id = self.counterpart_account_id
+                lambda x: x.account_id.account_type in ('asset_receivable', 'liability_payable')).account_id = self.counterpart_account_id
 
         return {
             "name": "Importación de Saldos Iniciales",
