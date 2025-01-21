@@ -10,20 +10,18 @@
    :target: https://www.gnu.org/licenses/agpl
    :alt: License: AGPL-3
 
-======
-CRM UX
-======
+====================
+Sale Exception Print
+====================
 
-This module:
-
-#. If the option "Allow any user as salesman" is enable, it would be possible to assign any user as salesperson in leads, opportunities and teams.
+Adds the possibility of blocking the sending of the quotation in the sales exceptions.
 
 Installation
 ============
 
 To install this module, you need to:
 
-#. Only need to install the module
+#. Only need to install the module.
 
 Configuration
 =============
@@ -37,7 +35,7 @@ Usage
 
 To use this module, you need to:
 
-#. Just use it.
+#. Before printing a quotation, it checks that the partner limit not exceeded.
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
@@ -47,7 +45,7 @@ Bug Tracker
 ===========
 
 Bugs are tracked on `GitHub Issues
-<https://github.com/ingadhoc/{project_repo}/issues>`_. In case of trouble, please
+<https://github.com/ingadhoc/sale/issues>`_. In case of trouble, please
 check there if your issue has already been reported. If you spotted it first,
 help us smashing it by providing a detailed and welcomed feedback.
 
