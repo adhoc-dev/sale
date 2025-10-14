@@ -19,7 +19,7 @@
 ##############################################################################
 {
     "name": "Sale Order Type Ux",
-    "version": "18.0.1.2.0",
+    "version": "19.0.1.0.0",
     "category": "Accounting",
     "sequence": 14,
     "author": "ADHOC SA",
@@ -37,7 +37,7 @@
         "views/account_move_views.xml",
     ],
     "demo": [],
-    "installable": False,
+    "installable": True,
     "auto_install": False,
     "application": False,
     "post_init_hook": "post_init_hook",
