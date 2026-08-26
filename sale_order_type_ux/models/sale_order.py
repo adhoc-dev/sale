@@ -14,10 +14,32 @@ class SaleOrder(models.Model):
 
     @api.depends("partner_shipping_id", "partner_id", "company_id", "type_id")
     def _compute_fiscal_position_id(self):
-        if self.type_id.fiscal_position_id:
-            self.fiscal_position_id = self.type_id.fiscal_position_id
-        else:
-            return super()._compute_fiscal_position_id()
+        """The order type wins, but only with a position the order's company can use.
+
+        Two things were wrong with taking ``type_id.fiscal_position_id`` unconditionally.
+        It did not iterate, so on a recordset of more than one order the value of whichever
+        types happened to be in it was written to all of them. And, the reason this is being
+        fixed: it ignored the company, so changing the company of an order whose type
+        carries a position left the position of the old company in place — the field is
+        ``check_company=True``, so what looks like "it did not recompute" is a value that
+        does not belong in the new company at all.
+
+        A position is usable by a company when it is global or owned by one of its
+        ancestors, which is ``check_company_domain_parent_of``, the domain the field itself
+        is checked against. When the type's position is not usable, the standard detection
+        for the new company answers instead.
+        """
+        typed = self.env["sale.order"]
+        for order in self:
+            fpos = order.type_id.fiscal_position_id
+            if fpos and (not fpos.company_id or fpos.company_id in order.company_id.parent_ids):
+                if order.fiscal_position_id != fpos and order.order_line:
+                    # Same flag core raises: the taxes of the lines do not follow the
+                    # position on their own, so the "Update Taxes" button has to show up.
+                    order.show_update_fpos = True
+                order.fiscal_position_id = fpos
+                typed |= order
+        return super(SaleOrder, self - typed)._compute_fiscal_position_id()
 
     @api.model_create_multi
     def create(self, vals):

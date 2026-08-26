@@ -27,6 +27,9 @@ Sale Order Type Ux
  - Make invisible sale order type for portal users.
 
 * If installed after some sales have been confirmed, it sets the "Default" sales order type on them.
+* The fiscal position of the order type only applies while the order's company can use it. Before, it was
+  applied whatever the company, so changing the company of an order left the fiscal position of the previous
+  one -a value the field's own company check does not accept- and it looked as if it had not been recomputed.
 
 Installation
 ============
